@@ -1,10 +1,10 @@
-#include "hitrun.hpp"
+#include "hitrun_walk.hpp"
 
-double HitAndRun::distance(VectorXd& x, VectorXd&y){
+double HitAndRunWalk::distance(VectorXd& x, VectorXd&y){
     return (x - y).norm();
 }
 
-double HitAndRun::binarySearch(VectorXd direction, VectorXd x){
+double HitAndRunWalk::binarySearch(VectorXd direction, VectorXd x){
 
     VectorXd farth = x + r * direction;
     double dist = 0; 
@@ -12,7 +12,7 @@ double HitAndRun::binarySearch(VectorXd direction, VectorXd x){
     while(true){
         dist = distance(x, farth);
         farth = x + 2 * dist * direction; 
-        if (!acceptReject(farth)){
+        if (!acceptReject(farth, A, b)){
             break; 
         }
     }
@@ -20,9 +20,9 @@ double HitAndRun::binarySearch(VectorXd direction, VectorXd x){
     VectorXd right = farth;
     VectorXd mid = (x + farth)/2;
 
-    while (distance(left, right) > err || ! acceptReject(mid)){
+    while (distance(left, right) > err || ! acceptReject(mid, A, b)){
         mid = (left + right)/2; 
-        if (acceptReject(mid)){
+        if (acceptReject(mid, A, b)){
             left = mid; 
         } else {
             right = mid; 
@@ -31,7 +31,7 @@ double HitAndRun::binarySearch(VectorXd direction, VectorXd x){
     return distance(mid, x);
 }
 
-MatrixXd HitAndRun::generateCompleteWalk(int num_steps, VectorXd x){
+MatrixXd HitAndRunWalk::generateCompleteWalk(int num_steps, VectorXd x){
     int n = x.rows(); 
     MatrixXd results = MatrixXd::Zero(num_steps, n);
     random_device rd;

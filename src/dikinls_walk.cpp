@@ -20,8 +20,9 @@ void DikinLSWalk::gradientDescent(VectorXd& x, float adj, int sim, float gl){
     VectorXd proposal (A.rows()); 
 
     while(sim--){
-        W = w_i.pow(alpha).asDiagonal().toDenseMatrix();
-        term1a = alpha * w_i.pow(alpha - 1);
+        W = vectPow(w_i, alpha).asDiagonal().toDenseMatrix();
+        term1a = alpha * vectPow(w_i, alpha - 1);
+    
         term1b = (A_x * (A_x.transpose() * W * A_x).inverse() * A_x.transpose()).diagonal();
 
         term1 = term1a.cwiseProduct(term1b);
@@ -42,7 +43,7 @@ void DikinLSWalk::gradientDescent(VectorXd& x, float adj, int sim, float gl){
 }
 
 void DikinLSWalk::generateWeight(VectorXd& x){
-    gradient_descent(x, step_size, max_iter, grad_lim);
+    gradientDescent(x, step_size, max_iter, grad_lim);
 }
 
 void DikinLSWalk::printType(){

@@ -1,13 +1,20 @@
 #include "random_walk.hpp"
 
+VectorXd RandomWalk::vectPow(VectorXd& x, float alpha){
+    for(int i = 0; i < x.rows(); i++){
+        x(i) = pow(x(i), alpha);
+    }
+    return x;
+}
+
 void RandomWalk::initialize(MatrixXd A_p, VectorXd b_p, float r_p){
     A = A_p;
     b = b_p;
     r = r_p;
 }
 
-bool RandomWalk::acceptReject(VectorXd& z){
-    return ((A * z) - b).maxCoeff() <= 0;
+bool RandomWalk::acceptReject(VectorXd& vec, MatrixXd& A, VectorXd&b){
+    return ((A * vec) - b).maxCoeff() <= 0;
 }
 
 VectorXd RandomWalk::generateGaussianRVNorm(int d){

@@ -24,7 +24,6 @@ class BarrierWalk : public RandomWalk{
 
         void setTs(float a);
         void setTd(float b);
-        bool acceptReject(VectorXd& z);
 
         VectorXd generateGaussianRV(int d);
         void generateSlack(VectorXd& x);

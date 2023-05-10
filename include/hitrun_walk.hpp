@@ -1,10 +1,10 @@
 #include "random_walk.hpp"
 
-class HitAndRun: public RandomWalk{
+class HitAndRunWalk: public RandomWalk{
 
     float err {};
     public:
-        HitAndRun(float err_p) : RandomWalk() {
+        HitAndRunWalk(float err_p) : RandomWalk() {
             err = err_p; 
         }
 

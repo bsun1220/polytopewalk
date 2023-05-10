@@ -14,10 +14,6 @@ void BarrierWalk::setTd(float b){
     term_density = b; 
 }
 
-bool RandomWalk::acceptReject(VectorXd& z){
-    return ((A * z) - b).maxCoeff() <= 0;
-}
-
 VectorXd BarrierWalk::generateGaussianRV(int d){
     VectorXd v(d);
     random_device rd;
@@ -52,7 +48,7 @@ void BarrierWalk::generateHessian(VectorXd& x){
 float BarrierWalk::generateProposalDensity(VectorXd& x, VectorXd& z){
     generateHessian(x);
     VectorXd d = generateGaussianRV(x.rows());
-    return sqrt(hess.determinant()) * exp(term_density * local_norm(x - z, hess));
+    return sqrt(hess.determinant()) * exp(term_density * localNorm(x - z, hess));
 }
 
 void BarrierWalk::generateSample(VectorXd& x){
@@ -74,7 +70,7 @@ MatrixXd BarrierWalk::generateCompleteWalk(int num_steps, VectorXd& x){
     float one = 1.0;
     for(int i = 0; i < num_steps; i++){
         generateSample(x);
-        if(acceptReject(z)){
+        if(acceptReject(z, A, b)){
             float g_x_z = generateProposalDensity(x, z);
             float g_z_x = generateProposalDensity(z, x);
             float alpha = min(one, g_z_x/g_x_z);

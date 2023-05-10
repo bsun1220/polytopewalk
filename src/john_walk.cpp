@@ -20,9 +20,9 @@ void JohnWalk::gradientDescent(VectorXd& x, float adj, int sim, float grad_lim){
     VectorXd gradient (A.rows());
 
     while(sim--){
-        W = w_i.pow(alpha).asDiagonal().toDenseMatrix();
+        W = vectPow(w_i, alpha).asDiagonal().toDenseMatrix();
 
-        term2a = w_i.pow(alpha - 1); 
+        term2a = vectPow(w_i, alpha - 1);
         term2b = (A_x * (A_x.transpose() * W * A_x).inverse() * A_x.transpose()).diagonal();
 
         term2 = term2a.cwiseProduct(term2b);

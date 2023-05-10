@@ -18,8 +18,8 @@ class DikinLSWalk: public BarrierWalk{
             float ts = sqrt(constant);
             A = A_p;
             b = b_p;
-            BarrierWalk::set_ts(ts);
-            BarrierWalk::set_td(td);
+            BarrierWalk::setTs(ts);
+            BarrierWalk::setTd(td);
         }
         void generateWeight(VectorXd& x);
         void gradientDescent(VectorXd& x, float adj, int sim, float grad_lim);

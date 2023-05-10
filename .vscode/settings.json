@@ -3,6 +3,8 @@
         "cmath": "cpp",
         "complex": "cpp",
         "__locale": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "ostream": "cpp",
+        "iostream": "cpp"
     }
 }
