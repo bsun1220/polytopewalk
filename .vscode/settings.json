@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "cmath": "cpp",
+        "complex": "cpp",
+        "__locale": "cpp",
+        "random": "cpp"
+    }
+}
