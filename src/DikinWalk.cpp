@@ -1,4 +1,4 @@
-#include "dikin_walk.hpp"
+#include "DikinWalk.hpp"
 
 void DikinWalk::generateWeight(VectorXd& x){
     int d = b.rows();

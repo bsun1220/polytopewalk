@@ -1,4 +1,4 @@
-#include "barrier_walk.hpp"
+#include "BarrierWalk.hpp"
 
 void BarrierWalk::initialize(MatrixXd A_p, VectorXd b_p, float r){
     A = A_p;

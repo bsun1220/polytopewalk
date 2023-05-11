@@ -1,4 +1,4 @@
-#include "random_walk.hpp"
+#include "RandomWalk.hpp"
 
 class BallWalk: public RandomWalk{
     

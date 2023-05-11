@@ -1,4 +1,4 @@
-#include "dikinls_walk.hpp"
+#include "DikinLSWalk.hpp"
 
 void DikinLSWalk::gradientDescent(VectorXd& x, float adj, int sim, float gl){
 

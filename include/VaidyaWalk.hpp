@@ -1,10 +1,9 @@
-#include "barrier_walk.hpp"
+#include "BarrierWalk.hpp"
 
 class VaidyaWalk: public BarrierWalk{
 
     public:
 
-        MatrixXd dhess {};
         VaidyaWalk() : BarrierWalk(){}
 
         void initialize(MatrixXd A_p, VectorXd b_p, float r){
@@ -19,4 +18,7 @@ class VaidyaWalk: public BarrierWalk{
         void generateWeight(VectorXd& x);
         void generateDikinHessian(VectorXd& x);
         void printType();
+    
+    protected:
+        MatrixXd dhess {};
 };

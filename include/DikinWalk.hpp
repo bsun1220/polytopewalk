@@ -1,4 +1,4 @@
-#include "barrier_walk.hpp"
+#include "BarrierWalk.hpp"
 
 class DikinWalk: public BarrierWalk{
 

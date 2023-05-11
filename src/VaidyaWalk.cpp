@@ -1,4 +1,4 @@
-#include "vaidya_walk.hpp"
+#include "VaidyaWalk.hpp"
 
 void VaidyaWalk::generateWeight(VectorXd& x){
     generateDikinHessian(x);

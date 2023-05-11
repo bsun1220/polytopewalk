@@ -1,9 +1,11 @@
-#include "dikin_walk.hpp"
-#include "dikinls_walk.hpp"
-#include "vaidya_walk.hpp"
-#include "john_walk.hpp"
-#include "ball_walk.hpp"
-#include "hitrun_walk.hpp"
+#include "DikinWalk.hpp"
+#include "DikinLSWalk.hpp"
+#include "VaidyaWalk.hpp"
+#include "JohnWalk.hpp"
+#include "BallWalk.hpp"
+#include "HitRunWalk.hpp"
+
+#include "CentralPointFinder.hpp"
 
 int main(){
     /*
@@ -44,4 +46,7 @@ int main(){
     HitAndRunWalk hr (0.2);
     hr.initialize(A, b, 0.1);
     cout << hr.generateCompleteWalk(10, x) << endl;
+
+    CentralPointFinder cpf (0.0001, 0.0001, 10000.0, 0.00001, 0.01);
+    cout << cpf.getInitialPoint(A, b) << endl;
 }

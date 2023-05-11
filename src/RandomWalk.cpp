@@ -1,4 +1,4 @@
-#include "random_walk.hpp"
+#include "RandomWalk.hpp"
 
 VectorXd RandomWalk::vectPow(VectorXd& x, float alpha){
     for(int i = 0; i < x.rows(); i++){

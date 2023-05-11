@@ -1,4 +1,4 @@
-#include "hitrun_walk.hpp"
+#include "HitRunWalk.hpp"
 
 double HitAndRunWalk::distance(VectorXd& x, VectorXd&y){
     return (x - y).norm();

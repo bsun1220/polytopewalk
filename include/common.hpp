@@ -1,5 +1,5 @@
-#ifndef common_hpp
-#define common_hpp
+#ifndef COMMON_HPP
+#define COMMON_HPP
 
 #include <Eigen/Dense>
 #include <unsupported/Eigen/MatrixFunctions>

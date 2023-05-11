@@ -1,19 +1,10 @@
 #ifndef BARRIER_H
 #define BARRIER_H
 
-#include "random_walk.hpp"
+#include "RandomWalk.hpp"
 
 class BarrierWalk : public RandomWalk{
     public:
-        MatrixXd A{};
-        VectorXd b{};
-        float term_sample{};
-        float term_density{};
-
-        VectorXd slack{}; 
-        MatrixXd hess{};
-        VectorXd z{};
-        MatrixXd weights{};
         
         BarrierWalk(){
             term_sample = 0;
@@ -37,6 +28,15 @@ class BarrierWalk : public RandomWalk{
         void generateSample(VectorXd& x);
 
         MatrixXd generateCompleteWalk(int num_steps, VectorXd& x);
+    
+    protected:
+        float term_sample{};
+        float term_density{};
+
+        VectorXd slack{}; 
+        MatrixXd hess{};
+        VectorXd z{};
+        MatrixXd weights{};
 };
 
 

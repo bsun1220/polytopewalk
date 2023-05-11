@@ -1,13 +1,11 @@
 #ifndef RAND_H
 #define RAND_H
-#include "common.hpp"
+#include "Common.hpp"
 
 class RandomWalk{
-    public: 
-        MatrixXd A{};
-        VectorXd b{};
-        float r {};
 
+    public:
+    
     RandomWalk(){}
 
     VectorXd vectPow(VectorXd& x, float alpha);
@@ -15,6 +13,11 @@ class RandomWalk{
     bool acceptReject(VectorXd& z, MatrixXd& A, VectorXd& b);
     VectorXd generateGaussianRVNorm(int d);
     virtual MatrixXd generateCompleteWalk(int num_steps, VectorXd x);
+
+    protected: 
+        MatrixXd A{};
+        VectorXd b{};
+        float r {};
 };
 
 #endif

@@ -1,4 +1,4 @@
-#include "ball_walk.hpp"
+#include "BallWalk.hpp"
 
 
 MatrixXd BallWalk::generateCompleteWalk(int num_steps, VectorXd x){

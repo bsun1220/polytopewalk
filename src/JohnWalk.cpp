@@ -1,4 +1,4 @@
-#include "john_walk.hpp"
+#include "JohnWalk.hpp"
 
 
 void JohnWalk::gradientDescent(VectorXd& x, float adj, int sim, float grad_lim){
