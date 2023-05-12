@@ -6,22 +6,24 @@
 #include "HitRunWalk.hpp"
 
 #include "CentralPointFinder.hpp"
+#include "FacialReduction.hpp"
 
 int main(){
-    /*
+    
     MatrixXd A (4,2);
     A << 1, 0, -1, 0, 0, 1, 0, -1;
     VectorXd b (4);
     b << 1, 0, 1, 0;
     VectorXd x (2);
-    x << 0.5, 0.5;*/
+    x << 0.5, 0.5;
 
+    /*
     MatrixXd A (6,3);
     A << 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1;
     VectorXd b(6);
     b << 1, 0, 1, 0, 1, 0;
     VectorXd x (3);
-    x << 0.5, 0.5, 0.5;
+    x << 0.5, 0.5, 0.5;*/
 
     DikinWalk d;
     d.initialize(A, b, 0.4);
@@ -49,4 +51,41 @@ int main(){
 
     CentralPointFinder cpf (0.0001, 0.0001, 10000.0, 0.00001, 0.01);
     cout << cpf.getInitialPoint(A, b) << endl;
+
+    MatrixXd newA (6, 3);
+    newA << 1, 1, 0, -1, -1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1;
+
+    VectorXd newB (6);
+    newB << 1, -1, 1, 1, 1, 1;
+
+    FacialReduction fr;
+    problem_result res = fr.reduce(newA, newB);
+
+    cout << res.reduced_A << endl;
+    cout << res.reduced_b << endl;
+
+    MatrixXd newA2 (6,3);
+    newA2 << 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1;
+
+    VectorXd newB2(6);
+    newB2 << 1, 1, 0, 0, 0, 0;
+
+    res = fr.reduce(newA2, newB2);
+    cout << res.reduced_A << endl;
+    cout << res.reduced_b << endl;
+
+    MatrixXd newA3 (4,2);
+    newA3 << 1, 0, -1, 0, 1, 1, -1, -1;
+
+    VectorXd newB3(4);
+    newB3 << 1, 1, 1, -1;
+
+    res = fr.reduce(newA3, newB3);
+    cout << res.reduced_A << endl;
+    cout << res.reduced_b << endl;
+
+
+    
 }
+
+

@@ -3,9 +3,6 @@
 class DikinLSWalk: public BarrierWalk{
 
     public:
-        float step_size {};
-        float max_iter {};
-        float grad_lim {};
         DikinLSWalk(float ss, float mi, float gl) : BarrierWalk(){
             step_size = ss;
             max_iter = mi;
@@ -22,6 +19,11 @@ class DikinLSWalk: public BarrierWalk{
             BarrierWalk::setTd(td);
         }
         void generateWeight(VectorXd& x);
-        void gradientDescent(VectorXd& x, float adj, int sim, float grad_lim);
         void printType();
+    
+    protected:
+        float step_size {};
+        float max_iter {};
+        float grad_lim {};
+        void gradientDescent(VectorXd& x, float adj, int sim, float grad_lim);
 };

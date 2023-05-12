@@ -15,9 +15,9 @@ class RandomWalk{
     virtual MatrixXd generateCompleteWalk(int num_steps, VectorXd x);
 
     protected: 
-        MatrixXd A{};
-        VectorXd b{};
-        float r {};
+        MatrixXd A;
+        VectorXd b;
+        float r;
 };
 
 #endif

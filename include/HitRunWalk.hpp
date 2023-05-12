@@ -2,7 +2,6 @@
 
 class HitAndRunWalk: public RandomWalk{
 
-    float err {};
     public:
         HitAndRunWalk(float err_p) : RandomWalk() {
             err = err_p; 
@@ -14,10 +13,11 @@ class HitAndRunWalk: public RandomWalk{
             r = r_p;
         }
 
-        double distance(VectorXd& x, VectorXd&y);
-
-        double binarySearch(VectorXd direction, VectorXd x);
-
         MatrixXd generateCompleteWalk(int num_steps, VectorXd x);
+    
+    protected:
+        float err {};
+        double distance(VectorXd& x, VectorXd&y);
+        double binarySearch(VectorXd direction, VectorXd x);
 
 };
