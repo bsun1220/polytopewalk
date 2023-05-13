@@ -24,5 +24,4 @@ class FacialReduction: public Reducer{
         fr_result entireFacialReductionStep(MatrixXd A, VectorXd b, int x_dim);
         fr_result reduceSampling(MatrixXd M, VectorXd b, int delta_dim);
 
-
 };

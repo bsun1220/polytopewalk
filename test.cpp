@@ -1,15 +1,23 @@
-#include "DikinWalk.hpp"
-#include "DikinLSWalk.hpp"
-#include "VaidyaWalk.hpp"
-#include "JohnWalk.hpp"
-#include "BallWalk.hpp"
-#include "HitRunWalk.hpp"
-
-#include "CentralPointFinder.hpp"
-#include "FacialReduction.hpp"
+#include "PolytopeWalk.hpp"
 
 int main(){
-    
+
+    MatrixXd A (4,2);
+    A << 1, 0, -1, 0, 1, 1, -1, -1;
+
+    VectorXd b(4);
+    b << 1, 1, 1, -1;
+
+    //BallWalk walk;
+    JohnWalk walk(0.01, 100, 0.01);
+    FacialReduction fr;
+
+    CentralPointFinder cpf(10000, 0.0001, 10000, 0.0001, 0.001);
+
+    MatrixXd res = fullWalkRun(A, b, 0.4, 100, walk, fr, cpf);
+    cout << res << endl;
+
+    /*
     MatrixXd A (4,2);
     A << 1, 0, -1, 0, 0, 1, 0, -1;
     VectorXd b (4);
@@ -17,13 +25,13 @@ int main(){
     VectorXd x (2);
     x << 0.5, 0.5;
 
-    /*
+
     MatrixXd A (6,3);
     A << 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1;
     VectorXd b(6);
     b << 1, 0, 1, 0, 1, 0;
     VectorXd x (3);
-    x << 0.5, 0.5, 0.5;*/
+    x << 0.5, 0.5, 0.5;
 
     DikinWalk d;
     d.initialize(A, b, 0.4);
@@ -83,7 +91,7 @@ int main(){
     res = fr.reduce(newA3, newB3);
     cout << res.reduced_A << endl;
     cout << res.reduced_b << endl;
-
+    */
 
     
 }

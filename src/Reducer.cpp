@@ -20,10 +20,10 @@ MatrixXd Reducer::makeFullRank(MatrixXd mat){
     }
 
     MatrixXd ans = (q * new_r).transpose();
+    const double multiplier = std::pow(10.0, 10);
 
     for(int i = 0; i < ans.rows(); i++){
         for(int j = 0; j < ans.cols(); j++){
-            const double multiplier = std::pow(10.0, 10);
             ans.coeffRef(i,j) = round(ans.coeffRef(i,j) * multiplier) / multiplier;
         }
     }
@@ -32,5 +32,6 @@ MatrixXd Reducer::makeFullRank(MatrixXd mat){
 
 problem_result Reducer::reduce(MatrixXd A, VectorXd b){
     problem_result pf;
+    cout << "oops" << endl;
     return pf;
 }

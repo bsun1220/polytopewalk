@@ -1,7 +1,7 @@
 #include "BallWalk.hpp"
 
 
-MatrixXd BallWalk::generateCompleteWalk(int num_steps, VectorXd x){
+MatrixXd BallWalk::generateCompleteWalk(int num_steps, VectorXd& x){
     int n = x.rows(); 
     MatrixXd results = MatrixXd::Zero(num_steps, n);
     for (int i = 0; i < num_steps; i++){

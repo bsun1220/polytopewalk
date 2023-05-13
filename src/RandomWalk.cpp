@@ -28,6 +28,7 @@ VectorXd RandomWalk::generateGaussianRVNorm(int d){
     return v/v.norm();
 }
 
-MatrixXd RandomWalk::generateCompleteWalk(int num_steps, VectorXd x){
+MatrixXd RandomWalk::generateCompleteWalk(int num_steps, VectorXd& x){
+    cout << "oops" << endl;
     return MatrixXd::Zero(1,1);
 }

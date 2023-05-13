@@ -13,11 +13,11 @@ class HitAndRunWalk: public RandomWalk{
             r = r_p;
         }
 
-        MatrixXd generateCompleteWalk(int num_steps, VectorXd x);
+        MatrixXd generateCompleteWalk(int num_steps, VectorXd& x);
     
     protected:
         float err {};
         double distance(VectorXd& x, VectorXd&y);
-        double binarySearch(VectorXd direction, VectorXd x);
+        double binarySearch(VectorXd direction, VectorXd& x);
 
 };
