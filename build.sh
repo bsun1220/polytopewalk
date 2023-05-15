@@ -1,1 +1,1 @@
- rm -r build; mkdir build ; cd build; cmake ..;
+ rm -r build; mkdir build ; cd build; cmake .. 

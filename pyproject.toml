@@ -1,0 +1,14 @@
+[build-system]
+requires = ["scikit-build-core", "pybind11"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "polytopewalk"
+version = "1.0.2"
+description="Open Source Implementation of MCMC Polytope Walks"
+authors = [
+  { name = "Benny Sun", email = "benny.sun@duke.edu" },
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License"
+]

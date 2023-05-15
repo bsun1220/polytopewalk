@@ -8,6 +8,7 @@
         "iostream": "cpp",
         "iosfwd": "cpp",
         "*.tcc": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "vector": "cpp"
     }
 }

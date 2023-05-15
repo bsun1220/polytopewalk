@@ -12,5 +12,7 @@ class BallWalk: public RandomWalk{
         }
 
         MatrixXd generateCompleteWalk(int num_steps, VectorXd& x);
+        void printType();
+
 
 };

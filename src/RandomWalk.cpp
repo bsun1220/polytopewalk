@@ -32,3 +32,7 @@ MatrixXd RandomWalk::generateCompleteWalk(int num_steps, VectorXd& x){
     cout << "oops" << endl;
     return MatrixXd::Zero(1,1);
 }
+
+void RandomWalk::printType(){
+    cout << "oops" << endl;
+}

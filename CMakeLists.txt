@@ -18,15 +18,17 @@ include_directories(include)
 # Define the source files for the library
 file(GLOB SOURCES "src/*.cpp")
 #list(FILTER SOURCES EXCLUDE REGEX ".*main\\.cpp$")
-#list(FILTER SOURCES EXCLUDE REGEX ".*test\\.cpp$")
+list(FILTER SOURCES EXCLUDE REGEX ".*PybindExt\\.cpp$")
 # message("The value of SOURCES is: ${SOURCES}")
 
-add_executable(${PROJECT_NAME} test.cpp ${SOURCES})
-target_link_libraries(${PROJECT_NAME} PUBLIC pybind11::module Eigen3::Eigen ifopt::ifopt_ipopt)
-target_include_directories(${PROJECT_NAME} PRIVATE ${Eigen3_INCLUDE_DIRS})
-#pybind11_add_module(${PROJECT_NAME} MODULE src/main.cpp ${SOURCES})
+#add_executable(${PROJECT_NAME} test.cpp ${SOURCES})
 #target_link_libraries(${PROJECT_NAME} PUBLIC pybind11::module Eigen3::Eigen ifopt::ifopt_ipopt)
 #target_include_directories(${PROJECT_NAME} PRIVATE ${Eigen3_INCLUDE_DIRS})
+
+#add_executable(${PROJECT_NAME}  test.cpp ${SOURCES})
+pybind11_add_module(${PROJECT_NAME} MODULE src/PybindExt.cpp ${SOURCES})
+target_link_libraries(${PROJECT_NAME} PUBLIC pybind11::module Eigen3::Eigen ifopt::ifopt_ipopt)
+target_include_directories(${PROJECT_NAME} PRIVATE ${Eigen3_INCLUDE_DIRS})
 
 # add_executable(mytest1 src/test.cpp ${SOURCES})
 # target_link_libraries(mytest1 PRIVATE Eigen3::Eigen ifopt::ifopt_ipopt)

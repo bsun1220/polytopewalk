@@ -14,6 +14,7 @@ class HitAndRunWalk: public RandomWalk{
         }
 
         MatrixXd generateCompleteWalk(int num_steps, VectorXd& x);
+        void printType();
     
     protected:
         float err {};

@@ -48,3 +48,7 @@ MatrixXd HitAndRunWalk::generateCompleteWalk(int num_steps, VectorXd& x){
     }
     return results;
 }
+
+void HitAndRunWalk::printType(){
+    cout << "HitAndRunWalk" << endl;
+}

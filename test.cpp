@@ -2,16 +2,15 @@
 
 int main(){
 
-    MatrixXd A (4,2);
-    A << 1, 0, -1, 0, 1, 1, -1, -1;
+    MatrixXd A (6,3);
+    A << 1, 1, 0, -1, -1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1;
 
-    VectorXd b(4);
-    b << 1, 1, 1, -1;
+    VectorXd b(6);
+    b << 1, -1, 1, 1, 1, 1;
 
     //BallWalk walk;
     JohnWalk walk(0.01, 100, 0.01);
     FacialReduction fr;
-
     CentralPointFinder cpf(10000, 0.0001, 10000, 0.0001, 0.001);
 
     MatrixXd res = fullWalkRun(A, b, 0.4, 100, walk, fr, cpf);

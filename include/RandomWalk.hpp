@@ -6,13 +6,14 @@ class RandomWalk{
 
     public:
     
-    RandomWalk(){}
+        RandomWalk(){}
 
-    VectorXd vectPow(VectorXd& x, float alpha);
-    virtual void initialize(MatrixXd A_p, VectorXd b_p, float r_p);
-    bool acceptReject(VectorXd& z, MatrixXd& A, VectorXd& b);
-    VectorXd generateGaussianRVNorm(int d);
-    virtual MatrixXd generateCompleteWalk(int num_steps, VectorXd& x);
+        VectorXd vectPow(VectorXd& x, float alpha);
+        virtual void initialize(MatrixXd A_p, VectorXd b_p, float r_p);
+        bool acceptReject(VectorXd& z, MatrixXd& A, VectorXd& b);
+        VectorXd generateGaussianRVNorm(int d);
+        virtual MatrixXd generateCompleteWalk(int num_steps, VectorXd& x);
+        virtual void printType();
 
     protected: 
         MatrixXd A;

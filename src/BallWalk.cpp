@@ -13,3 +13,7 @@ MatrixXd BallWalk::generateCompleteWalk(int num_steps, VectorXd& x){
     }
     return results;
 }
+
+void BallWalk::printType(){
+    cout << "Ball Walk" << endl;
+}
