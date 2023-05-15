@@ -31,7 +31,7 @@ double HitAndRunWalk::binarySearch(VectorXd direction, VectorXd& x){
     return distance(mid, x);
 }
 
-MatrixXd HitAndRunWalk::generateCompleteWalk(int num_steps, VectorXd& x){
+MatrixXd HitAndRunWalk::generateCompleteWalk(const int num_steps, VectorXd& x){
     int n = x.rows(); 
     MatrixXd results = MatrixXd::Zero(num_steps, n);
     random_device rd;

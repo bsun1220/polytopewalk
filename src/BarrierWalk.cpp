@@ -62,7 +62,7 @@ void BarrierWalk::printType(){
     cout << "Generic Barrier" << endl;
 }
 
-MatrixXd BarrierWalk::generateCompleteWalk(int num_steps, VectorXd& x){
+MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x){
     MatrixXd results = MatrixXd::Zero(num_steps, A.cols());
     random_device rd;
     mt19937 gen(rd());

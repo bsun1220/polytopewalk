@@ -10,6 +10,16 @@
 #include "HitRunWalk.hpp"
 #include "VaidyaWalk.hpp"
 
+ /**
+ * @brief does complete polytope walk process
+ * @param A part of polytope initialization {x | Ax <= b}
+ * @param b part of polytope initialization {x | Ax <= b}
+ * @param r part of spread for the walk initializer
+ * @param walk pre-specified walk choice
+ * @param reducer pre-specified reducer choice
+ * @param initializer pre-specified initializer choice
+ * @return Matrix
+ */
 MatrixXd fullWalkRun(MatrixXd A, VectorXd b, float r, int num_sim, RandomWalk& walk, Reducer& reducer, Initializer& initializer){
     problem_result fr = reducer.reduce(A, b);
     int x_dim = A.cols();
