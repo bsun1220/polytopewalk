@@ -1,10 +1,5 @@
 #include "BarrierWalk.hpp"
 
-void BarrierWalk::initialize(MatrixXd A_p, VectorXd b_p, float r){
-    A = A_p;
-    b = b_p;
-    r = r; 
-}
 
 void BarrierWalk::setTs(float a){
     term_sample = a; 
@@ -25,34 +20,34 @@ VectorXd BarrierWalk::generateGaussianRV(int d){
     return v;
 }
 
-void BarrierWalk::generateSlack(VectorXd& x){
+void BarrierWalk::generateSlack(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
     slack = (b - (A * x));
 }
 
-float BarrierWalk::localNorm(VectorXd v, MatrixXd& m){
+float BarrierWalk::localNorm(VectorXd v, const MatrixXd& m){
     return ((v.transpose() * m) * v)(0);
 }
 
-void BarrierWalk::generateWeight(VectorXd& x){
+void BarrierWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
     int d = b.rows();
     weights = VectorXd::Zero(d).asDiagonal().toDenseMatrix();
 }
 
-void BarrierWalk::generateHessian(VectorXd& x){
-    generateWeight(x);
-    generateSlack(x);
+void BarrierWalk::generateHessian(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
+    generateWeight(x, A, b);
+    generateSlack(x, A, b);
     MatrixXd slack_inv = slack.cwiseInverse().asDiagonal().toDenseMatrix();
     hess = A.transpose() * slack_inv * weights * slack_inv * A;
 }
 
-float BarrierWalk::generateProposalDensity(VectorXd& x, VectorXd& z){
-    generateHessian(x);
+float BarrierWalk::generateProposalDensity(const VectorXd& x, const VectorXd& z, const MatrixXd& A, const VectorXd& b){
+    generateHessian(x, A, b);
     VectorXd d = generateGaussianRV(x.rows());
     return sqrt(hess.determinant()) * exp(term_density * localNorm(x - z, hess));
 }
 
-void BarrierWalk::generateSample(VectorXd& x){
-    generateHessian(x);
+void BarrierWalk::generateSample(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
+    generateHessian(x, A, b);
     MatrixXd matrix = hess.inverse().sqrt();
     VectorXd direction = generateGaussianRV(x.rows());
     z = x + term_sample * (matrix * direction);
@@ -62,17 +57,24 @@ void BarrierWalk::printType(){
     cout << "Generic Barrier" << endl;
 }
 
-MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x){
+MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b){
     MatrixXd results = MatrixXd::Zero(num_steps, A.cols());
     random_device rd;
     mt19937 gen(rd());
     uniform_real_distribution<> dis(0.0, 1.0);
     float one = 1.0;
+
+    float constant = (R * R)/b.rows();
+    float td = (-0.5 / constant);
+    float ts = sqrt(constant);
+    BarrierWalk::setTs(ts);
+    BarrierWalk::setTd(td);
+
     for(int i = 0; i < num_steps; i++){
-        generateSample(x);
-        if(acceptReject(z, A, b)){
-            float g_x_z = generateProposalDensity(x, z);
-            float g_z_x = generateProposalDensity(z, x);
+        generateSample(x, A, b);
+        if(inPolytope(z, A, b)){
+            float g_x_z = generateProposalDensity(x, z, A, b);
+            float g_z_x = generateProposalDensity(z, x, A, b);
             float alpha = min(one, g_z_x/g_x_z);
             float val = dis(gen);
             x = val < alpha ? z : x;

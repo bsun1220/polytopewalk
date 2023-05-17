@@ -9,38 +9,16 @@ class RandomWalk{
         RandomWalk(){}
 
         /**
-         * @brief Initialize values (because prior to Reducer, it is unknown what these values are)
-         * @param A_p (Matrix for polytope) Ax <= b
-         * @param b_p (Vector for polytope) Ax <= b
-         * @param r_p general indicator of spread
-         * @return void
-         */
-        virtual void initialize(MatrixXd A_p, VectorXd b_p, float r_p);
-
-        /**
          * @brief Generate values from the walk
          * @param num_steps number of steps wanted to take
          * @param x initial starting point
+         * @param A polytope matrix
+         * @param b polytope vector
          * @return Matrix
          */
-        virtual MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x);
+        virtual MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b);
 
     protected: 
-
-        /**
-         * @brief matrix for x {x | Ax <= b}
-         */
-        MatrixXd A;
-
-        /**
-         * @brief vector for x {x | Ax <= b}
-         */
-        VectorXd b;
-
-        /**
-         * @brief general spread hyperparameter
-         */
-        float r;
 
         /**
          * @brief return elementwise [x_1^alpha,...,a_n^alpha]
@@ -54,10 +32,10 @@ class RandomWalk{
          * @brief checks Az <= b
          * @param z
          * @param A
-         * @param x
+         * @param b
          * @return void
          */
-        bool acceptReject(VectorXd& z, MatrixXd& A, VectorXd& b);
+        bool inPolytope(const VectorXd& z, const MatrixXd& A, const VectorXd& b);
 
         /**
          * @brief returns normalized Gaussian vector of dimension d

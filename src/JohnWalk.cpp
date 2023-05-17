@@ -1,12 +1,12 @@
 #include "JohnWalk.hpp"
 
 
-void JohnWalk::gradientDescent(VectorXd& x, float adj, int sim, float grad_lim){
+void JohnWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b ){
     float alpha = 1 - 1/(log2(2 * A.rows() / A.cols()));
     float beta = (double)A.cols() / (2 * A.rows());
 
     VectorXd w_i = VectorXd::Ones(A.rows()); 
-    generateSlack(x);
+    generateSlack(x, A, b);
     MatrixXd slack_mat = slack.asDiagonal().toDenseMatrix();
 
     MatrixXd A_x = slack_mat.colPivHouseholderQr().solve(A);
@@ -19,7 +19,7 @@ void JohnWalk::gradientDescent(VectorXd& x, float adj, int sim, float grad_lim){
     VectorXd term3 (A.rows());
     VectorXd gradient (A.rows());
 
-    while(sim--){
+    for(int i = 0; i < MAXITER; i++){
         W = vectPow(w_i, alpha).asDiagonal().toDenseMatrix();
 
         term2a = vectPow(w_i, alpha - 1);
@@ -29,19 +29,16 @@ void JohnWalk::gradientDescent(VectorXd& x, float adj, int sim, float grad_lim){
         term3 = beta * w_i.cwiseInverse();
         
         gradient = term1 - term2 - term3;
-        if(gradient.norm() < grad_lim){
+        if(gradient.norm() < GRADLIM){
             break;
         }
-        w_i = w_i - adj * gradient;
+        w_i = w_i - STEPSIZE * gradient;
     }
 
     weights = w_i.asDiagonal().toDenseMatrix();
 
 }
 
-void JohnWalk::generateWeight(VectorXd& x){
-    gradientDescent(x, step_size, max_iter, grad_lim);
-}
 
 void JohnWalk::printType(){
     cout << "John Walk" << endl;

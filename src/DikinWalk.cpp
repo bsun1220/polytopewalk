@@ -1,6 +1,6 @@
 #include "DikinWalk.hpp"
 
-void DikinWalk::generateWeight(VectorXd& x){
+void DikinWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
     int d = b.rows();
     weights = MatrixXd::Identity(d, d);
 }

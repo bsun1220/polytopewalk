@@ -14,13 +14,12 @@
  * @brief does complete polytope walk process
  * @param A part of polytope initialization {x | Ax <= b}
  * @param b part of polytope initialization {x | Ax <= b}
- * @param r part of spread for the walk initializer
  * @param walk pre-specified walk choice
  * @param reducer pre-specified reducer choice
  * @param initializer pre-specified initializer choice
  * @return Matrix
  */
-MatrixXd fullWalkRun(MatrixXd A, VectorXd b, float r, int num_sim, RandomWalk& walk, Reducer& reducer, Initializer& initializer){
+MatrixXd fullWalkRun(MatrixXd A, VectorXd b, int num_sim, RandomWalk& walk, Reducer& reducer, Initializer& initializer){
     problem_result fr = reducer.reduce(A, b);
     int x_dim = A.cols();
     if (fr.reduced){
@@ -29,9 +28,8 @@ MatrixXd fullWalkRun(MatrixXd A, VectorXd b, float r, int num_sim, RandomWalk& w
         VectorXd pb = fr.b_tilde;
         MatrixXd M_inv = fr.M.inverse();
 
-        walk.initialize(reduced_A, reduced_b, r);
         VectorXd x = initializer.getInitialPoint(reduced_A, reduced_b);
-        MatrixXd results = walk.generateCompleteWalk(num_sim, x);
+        MatrixXd results = walk.generateCompleteWalk(num_sim, x, reduced_A, reduced_b);
         MatrixXd res(results.rows(), x_dim);
         for(int i = 0; i < results.rows(); i++){
             VectorXd val (results.cols() + pb.rows());
@@ -43,10 +41,9 @@ MatrixXd fullWalkRun(MatrixXd A, VectorXd b, float r, int num_sim, RandomWalk& w
 
 
     } else {
-        walk.initialize(A, b, r);
 
         VectorXd x = initializer.getInitialPoint(A, b);
-        MatrixXd res = walk.generateCompleteWalk(num_sim, x);
+        MatrixXd res = walk.generateCompleteWalk(num_sim, x, A, b);
         return res;
     }
 }

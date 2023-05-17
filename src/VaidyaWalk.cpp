@@ -1,7 +1,7 @@
 #include "VaidyaWalk.hpp"
 
-void VaidyaWalk::generateWeight(VectorXd& x){
-    generateDikinHessian(x);
+void VaidyaWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
+    generateDikinHessian(x, A, b);
     MatrixXd hess_inv = dhess.inverse();
     MatrixXd slack_inv = slack.cwiseInverse().asDiagonal().toDenseMatrix();
 
@@ -13,8 +13,8 @@ void VaidyaWalk::generateWeight(VectorXd& x){
     weights = wi.asDiagonal().toDenseMatrix();
 }
 
-void VaidyaWalk::generateDikinHessian(VectorXd& x){
-    generateSlack(x);
+void VaidyaWalk::generateDikinHessian(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
+    generateSlack(x, A, b);
     MatrixXd slack_inv = slack.cwiseInverse().asDiagonal().toDenseMatrix();
     dhess = A.transpose() * slack_inv * slack_inv * A;
 }

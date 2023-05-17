@@ -9,23 +9,23 @@ MatrixXd generateWalk(MatrixXd& A, VectorXd& b, string walk_type, float r, int n
     FacialReduction fr;
 
     if (walk_type == "dikin"){
-        DikinWalk d;
-        return fullWalkRun(A, b, r, num_sim, d, fr, cpf);
+        DikinWalk d(r);
+        return fullWalkRun(A, b, num_sim, d, fr, cpf);
     } else if (walk_type == "vaidya"){
-        VaidyaWalk v;
-        return fullWalkRun(A, b, r, num_sim, v, fr, cpf);
+        VaidyaWalk v(r);
+        return fullWalkRun(A, b, num_sim, v, fr, cpf);
     } else if (walk_type == "dikinls"){
-        DikinLSWalk dl(step_size, max_iter, grad_lim);
-        return fullWalkRun(A, b, r, num_sim, dl, fr, cpf);
+        DikinLSWalk dl(step_size, max_iter, grad_lim, r);
+        return fullWalkRun(A, b, num_sim, dl, fr, cpf);
     } else if (walk_type == "john"){
-        JohnWalk j(step_size, max_iter, grad_lim);
-        return fullWalkRun(A, b, r, num_sim, j, fr, cpf);
+        JohnWalk j(step_size, max_iter, grad_lim, r);
+        return fullWalkRun(A, b, num_sim, j, fr, cpf);
     } else if (walk_type == "ball"){
-        BallWalk ball;
-        return fullWalkRun(A, b, r, num_sim, ball, fr, cpf);
+        BallWalk ball (r);
+        return fullWalkRun(A, b, num_sim, ball, fr, cpf);
     } else if (walk_type == "hitrun"){
-        HitAndRunWalk hr (err);
-        return fullWalkRun(A, b, r, num_sim, hr, fr, cpf);
+        HitAndRunWalk hr (err, r);
+        return fullWalkRun(A, b, num_sim, hr, fr, cpf);
     }
     return A;
 }

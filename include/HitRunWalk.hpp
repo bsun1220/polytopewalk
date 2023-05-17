@@ -5,31 +5,22 @@ class HitAndRunWalk: public RandomWalk{
     public:
         /**
          * @brief Hit and Run implementation constructor
-         * 
+         * @param err_p error hyperparameter
+         * @param r spread hyperparamter
          */
-        HitAndRunWalk(float err_p) : RandomWalk() {
-            err = err_p; 
+        HitAndRunWalk(const float err_p, const float r) : ERR(err_p), R(r), RandomWalk() {
+
         }
 
-        /**
-         * @brief Initialize values (because prior to Reducer, it is unknown what these values are)
-         * @param A_p (Matrix for polytope) {x | Ax <= b}
-         * @param b_p (Vector for polytope) {x | Ax <= b}
-         * @param r_p general indicator of spread
-         * @return void
-         */
-        void initialize(MatrixXd A_p, VectorXd b_p, float r_p){
-            A = A_p;
-            b = b_p;
-            r = r_p;
-        }
         /**
          * @brief Generate values from the walk
          * @param num_steps number of steps wanted to take
          * @param x initial starting point
+         * @param A polytope matrix
+         * @param b polytope matrix
          * @return Matrix
          */
-        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x);
+        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b);
 
          /**
          * @brief print general type 
@@ -41,7 +32,12 @@ class HitAndRunWalk: public RandomWalk{
         /**
          * @brief relative error of the binary search operation
          */
-        float err {};
+        const float ERR;
+
+        /**
+         * @brief initial starting value
+         */
+        const float R;
 
         /**
          * @brief get distance between vectors x and y
@@ -55,8 +51,10 @@ class HitAndRunWalk: public RandomWalk{
          * @brief runs binary search to find a suitable chord intersection with the polytope
          * @param direction (random direction variable)
          * @param x (starting point)
+         * @param A polytope matrix
+         * @param b polytope vector
          * @return double 
          */
-        double binarySearch(VectorXd direction, VectorXd& x);
+        double binarySearch(VectorXd direction, VectorXd& x, const MatrixXd& A, const VectorXd& b);
 
 };

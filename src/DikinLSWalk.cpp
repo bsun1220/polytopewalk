@@ -1,12 +1,12 @@
 #include "DikinLSWalk.hpp"
 
-void DikinLSWalk::gradientDescent(VectorXd& x, float adj, int sim, float gl){
+void DikinLSWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
 
     float q = 2 * (1 + log(A.rows()));
     float alpha = 1 - (2/q);
 
     VectorXd w_i = VectorXd::Ones(A.rows()); 
-    generateSlack(x);
+    generateSlack(x, A, b);
     MatrixXd slack_mat = slack.asDiagonal().toDenseMatrix();
     MatrixXd A_x = slack_mat.colPivHouseholderQr().solve(A);
 
@@ -19,7 +19,8 @@ void DikinLSWalk::gradientDescent(VectorXd& x, float adj, int sim, float gl){
     VectorXd gradient (A.rows()); 
     VectorXd proposal (A.rows()); 
 
-    while(sim--){
+
+    for(int i = 0; i < MAXITER; i++){
         W = vectPow(w_i, alpha).asDiagonal().toDenseMatrix();
         term1a = alpha * vectPow(w_i, alpha - 1);
     
@@ -28,10 +29,10 @@ void DikinLSWalk::gradientDescent(VectorXd& x, float adj, int sim, float gl){
         term1 = term1a.cwiseProduct(term1b);
         
         gradient = term1 - term2;
-        if(gradient.norm() < gl){
+        if(gradient.norm() < GRADLIM){
             break;
         }
-        proposal = w_i + adj * gradient;
+        proposal = w_i + STEPSIZE * gradient;
         if(proposal.minCoeff() < 0){
             break; 
         }
@@ -40,10 +41,6 @@ void DikinLSWalk::gradientDescent(VectorXd& x, float adj, int sim, float gl){
 
     weights = w_i.asDiagonal().toDenseMatrix();
     
-}
-
-void DikinLSWalk::generateWeight(VectorXd& x){
-    gradientDescent(x, step_size, max_iter, grad_lim);
 }
 
 void DikinLSWalk::printType(){

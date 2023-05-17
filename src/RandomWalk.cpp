@@ -7,13 +7,7 @@ VectorXd RandomWalk::vectPow(VectorXd& x, const float alpha){
     return x;
 }
 
-void RandomWalk::initialize(MatrixXd A_p, VectorXd b_p, float r_p){
-    A = A_p;
-    b = b_p;
-    r = r_p;
-}
-
-bool RandomWalk::acceptReject(VectorXd& vec, MatrixXd& A, VectorXd&b){
+bool RandomWalk::inPolytope(const VectorXd& vec, const MatrixXd& A, const VectorXd&b){
     return ((A * vec) - b).maxCoeff() <= 0;
 }
 
@@ -28,7 +22,7 @@ VectorXd RandomWalk::generateGaussianRVNorm(const int d){
     return v/v.norm();
 }
 
-MatrixXd RandomWalk::generateCompleteWalk(const int num_steps, VectorXd& x){
+MatrixXd RandomWalk::generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b){
     cout << "oops" << endl;
     return MatrixXd::Zero(1,1);
 }
