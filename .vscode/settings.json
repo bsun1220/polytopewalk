@@ -9,6 +9,7 @@
         "iosfwd": "cpp",
         "*.tcc": "cpp",
         "bitset": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "ios": "cpp"
     }
 }

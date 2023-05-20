@@ -16,7 +16,7 @@ class JohnWalk: public BarrierWalk{
         }
 
         /**
-         * @brief print dikinls
+         * @brief print john walk
          * @return void
          */
         void printType();
