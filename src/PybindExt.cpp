@@ -18,37 +18,46 @@ class PyInitializer : public Initializer{
         }
 };
 
-class PyRandomWalk : public RandomWalk{
-    public:
-        using RandomWalk::RandomWalk;
-
-        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b) override{
+template <class RandomWalkBase = RandomWalk> class PyRandomWalk : public RandomWalkBase {
+public:
+    using RandomWalkBase::RandomWalkBase; // Inherit constructors
+    MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b) override{
             PYBIND11_OVERRIDE_PURE(
                 MatrixXd,
-                RandomWalk,
+                RandomWalkBase,
                 generateCompleteWalk,
                 num_steps,
                 x,
                 A,
                 b
             );
-        }
+    }
 };
-
-class PyBarrierWalk : public BarrierWalk{
-    public:
-        using BarrierWalk::BarrierWalk;
-        void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b) override{
-            PYBIND11_OVERRIDE_PURE(
+template <class BarrierWalkBase = BarrierWalk> class PyBarrierWalk: public PyRandomWalk<BarrierWalkBase> {
+public:
+    using PyRandomWalk<BarrierWalkBase>::PyRandomWalk; // Inherit constructors
+    // Override PyAnimal's pure virtual go() with a non-pure one:
+    MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b) override{
+            PYBIND11_OVERRIDE(
+                MatrixXd,
+                BarrierWalkBase,
+                generateCompleteWalk,
+                num_steps,
+                x,
+                A,
+                b
+            );
+    }
+    void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b) override{
+            PYBIND11_OVERRIDE(
                 void,
-                BarrierWalk,
+                BarrierWalkBase,
                 generateWeight,
                 x,
                 A,
                 b
             );
         }
-
 };
 
 class PyReducer : public Reducer{
@@ -85,7 +94,7 @@ PYBIND11_MODULE(polytopewalk, m) {
             py::arg("te") = 10000, py::arg("err_term") = 0.000001,
             py::arg("grad_lim") = 0.01);
     
-    py::class_<RandomWalk, PyRandomWalk>(m, "RandomWalk")
+    py::class_<RandomWalk, PyRandomWalk<>>(m, "RandomWalk")
         .def(py::init<>())
         .def("generateCompleteWalk", &RandomWalk::generateCompleteWalk);
     
@@ -96,23 +105,23 @@ PYBIND11_MODULE(polytopewalk, m) {
         .def(py::init<const float, const float>(), 
         py::arg("err_p") = 0.01, py::arg("r") = 0.1);
 
-    py::class_<BarrierWalk, PyBarrierWalk>(m, "BarrierWalk")
+    py::class_<BarrierWalk, RandomWalk, PyBarrierWalk<>>(m, "BarrierWalk")
         .def(py::init<const float>(), py::arg("rp") = 1)
         .def("generateWeight", &BarrierWalk::generateWeight)
         .def("generateCompleteWalk", &RandomWalk::generateCompleteWalk);
     
-    py::class_<DikinWalk, BarrierWalk>(m, "DikinWalk")
+    py::class_<DikinWalk, BarrierWalk, PyBarrierWalk<DikinWalk>>(m, "DikinWalk")
         .def(py::init<const float>(), py::arg("rp") = 1);
     
-    py::class_<VaidyaWalk, BarrierWalk>(m, "VaidyaWalk")
+    py::class_<VaidyaWalk, BarrierWalk, PyBarrierWalk<VaidyaWalk>>(m, "VaidyaWalk")
         .def(py::init<const float>(), py::arg("rp") = 1);
     
-    py::class_<DikinLSWalk, BarrierWalk>(m, "DikinLSWalk")
+    py::class_<DikinLSWalk, BarrierWalk, PyBarrierWalk<DikinLSWalk>>(m, "DikinLSWalk")
         .def(py::init<const float, const int, const float, const float>(), 
         py::arg("ss") = 0.1, py::arg("mi") = 100, py::arg("mi") = 0.1, 
         py::arg("rp") = 1);
     
-    py::class_<JohnWalk, BarrierWalk>(m, "JohnWalk")
+    py::class_<JohnWalk, BarrierWalk, PyBarrierWalk<JohnWalk>>(m, "JohnWalk")
         .def(py::init<const float, const int, const float, const float>(), 
         py::arg("ss") = 0.1, py::arg("mi") = 100, py::arg("mi") = 0.1, 
         py::arg("rp") = 1);
