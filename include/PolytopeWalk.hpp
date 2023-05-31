@@ -19,8 +19,8 @@
  * @param initializer pre-specified initializer choice
  * @return Matrix
  */
-MatrixXd fullWalkRun(MatrixXd A, VectorXd b, int num_sim, RandomWalk& walk, Reducer& reducer, Initializer& initializer){
-    problem_result fr = reducer.reduce(A, b);
+MatrixXd fullWalkRun(MatrixXd A, VectorXd b, int num_sim, RandomWalk* walk, Reducer* reducer, Initializer* initializer){
+    problem_result fr = reducer->reduce(A, b);
     int x_dim = A.cols();
     if (fr.reduced){
         MatrixXd reduced_A = fr.reduced_A;
@@ -28,8 +28,8 @@ MatrixXd fullWalkRun(MatrixXd A, VectorXd b, int num_sim, RandomWalk& walk, Redu
         VectorXd pb = fr.b_tilde;
         MatrixXd M_inv = fr.M.inverse();
 
-        VectorXd x = initializer.getInitialPoint(reduced_A, reduced_b);
-        MatrixXd results = walk.generateCompleteWalk(num_sim, x, reduced_A, reduced_b);
+        VectorXd x = initializer->getInitialPoint(reduced_A, reduced_b);
+        MatrixXd results = walk->generateCompleteWalk(num_sim, x, reduced_A, reduced_b);
         MatrixXd res(results.rows(), x_dim);
         for(int i = 0; i < results.rows(); i++){
             VectorXd val (results.cols() + pb.rows());
@@ -42,8 +42,8 @@ MatrixXd fullWalkRun(MatrixXd A, VectorXd b, int num_sim, RandomWalk& walk, Redu
 
     } else {
 
-        VectorXd x = initializer.getInitialPoint(A, b);
-        MatrixXd res = walk.generateCompleteWalk(num_sim, x, A, b);
+        VectorXd x = initializer->getInitialPoint(A, b);
+        MatrixXd res = walk->generateCompleteWalk(num_sim, x, A, b);
         return res;
     }
 }

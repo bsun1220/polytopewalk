@@ -207,7 +207,7 @@ TEST_CASE( "Check PolytopeWalk Results (pass)", "[require]" ){
     DikinWalk dikin (0.5);
     FacialReduction fr;
     CentralPointFinder cpf (10000, 0.0001, 10000, 0.0001, 0.0001);
-    MatrixXd res = fullWalkRun(A, b, 1000, dikin, fr, cpf);
+    MatrixXd res = fullWalkRun(A, b, 1000, &dikin, &fr, &cpf);
 
     REQUIRE(res.rows() == 1000);
     REQUIRE(res.cols() == 3);

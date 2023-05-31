@@ -3,34 +3,6 @@
 #include <pybind11/eigen.h>
 namespace py = pybind11;
 
-MatrixXd generateWalk(MatrixXd& A, VectorXd& b, string walk_type, float r, int num_sim, float step_size, int max_iter, float grad_lim, double ss, double ts, double te, float err){
-    
-    CentralPointFinder cpf (ss, ts, te, err, grad_lim);
-    FacialReduction fr;
-
-    if (walk_type == "dikin"){
-        DikinWalk d(r);
-        return fullWalkRun(A, b, num_sim, d, fr, cpf);
-    } else if (walk_type == "vaidya"){
-        VaidyaWalk v(r);
-        return fullWalkRun(A, b, num_sim, v, fr, cpf);
-    } else if (walk_type == "dikinls"){
-        DikinLSWalk dl(step_size, max_iter, grad_lim, r);
-        return fullWalkRun(A, b, num_sim, dl, fr, cpf);
-    } else if (walk_type == "john"){
-        JohnWalk j(step_size, max_iter, grad_lim, r);
-        return fullWalkRun(A, b, num_sim, j, fr, cpf);
-    } else if (walk_type == "ball"){
-        BallWalk ball (r);
-        return fullWalkRun(A, b, num_sim, ball, fr, cpf);
-    } else if (walk_type == "hitrun"){
-        HitAndRunWalk hr (err, r);
-        return fullWalkRun(A, b, num_sim, hr, fr, cpf);
-    }
-    return A;
-};
-
-
 class PyInitializer : public Initializer{
     public:
         using Initializer::Initializer;
@@ -79,17 +51,33 @@ class PyBarrierWalk : public BarrierWalk{
 
 };
 
+class PyReducer : public Reducer{
+    public:
+        using Reducer::Reducer;
+        problem_result reduce(MatrixXd A, VectorXd b) override{
+            PYBIND11_OVERRIDE_PURE(
+                problem_result,
+                Reducer,
+                reduce,
+                A,
+                b
+            );
+        }
+};
+
 
 PYBIND11_MODULE(polytopewalk, m) {
-    m.doc() = "pybind11 polytopwalk library";
-    m.def("generateWalk", &generateWalk, "central function", 
-    py::arg("A"), py::arg("b"), py::arg("walk_type"), py::arg("r"), py::arg("num_sim"), 
-    py::arg("step_size") = 0.1, py::arg("max_iter") = 100, py::arg("grad_lim") = 0.01, py::arg("ss") = 10000, 
-    py::arg("ts") = 0.00001, py::arg("te") =10000, py::arg("err") = 0.01);
+    m.doc() = "pybind11 polytopewalk library";
+
+    
+    m.def("fullWalkRun", &fullWalkRun, "Central Function", py::arg("A"), 
+    py::arg("b"), py::arg("num_sim"), py::arg("walk"), py::arg("reducer"), 
+    py::arg("initializer"));
     
     py::class_<Initializer, PyInitializer>(m, "Initializer")
         .def(py::init<>())
         .def("getInitialPoint", &Initializer::getInitialPoint);
+
     py::class_<CentralPointFinder, Initializer>(m, "CentralPointFinder")
         .def(py::init<const double, const double, 
             const double, const double, const double >(),
@@ -128,5 +116,19 @@ PYBIND11_MODULE(polytopewalk, m) {
         .def(py::init<const float, const int, const float, const float>(), 
         py::arg("ss") = 0.1, py::arg("mi") = 100, py::arg("mi") = 0.1, 
         py::arg("rp") = 1);
+    
+    py::class_<problem_result>(m, "problem_result")
+        .def_readwrite("reduced_A", &problem_result::reduced_A)
+        .def_readwrite("reduced_b", &problem_result::reduced_b)
+        .def_readwrite("reduced", &problem_result::reduced)
+        .def_readwrite("b_tilde", &problem_result::b_tilde)
+        .def_readwrite("M", &problem_result::M);
+
+    py::class_<Reducer, PyReducer>(m, "Reducer")
+        .def(py::init<>())
+        .def("reduce", &Reducer::reduce);
+    
+    py::class_<FacialReduction, Reducer>(m, "FacialReduction")
+        .def(py::init<>());
 
 }
