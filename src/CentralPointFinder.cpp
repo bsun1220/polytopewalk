@@ -1,6 +1,5 @@
 #include "CentralPointFinder.hpp"
 
-
 VectorXd CentralPointFinder::getInitialPoint(MatrixXd A, VectorXd b){
     int n = A.rows();
     int d = A.cols();

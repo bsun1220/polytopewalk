@@ -53,10 +53,6 @@ void BarrierWalk::generateSample(const VectorXd& x, const MatrixXd& A, const Vec
     z = x + term_sample * (matrix * direction);
 }
 
-void BarrierWalk::printType(){
-    cout << "Generic Barrier" << endl;
-}
-
 MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b){
     MatrixXd results = MatrixXd::Zero(num_steps, A.cols());
     random_device rd;

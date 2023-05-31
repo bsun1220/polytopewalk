@@ -19,7 +19,7 @@ class JohnWalk: public BarrierWalk{
          * @brief print john walk
          * @return void
          */
-        void printType();
+        void printType() override;
     
     protected:
         /**
@@ -44,6 +44,6 @@ class JohnWalk: public BarrierWalk{
          * @param b polytope matrix
          * @return void (update global variable weights)
          */
-        void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b);
+        void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
 
 };

@@ -21,13 +21,13 @@ class BallWalk: public RandomWalk{
          * @param b polytope
          * @return Matrix
          */
-        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b);
+        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
         
         /**
          * @brief print general type 
          * @return void
          */
-        void printType();
+        void printType() override;
     
     protected:
         const float R;

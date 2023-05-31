@@ -18,7 +18,7 @@ class DikinLSWalk: public BarrierWalk{
          * @brief print dikinls
          * @return void
          */
-        void printType();
+        void printType() override;
     
     protected:
         /**
@@ -43,5 +43,5 @@ class DikinLSWalk: public BarrierWalk{
          * @param b polytope vector
          * @return void (update global variable weights)
          */
-        void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b);
+        void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
 };

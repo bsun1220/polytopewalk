@@ -25,7 +25,7 @@ class CentralPointFinder : public Initializer {
     * @param b Vector in polytope {x | Ax <= b}
     * @return Vector (The geometrical center of the polytope)
     */
-    VectorXd getInitialPoint(MatrixXd A, VectorXd b);
+    VectorXd getInitialPoint(MatrixXd A, VectorXd b) override;
 
 
     protected:

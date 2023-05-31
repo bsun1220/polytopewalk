@@ -16,6 +16,15 @@ class BarrierWalk : public RandomWalk{
         }
 
         /**
+         * @brief generate weights when calculating Hessian matrix
+         * @param x point in polytope to generate weight
+         * @param A polytope matrix
+         * @param b polytope vector
+         * @return void (update global variable weights)
+         */
+        virtual void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b);
+
+        /**
          * @brief Generate values from the walk
          * @param num_steps number of steps wanted to take
          * @param x initial starting point
@@ -23,7 +32,7 @@ class BarrierWalk : public RandomWalk{
          * @param b polytope vector
          * @return Matrix
          */
-        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b);
+        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
     
     protected:
 
@@ -99,22 +108,6 @@ class BarrierWalk : public RandomWalk{
          * @return float 
          */
         float localNorm(VectorXd v, const MatrixXd& m);
-
-        /**
-         * @brief generate weights when calculating Hessian matrix
-         * @param x point in polytope to generate weight
-         * @param A polytope matrix
-         * @param b polytope vector
-         * @return void (update global variable weights)
-         */
-        virtual void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b);
-
-        /**
-         * @brief generate weights when calculating Hessian matrix
-         * @param x point in polytope to generate weight
-         * @return void (update global variable weights)
-         */
-        virtual void printType();
 
         /**
          * @brief print general type 

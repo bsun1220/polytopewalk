@@ -27,7 +27,7 @@ class FacialReduction: public Reducer{
          * @param b
          * @return problem_result object for reducedA, reducedb, reduced value, originalA, originalb
          */
-        problem_result reduce(MatrixXd A, VectorXd b);
+        problem_result reduce(MatrixXd A, VectorXd b) override;
 
     protected:
         /**

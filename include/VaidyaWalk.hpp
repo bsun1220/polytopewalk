@@ -10,7 +10,7 @@ class VaidyaWalk: public BarrierWalk{
          * @brief print general type 
          * @return void
          */
-        void printType();
+        void printType() override;
     
     protected:
          /**
@@ -25,7 +25,7 @@ class VaidyaWalk: public BarrierWalk{
          * @param b polytope vector
          * @return void
          */
-        void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b);
+        void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
 
         /**
          * @brief returns unweight for Dikin Hessian around vector x
