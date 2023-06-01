@@ -1,3 +1,7 @@
+
+#ifndef BALLWALK_HPP
+#define BALLWALK_HPP
+
 #include "RandomWalk.hpp"
 
 class BallWalk: public RandomWalk{
@@ -34,3 +38,5 @@ class BallWalk: public RandomWalk{
 
 
 };
+
+#endif

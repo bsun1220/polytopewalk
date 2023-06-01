@@ -1,3 +1,7 @@
+
+#ifndef FACIALREDUCTION_HPP
+#define FACIALREDUCTION_HPP
+
 #include "Reducer.hpp"
 
 /**
@@ -67,3 +71,5 @@ class FacialReduction: public Reducer{
         fr_result reduceSampling(MatrixXd M, VectorXd b, int delta_dim);
 
 };
+
+#endif

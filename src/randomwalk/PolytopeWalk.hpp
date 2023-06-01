@@ -1,5 +1,5 @@
-#ifndef POLY_H
-#define POLY_H
+#ifndef POLYTOPEWALK_HPP
+#define POLYTOPEWALK_HPP
 #include "Common.hpp"
 #include "CentralPointFinder.hpp"
 #include "FacialReduction.hpp"

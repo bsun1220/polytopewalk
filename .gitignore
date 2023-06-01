@@ -11,6 +11,8 @@ CTestTestfile.cmake
 _deps
 .vscode
 
+.DS_Store
+
 test.ipynb
 # Byte-compiled / optimized / DLL files
 __pycache__/

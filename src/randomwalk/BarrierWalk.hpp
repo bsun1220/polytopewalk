@@ -1,5 +1,5 @@
-#ifndef BARRIER_H
-#define BARRIER_H
+#ifndef BARRIER_HPP
+#define BARRIER_HPP
 
 #include "RandomWalk.hpp"
 

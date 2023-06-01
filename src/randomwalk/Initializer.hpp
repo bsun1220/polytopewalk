@@ -1,5 +1,5 @@
-#ifndef INIT_H
-#define INIT_H
+#ifndef INITIALIZER_HPP
+#define INITIALIZER_HPP
 #include "Common.hpp"
 
 class Initializer{

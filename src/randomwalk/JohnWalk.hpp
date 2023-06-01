@@ -1,21 +1,26 @@
+
+#ifndef JOHNWALK_HPP
+#define JOHNWALK_HPP
+
 #include "BarrierWalk.hpp"
 
-class DikinLSWalk: public BarrierWalk{
+class JohnWalk: public BarrierWalk{
 
     public:
         /**
-         * @brief constructor for weighted Dikin Walk class
+         * @brief constructor for weighted John walk class
          * @param ss 
          * @param mi 
          * @param gl 
-         * @param rp
+         * @param r
          */
-        DikinLSWalk(const float ss, const int mi, const float gl, const float rp) : STEPSIZE(ss), MAXITER(mi), GRADLIM(gl), BarrierWalk(rp){
-            
+        JohnWalk(const float ss, const float mi, const float gl, const float r) : STEPSIZE(ss), MAXITER(mi), GRADLIM(gl), BarrierWalk(r){
+
+
         }
 
         /**
-         * @brief print dikinls
+         * @brief print john walk
          * @return void
          */
         void printType() override;
@@ -29,7 +34,7 @@ class DikinLSWalk: public BarrierWalk{
         /**
          * @brief max number of iterations in gradient descent
          */
-        const int MAXITER;
+        const float MAXITER;
 
         /**
          * @brief stops gradient descent if it reaches under this number
@@ -40,8 +45,11 @@ class DikinLSWalk: public BarrierWalk{
          * @brief generate weights when calculating Hessian matrix
          * @param x point in polytope to generate DikinLS weight
          * @param A polytope matrix
-         * @param b polytope vector
+         * @param b polytope matrix
          * @return void (update global variable weights)
          */
         void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
+
 };
+
+#endif

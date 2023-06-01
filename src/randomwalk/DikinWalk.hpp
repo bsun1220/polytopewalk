@@ -1,3 +1,7 @@
+
+#ifndef DIKINWALK_HPP
+#define DIKINWALK_HPP
+
 #include "BarrierWalk.hpp"
 
 class DikinWalk: public BarrierWalk{
@@ -21,3 +25,6 @@ class DikinWalk: public BarrierWalk{
          */
         void printType() override;
 };
+
+
+#endif

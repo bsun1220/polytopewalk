@@ -1,5 +1,5 @@
-#ifndef RAND_H
-#define RAND_H
+#ifndef RANDOMWALK_HPP
+#define RANDOMWALK_HPP
 #include "Common.hpp"
 
 class RandomWalk{

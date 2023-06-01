@@ -1,5 +1,5 @@
-#ifndef REDUC_H
-#define REDUC_H
+#ifndef REDUCER_HPP
+#define REDUCER_HPP
 #include "Common.hpp"
 #include <ifopt/variable_set.h>
 #include <ifopt/constraint_set.h>

@@ -1,3 +1,7 @@
+
+#ifndef VAIDYAWALK_HPP
+#define VAIDYAWALK_HPP
+
 #include "BarrierWalk.hpp"
 
 class VaidyaWalk: public BarrierWalk{
@@ -36,3 +40,5 @@ class VaidyaWalk: public BarrierWalk{
          */
         void generateDikinHessian(const VectorXd& x, const MatrixXd& A, const VectorXd& b);
 };
+
+#endif

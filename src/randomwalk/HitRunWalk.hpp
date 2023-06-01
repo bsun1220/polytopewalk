@@ -1,3 +1,7 @@
+
+#ifndef HITRUN_HPP
+#define HITRUN_HPP
+
 #include "RandomWalk.hpp"
 
 class HitAndRunWalk: public RandomWalk{
@@ -58,3 +62,5 @@ class HitAndRunWalk: public RandomWalk{
         double binarySearch(VectorXd direction, VectorXd& x, const MatrixXd& A, const VectorXd& b);
 
 };
+
+#endif

@@ -1,4 +1,8 @@
 
+
+#ifndef CPF_HPP
+#define CPF_HPP
+
 #include "Initializer.hpp"
 
 
@@ -54,3 +58,5 @@ class CentralPointFinder : public Initializer {
         const double grad_lim_;
 
 };
+
+#endif
