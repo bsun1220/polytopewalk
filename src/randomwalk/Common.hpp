@@ -2,6 +2,7 @@
 #define COMMON_HPP
 
 #include <Eigen/Dense>
+#include <Eigen/SparseCholesky>
 #include <unsupported/Eigen/MatrixFunctions>
 
 #include <iostream>

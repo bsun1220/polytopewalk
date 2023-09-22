@@ -1,4 +1,5 @@
 #include "BarrierWalk.hpp"
+#include <Eigen/SparseCholesky>
 
 
 void BarrierWalk::setTs(float a){
@@ -43,12 +44,26 @@ void BarrierWalk::generateHessian(const VectorXd& x, const MatrixXd& A, const Ve
 float BarrierWalk::generateProposalDensity(const VectorXd& x, const VectorXd& z, const MatrixXd& A, const VectorXd& b){
     generateHessian(x, A, b);
     VectorXd d = generateGaussianRV(x.rows());
-    return sqrt(hess.determinant()) * exp(term_density * localNorm(x - z, hess));
+
+    SimplicialLLT<SparseMatrix<double>, Eigen::Lower, Eigen::NaturalOrdering<int>> cholesky;
+    SparseMatrix<double> shess = hess.sparseView();
+    cholesky.analyzePattern(shess);
+    cholesky.factorize(shess);
+    MatrixXd L = MatrixXd(cholesky.matrixL());
+
+    return L.diagonal().prod() * exp(term_density * localNorm(x - z, hess));
 }
 
 void BarrierWalk::generateSample(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
     generateHessian(x, A, b);
-    MatrixXd matrix = hess.inverse().sqrt();
+
+    SimplicialLLT<SparseMatrix<double>, Eigen::Lower, Eigen::NaturalOrdering<int>> cholesky;
+    SparseMatrix<double> shess = hess.sparseView();
+    cholesky.analyzePattern(shess);
+    cholesky.factorize(shess);
+    MatrixXd L = MatrixXd(cholesky.matrixL());
+    MatrixXd matrix = cholesky.solve(L);
+
     VectorXd direction = generateGaussianRV(x.rows());
     z = x + term_sample * (matrix * direction);
 }
