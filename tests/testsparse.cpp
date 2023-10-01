@@ -105,6 +105,51 @@ TEST_CASE( "Check HitRun Walker Results (pass)", "[require]" ) {
     REQUIRE(res_hr.maxCoeff() < 1);
 }
 
+TEST_CASE( "Check DikinLS Walker Results (pass)", "[require]" ) {
+    MatrixXd A (4,2);
+    A << 1, 0, -1, 0, 0, 1, 0, -1;
+    SparseMatrixXd AS = A.sparseView();
+
+    VectorXd b(4);
+    b << 1, 0, 1, 0;
+
+    VectorXd init(2);
+    init << 0.5, 0.5;
+    const int steps = 1000;
+
+    DikinLSWalk dikinls (0.1, 100, 0.001, 0.4);
+    MatrixXd res_dikinls = dikinls.generateCompleteWalk(steps, init, AS, b);
+
+    REQUIRE(res_dikinls.rows() == steps);
+    REQUIRE(res_dikinls.cols() == 2);
+    REQUIRE(res_dikinls.minCoeff() > 0);
+    REQUIRE(res_dikinls.maxCoeff() < 1);
+
+}
+
+
+TEST_CASE( "Check John Walker Results (pass)", "[require]" ) {
+    MatrixXd A (4,2);
+    A << 1, 0, -1, 0, 0, 1, 0, -1;
+    SparseMatrixXd AS = A.sparseView();
+
+    VectorXd b(4);
+    b << 1, 0, 1, 0;
+
+    VectorXd init(2);
+    init << 0.5, 0.5;
+    const int steps = 1000;
+
+    JohnWalk john(0.1, 100, 0.001, 0.4);
+    MatrixXd res_john = john.generateCompleteWalk(steps, init, AS, b);
+
+    REQUIRE(res_john.rows() == steps);
+    REQUIRE(res_john.cols() == 2);
+    REQUIRE(res_john.minCoeff() > 0);
+    REQUIRE(res_john.maxCoeff() < 1);
+
+}
+
 TEST_CASE( "Check CentralPointFinder Results (pass)", "[require]" ) {
     CentralPointFinder cpf (10000, 0.0001, 10000, 0.0001, 0.0001);
     

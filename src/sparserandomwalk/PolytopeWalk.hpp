@@ -7,6 +7,8 @@
 #include "DikinWalk.hpp"
 #include "HitRunWalk.hpp"
 #include "VaidyaWalk.hpp"
+#include "JohnWalk.hpp"
+#include "DikinLSWalk.hpp"
 
  /**
  * @brief does complete polytope walk process

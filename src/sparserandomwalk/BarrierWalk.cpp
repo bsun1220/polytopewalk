@@ -31,13 +31,13 @@ float BarrierWalk::localNorm(VectorXd v, const SparseMatrixXd& m){
 
 void BarrierWalk::generateWeight(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b){
     int d = b.rows();
-    weights = VectorXd::Zero(d).asDiagonal().toDenseMatrix().sparseView();
+    weights = SparseMatrixXd(VectorXd::Zero(d).asDiagonal());
 }
 
 void BarrierWalk::generateHessian(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b){
     generateWeight(x, A, b);
     generateSlack(x, A, b);
-    SparseMatrixXd slack_inv = slack.cwiseInverse().asDiagonal().toDenseMatrix().sparseView();
+    SparseMatrixXd slack_inv = SparseMatrixXd(slack.cwiseInverse().asDiagonal());
     hess = A.transpose() * slack_inv * weights * slack_inv * A;
 }
 
