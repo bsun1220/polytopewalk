@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.0.0...3.5)
 project(polytopewalk)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-O2")
+set(CMAKE_CXX_FLAGS "-O2 -fPIC")
 
 find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 find_package(pybind11 CONFIG REQUIRED)
@@ -14,7 +14,7 @@ set(SOURCES_DIR ${POLYTOPEWALK_DIR}/src)
 set(TESTS_DIR ${POLYTOPEWALK_DIR}/tests)
 
 add_subdirectory("src")
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+# set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 #add_subdirectory ("docs")
 
 
