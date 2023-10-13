@@ -7,24 +7,28 @@ void DikinLSWalk::generateWeight(const VectorXd& x, const SparseMatrixXd& A, con
 
     VectorXd w_i = VectorXd::Ones(A.rows()); 
     generateSlack(x, A, b);
-    MatrixXd slack_mat = slack.asDiagonal().toDenseMatrix();
-    MatrixXd A_x = slack_mat.colPivHouseholderQr().solve(MatrixXd(A));
+    SparseMatrixXd slack_mat = SparseMatrixXd(slack.asDiagonal());
+
+    SimplicialCholesky<SparseMatrixXd> chol (slack_mat);
+    SparseMatrixXd A_x = chol.solve(A);
+    SparseMatrixXd A_x_T = A_x.transpose();
 
     VectorXd term2 = (0.5 - 1/q) * VectorXd::Ones(A.rows()); 
 
-    MatrixXd W(A.rows(), A.rows()); 
+    SparseMatrixXd W(A.rows(), A.rows()); 
     VectorXd term1a (A.rows());
     VectorXd term1b (A.rows());
     VectorXd term1(A.rows());
     VectorXd gradient (A.rows()); 
     VectorXd proposal (A.rows()); 
 
-
     for(int i = 0; i < MAXITER; i++){
-        W = vectPow(w_i, alpha).asDiagonal().toDenseMatrix();
+        W = SparseMatrixXd(vectPow(w_i, alpha).asDiagonal());
         term1a = alpha * vectPow(w_i, alpha - 1);
     
-        term1b = (A_x * (A_x.transpose() * W * A_x).inverse() * A_x.transpose()).diagonal();
+        SimplicialCholesky<SparseMatrixXd> chol2 (A_x_T * W * A_x);
+        SparseMatrixXd res = A_x * chol2.solve(A_x_T);
+        term1b = res.diagonal();
 
         term1 = term1a.cwiseProduct(term1b);
         
