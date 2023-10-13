@@ -6,8 +6,6 @@ void DikinWalk::generateWeight(const VectorXd& x, const SparseMatrixXd& A, const
     for (int i = 0; i < d; i++){
         w.coeffRef(i, i) = 1;
     }
-
-
     weights = w;
 }
 

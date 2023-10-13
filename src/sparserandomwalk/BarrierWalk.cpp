@@ -58,10 +58,10 @@ void BarrierWalk::generateSample(const VectorXd& x, const SparseMatrixXd& A, con
     SimplicialLLT<SparseMatrix<double>, Eigen::Lower, Eigen::NaturalOrdering<int>> cholesky;
     cholesky.analyzePattern(hess);
     cholesky.factorize(hess);
-    SparseMatrixXd matrix = cholesky.solve(cholesky.matrixL());
-
+    SparseMatrixXd L = cholesky.matrixL();
     VectorXd direction = generateGaussianRV(x.rows());
-    z = x + term_sample * (matrix * direction);
+    SimplicialCholesky<SparseMatrixXd> chol (cholesky.matrixL());
+    z = x + term_sample * (chol.solve(direction));
 }
 
 MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x, const SparseMatrixXd& A, const VectorXd& b){
