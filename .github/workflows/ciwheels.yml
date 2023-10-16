@@ -3,7 +3,7 @@ name: Build CI wheels
 on:
   push:
     branches:
-      - cibuild
+      - main 
   pull_request:
     branches:
       - main
