@@ -8,7 +8,7 @@ void VaidyaWalk::generateWeight(const VectorXd& x, const SparseMatrixXd& A, cons
         I.coeffRef(i, i) = 1;
     }
 
-    SimplicialCholesky<SparseMatrixXd> chol (dhess);
+    SparseLU<SparseMatrixXd> chol (dhess);
 
     SparseMatrixXd hess_inv = chol.solve(I);
     SparseMatrixXd slack_inv = SparseMatrixXd(slack.cwiseInverse().asDiagonal());
@@ -25,7 +25,6 @@ void VaidyaWalk::generateWeight(const VectorXd& x, const SparseMatrixXd& A, cons
 
 void VaidyaWalk::generateDikinHessian(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b){
     generateSlack(x, A, b);
-    VectorXd slack_inv_v = slack.cwiseInverse();
     SparseMatrixXd slack_inv = SparseMatrixXd(slack.cwiseInverse().asDiagonal());
     dhess = A.transpose() * slack_inv * slack_inv * A;
 }

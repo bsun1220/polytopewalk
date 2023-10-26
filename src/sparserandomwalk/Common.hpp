@@ -3,6 +3,7 @@
 
 #include <Eigen/Dense>
 #include <Eigen/SparseCholesky>
+#include <Eigen/SparseLU>
 #include <unsupported/Eigen/MatrixFunctions>
 typedef Eigen::SparseMatrix<double> SparseMatrixXd;
 
