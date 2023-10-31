@@ -20,7 +20,7 @@ class VaidyaWalk: public BarrierWalk{
          /**
          * @brief global variable to update dikin hessian
          */
-        SparseMatrixXd dhess {};
+        SparseMatrixXd dhess_inv {};
 
          /**
          * @brief returns weight for Vaidya Walk
@@ -38,7 +38,7 @@ class VaidyaWalk: public BarrierWalk{
          * @param b
          * @return void
          */
-        void generateDikinHessian(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b);
+        void generateDikinHessianInverse(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b);
 };
 
 #endif
