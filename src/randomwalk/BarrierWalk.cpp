@@ -55,10 +55,9 @@ void BarrierWalk::generateSample(const VectorXd& x, const MatrixXd& A, const Vec
     generateHessian(x, A, b);
     LLT<MatrixXd> cholesky(hess);
     MatrixXd L = cholesky.matrixL();
-    MatrixXd matrix = cholesky.solve(L);
-
+    FullPivLU<MatrixXd> lu(L);
     VectorXd direction = generateGaussianRV(x.rows());
-    z = x + term_sample * (matrix * direction);
+    z = x + term_sample * (lu.solve(direction));
 }
 
 MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b){

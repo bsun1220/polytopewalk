@@ -2,13 +2,9 @@
 
 void VaidyaWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
     generateDikinHessian(x, A, b);
-
-    SimplicialLLT<SparseMatrix<double>, Eigen::Lower, Eigen::NaturalOrdering<int>> cholesky;
-    SparseMatrix<double> shess = dhess.sparseView();
-    cholesky.analyzePattern(shess);
-    cholesky.factorize(shess);
+    FullPivLU<MatrixXd> lu(dhess);
     MatrixXd I = Eigen::MatrixXd::Identity(x.rows(),x.rows());
-    MatrixXd hess_inv = cholesky.solve(I);
+    MatrixXd hess_inv = lu.solve(I);
 
     MatrixXd slack_inv = slack.cwiseInverse().asDiagonal().toDenseMatrix();
 

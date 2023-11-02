@@ -43,15 +43,13 @@ void VaidyaWalk::generateDikinHessianInverse(const VectorXd& x, const SparseMatr
 
     SparseMatrixXd inv(L.rows(), L.rows());
     map<int, vector<pair<int, int>>> row_major;
-    map<int, vector<pair<int, int>>>col_major;
-
+    map<int, vector<pair<int, int>>> col_major;
 
     for(int i = L.rows() - 1; i >= 0; i--){
         for(int v = sparsity_ref[i].size() - 1; v >= 0; v--){
             int j = sparsity_ref[i][v];
             double z = (i == j) ? (double)1/D(i) : 0;
 
-            
             for(auto pair : col_major[j]){
                 int first = pair.first;
                 int second = pair.second;
@@ -68,7 +66,6 @@ void VaidyaWalk::generateDikinHessianInverse(const VectorXd& x, const SparseMatr
                 int k = max(first, second);
                 z -= term * L0.coeff(k, i);
             }
-
 
             col_major[j].push_back(make_pair(i, j));
             if (i != j){

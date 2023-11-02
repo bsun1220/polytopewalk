@@ -19,7 +19,6 @@ void DikinLSWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const Vec
     VectorXd gradient (A.rows()); 
     VectorXd proposal (A.rows()); 
 
-
     for(int i = 0; i < MAXITER; i++){
         W = vectPow(w_i, alpha).asDiagonal().toDenseMatrix();
         term1a = alpha * vectPow(w_i, alpha - 1);
