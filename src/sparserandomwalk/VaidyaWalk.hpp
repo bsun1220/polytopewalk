@@ -30,15 +30,6 @@ class VaidyaWalk: public BarrierWalk{
          * @return void
          */
         void generateWeight(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b) override;
-
-        /**
-         * @brief returns unweight for Dikin Hessian around vector x
-         * @param x
-         * @param A
-         * @param b
-         * @return void
-         */
-        void generateDikinHessianInverse(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b);
 };
 
 #endif

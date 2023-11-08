@@ -118,12 +118,12 @@ PYBIND11_MODULE(polytopewalk, m) {
     
     py::class_<DikinLSWalk, BarrierWalk, PyBarrierWalk<DikinLSWalk>>(m, "DikinLSWalk")
         .def(py::init<const float, const int, const float, const float>(), 
-        py::arg("ss") = 0.1, py::arg("mi") = 100, py::arg("mi") = 0.1, 
+        py::arg("ss") = 0.1, py::arg("mi") = 10000, py::arg("gl") = 0.1, 
         py::arg("rp") = 1);
     
     py::class_<JohnWalk, BarrierWalk, PyBarrierWalk<JohnWalk>>(m, "JohnWalk")
         .def(py::init<const float, const int, const float, const float>(), 
-        py::arg("ss") = 0.1, py::arg("mi") = 100, py::arg("mi") = 0.1, 
+        py::arg("ss") = 0.1, py::arg("mi") = 10000, py::arg("gl") = 0.1, 
         py::arg("rp") = 1);
     
     py::class_<problem_result>(m, "problem_result")

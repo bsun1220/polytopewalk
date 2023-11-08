@@ -9,6 +9,7 @@
 #include "VaidyaWalk.hpp"
 #include "JohnWalk.hpp"
 #include "DikinLSWalk.hpp"
+#include "LeverageScore.hpp"
 
  /**
  * @brief does complete polytope walk process
