@@ -1,5 +1,3 @@
-
-
 #ifndef CPF_HPP
 #define CPF_HPP
 

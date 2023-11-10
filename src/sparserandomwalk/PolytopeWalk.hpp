@@ -1,15 +1,17 @@
 #ifndef POLYTOPEWALK_HPP
 #define POLYTOPEWALK_HPP
 #include "Common.hpp"
-#include "CentralPointFinder.hpp"
-#include "FacialReduction.hpp"
+
 #include "BallWalk.hpp"
 #include "DikinWalk.hpp"
 #include "HitRunWalk.hpp"
 #include "VaidyaWalk.hpp"
 #include "JohnWalk.hpp"
 #include "DikinLSWalk.hpp"
-#include "LeverageScore.hpp"
+
+#include "utils/CentralPointFinder.hpp"
+#include "utils/FacialReduction.hpp"
+#include "utils/LeverageScore.hpp"
 
  /**
  * @brief does complete polytope walk process

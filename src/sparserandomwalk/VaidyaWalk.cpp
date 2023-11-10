@@ -1,5 +1,4 @@
 #include "VaidyaWalk.hpp"
-#include "LeverageScore.hpp"
 
 void VaidyaWalk::generateWeight(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b){
 

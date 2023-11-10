@@ -150,9 +150,10 @@ z_result FacialReduction::findZ(MatrixXd newA, VectorXd b, int x_dim){
             //if eqA is not invertible skip the step
             if (!lu.isInvertible()) continue;
             //create init with last entry as delta
-            init = eqA.inverse() * eqb;
+            init = lu.solve(eqb);
         } else {
-            init = eqA.colPivHouseholderQr().solve(eqb);
+            continue;
+            //init = eqA.colPivHouseholderQr().solve(eqb);
         }
         
         double delta = ((-1 * newA).transpose() * init).maxCoeff();

@@ -1,5 +1,4 @@
 #include "DikinLSWalk.hpp"
-#include "LeverageScore.hpp"
 
 void DikinLSWalk::generateWeight(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b){
 

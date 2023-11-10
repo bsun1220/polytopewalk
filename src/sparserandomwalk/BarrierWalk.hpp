@@ -2,6 +2,7 @@
 #define BARRIER_HPP
 
 #include "RandomWalk.hpp"
+#include "utils/LeverageScore.hpp"
 
 class BarrierWalk : public RandomWalk{
     public:

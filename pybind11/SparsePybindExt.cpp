@@ -77,7 +77,6 @@ class PyReducer : public Reducer{
 
 PYBIND11_MODULE(sparsepolytopewalk, m) {
     m.doc() = "pybind11 sparse polytopewalk library";
-
     
     m.def("sparseFullWalkRun", &fullWalkRun, "Central Function", py::arg("A"), 
     py::arg("b"), py::arg("num_sim"), py::arg("walk"), py::arg("reducer"), 

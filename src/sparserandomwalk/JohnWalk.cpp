@@ -1,5 +1,4 @@
 #include "JohnWalk.hpp"
-#include "LeverageScore.hpp"
 
 void JohnWalk::generateWeight(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b ){
     float alpha = 1 - 1/(log2(2 * A.rows() / A.cols()));

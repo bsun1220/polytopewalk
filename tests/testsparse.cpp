@@ -2,7 +2,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_approx.hpp>
 #include <cstring>
-#include <sparserandomwalk/PolytopeWalk.hpp>
+#include "sparserandomwalk/PolytopeWalk.hpp"
 
 using namespace std;
 
