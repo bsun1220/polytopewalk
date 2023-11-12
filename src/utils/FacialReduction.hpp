@@ -39,14 +39,14 @@ class FacialReduction: public Reducer{
          * @param A
          * @return Matrix
          */
-        MatrixXd equalConversion(MatrixXd A);
+        MatrixXd equalConversion(const MatrixXd& A);
 
          /**
          * @brief finds a vector z satisfying A^Ty = [0 z], z in R^n, z >= 0, z != 0, <b, y> = 0
          * @param A
          * @return Matrix
          */
-        z_result findZ(MatrixXd newA, VectorXd b, int x_dim);
+        z_result findZ(const MatrixXd& newA, const VectorXd& b, int x_dim);
 
          /**
          * @brief Finds a Matrix V to convert AVv = b after receiving v
@@ -68,7 +68,7 @@ class FacialReduction: public Reducer{
          * @param A
          * @return Matrix A, Vector b
          */
-        fr_result reduceSampling(MatrixXd M, VectorXd b, int delta_dim);
+        fr_result reduceSampling(const MatrixXd& M, const VectorXd& b, int delta_dim);
 
 };
 

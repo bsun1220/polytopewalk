@@ -21,7 +21,7 @@ class Reducer{
 
     Reducer (){};
 
-    MatrixXd makeFullRank(MatrixXd mat);
+    MatrixXd makeFullRank(const MatrixXd& mat);
     virtual problem_result reduce(MatrixXd A, VectorXd b);
 
 };

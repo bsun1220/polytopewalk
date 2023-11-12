@@ -4,7 +4,7 @@ class ExVariables : public VariableSet{
     public:
     VectorXd x;
 
-    ExVariables(int num_dim, string name, VectorXd init) : VariableSet(num_dim, name){
+    ExVariables(int num_dim, string name, const VectorXd& init) : VariableSet(num_dim, name){
         x = init;
     } 
     void SetVariables(const VectorXd& val) override
@@ -29,7 +29,7 @@ class ExVariables : public VariableSet{
 class ExConstraint1 : public ConstraintSet{
     public:
     MatrixXd A;
-    ExConstraint1(int num_dim, string name, MatrixXd A_param) : ConstraintSet(num_dim, name){
+    ExConstraint1(int num_dim, string name, const MatrixXd& A_param) : ConstraintSet(num_dim, name){
         // A is d by n matrix
         A = A_param;
         
@@ -61,7 +61,7 @@ class ExConstraint2 : public ConstraintSet{
     public:
     MatrixXd A;
     VectorXd b;
-    ExConstraint2(int num_dim, string name, MatrixXd A_param, VectorXd b_param) : ConstraintSet(num_dim, name){
+    ExConstraint2(int num_dim, string name, const MatrixXd& A_param, const VectorXd& b_param) : ConstraintSet(num_dim, name){
         A = A_param;
         b = b_param;
 
@@ -107,15 +107,21 @@ class ExCost : public CostTerm{
 };
 
 
-MatrixXd FacialReduction::equalConversion(MatrixXd A){
+MatrixXd FacialReduction::equalConversion(const MatrixXd& A){
     MatrixXd A_tilde (A.rows(), A.cols() + A.rows());
     A_tilde << A, MatrixXd::Identity(A.rows(), A.rows());
     return A_tilde;
 }
 
-z_result FacialReduction::findZ(MatrixXd newA, VectorXd b, int x_dim){
+z_result FacialReduction::findZ(const MatrixXd& newA, const VectorXd& b, int x_dim){
     int n = newA.rows();
     int d = newA.cols();
+    z_result ans;
+    ans.found_sol = false;
+
+    if (x_dim + 2 > newA.rows()){
+        return ans;
+    }
 
     // setting up ineqA with extra column for delta
     MatrixXd ineqA (newA.rows() + 1, newA.cols());
@@ -132,45 +138,36 @@ z_result FacialReduction::findZ(MatrixXd newA, VectorXd b, int x_dim){
     ineqA = temp_m;
 
     for(int ind = x_dim; ind < d; ind++){
-        //setting up eqA
+        
+         //setting up eqA
         MatrixXd eqA(x_dim + 2, newA.rows());
+
         for(int i = 0; i < x_dim; i++){
                 eqA.row(i) = newA.col(i);
         }
-        eqA.row(x_dim) = newA.col(ind);
         eqA.row(x_dim + 1) = b;
-        int b_length = eqA.cols() > x_dim + 2 ? eqA.cols() : x_dim + 2;
+        eqA.row(x_dim) = newA.col(ind);
+
+        int b_length = eqA.cols() >  x_dim + 2 ? eqA.cols() : x_dim + 2;
         VectorXd eqb = VectorXd::Zero(b_length);
         eqb(x_dim) = 1;
 
         VectorXd init;
-        if (eqA.rows() <= eqA.cols()){
-            eqA = makeFullRank(eqA);
-            FullPivLU <MatrixXd> lu(eqA);
-            //if eqA is not invertible skip the step
-            if (!lu.isInvertible()) continue;
-            //create init with last entry as delta
-            init = lu.solve(eqb);
-        } else {
-            continue;
-            //init = eqA.colPivHouseholderQr().solve(eqb);
-        }
+        eqA = makeFullRank(eqA);
+        FullPivLU <MatrixXd> lu(eqA);
+        //if eqA is not invertible skip the step
+        if (!lu.isInvertible()) continue;
+        //create init with last entry as delta
+        init = lu.solve(eqb);
         
         double delta = ((-1 * newA).transpose() * init).maxCoeff();
         VectorXd temp (init.rows() + 1);
-        for(int i =0 ; i < init.rows(); i++){
-            temp(i) = init(i);
-        }
-        temp(init.rows()) = delta;
+        temp << init, delta;
         init = temp;
 
         //add one column for delta
         MatrixXd temp_eqA (eqA.rows(), eqA.cols() + 1);
-        for(int i = 0; i < eqA.cols(); i++){
-            temp_eqA.col(i) = eqA.col(i);
-        }
-       
-        temp_eqA.col(eqA.cols()) = VectorXd::Zero(eqA.rows());
+        temp_eqA << eqA, VectorXd::Zero(eqA.rows());
         eqA = temp_eqA;
 
         string name = "var_set1";
@@ -192,14 +189,12 @@ z_result FacialReduction::findZ(MatrixXd newA, VectorXd b, int x_dim){
             for(int i = 0; i < ans_v.rows(); i++){
                 ans_v(i) = sol(i);
             }
-            z_result ans;
             ans.found_sol = true; 
             ans.z = (newA.transpose() * ans_v);
             return ans;
         }
     }
-    z_result ans;
-    ans.found_sol = false;
+    
     return ans;
 }
 
@@ -232,17 +227,18 @@ fr_result FacialReduction::entireFacialReductionStep(MatrixXd A, VectorXd b, int
     MatrixXd V = facialReduction(z_ans.z);
     MatrixXd AV = A * V;
 
-    FullPivLU<MatrixXd> lu_decomp(AV.transpose());
-    MatrixXd decomp = lu_decomp.image(AV.transpose());
-
-    vector<int> lst; 
-    for(int i = 0; i < AV.rows(); i++){
-        for(int j = 0; j< decomp.cols(); j++){
-            if(AV.row(i).transpose().isApprox(decomp.col(j))){
-                lst.push_back(i);
-            }
-        }
+    ColPivHouseholderQR<MatrixXd> qr(AV.cols(), AV.rows());
+    vector<int> lst;
+    qr.compute(AV.transpose());
+    int rank = qr.rank();
+    
+    int i = 0;
+    for(int s : qr.colsPermutation().indices()){
+        if (i == rank) break;
+        lst.push_back(s);
+        i += 1;
     }
+    sort(lst.begin(), lst.end());
 
     MatrixXd proj (lst.size(), A.rows());
     for(int i = 0; i < lst.size(); i++){
@@ -256,7 +252,7 @@ fr_result FacialReduction::entireFacialReductionStep(MatrixXd A, VectorXd b, int
     return entireFacialReductionStep(A, b, x_dim);
 }
 
-fr_result FacialReduction::reduceSampling(MatrixXd M, VectorXd b, int delta_dim){
+fr_result FacialReduction::reduceSampling(const MatrixXd& M, const VectorXd& b, int delta_dim){
     MatrixXd M_inv = M.inverse();
     int row = M_inv.rows() - delta_dim;
     int gamma = M_inv.rows() - b.rows();
@@ -267,7 +263,6 @@ fr_result FacialReduction::reduceSampling(MatrixXd M, VectorXd b, int delta_dim)
             temp1(i, k) = M_inv(i + row, k);
         }
     }
-
     MatrixXd temp2(M_inv.rows() - row, gamma);
     for(int i = 0; i < temp2.rows(); i++){
         for(int k = 0; k < temp2.cols(); k++){

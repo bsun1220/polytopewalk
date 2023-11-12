@@ -1,6 +1,6 @@
 #include "Reducer.hpp"
 
-MatrixXd Reducer::makeFullRank(MatrixXd mat){
+MatrixXd Reducer::makeFullRank(const MatrixXd& mat){
     if(mat.rows() == mat.cols()){
         return mat; 
     }
@@ -30,7 +30,7 @@ MatrixXd Reducer::makeFullRank(MatrixXd mat){
     return ans;
 }
 
-problem_result Reducer::reduce(MatrixXd A, VectorXd b){
+problem_result Reducer::reduce( MatrixXd A, VectorXd b){
     problem_result pf;
     cout << "oops" << endl;
     return pf;
