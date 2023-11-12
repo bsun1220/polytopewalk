@@ -5,10 +5,11 @@ MatrixXd Reducer::makeFullRank(const MatrixXd& mat){
         return mat; 
     }
 
+    
     HouseholderQR <MatrixXd> qr(mat.cols(), mat.rows());
     qr.compute(mat.transpose());
     MatrixXd q = qr.householderQ();
-    MatrixXd r = q.inverse() * mat.transpose();
+    MatrixXd r = qr.matrixQR().triangularView<Eigen::Upper>();
 
     MatrixXd iden = MatrixXd::Identity(q.rows(), q.rows());
     MatrixXd new_r (q.rows(), q.rows());
@@ -20,8 +21,8 @@ MatrixXd Reducer::makeFullRank(const MatrixXd& mat){
     }
 
     MatrixXd ans = (q * new_r).transpose();
+    
     const double multiplier = std::pow(10.0, 10);
-
     for(int i = 0; i < ans.rows(); i++){
         for(int j = 0; j < ans.cols(); j++){
             ans.coeffRef(i,j) = round(ans.coeffRef(i,j) * multiplier) / multiplier;

@@ -75,8 +75,8 @@ class ExConstraint2 : public ConstraintSet{
             //A row is a n dimensional vector
             g(i) = A_row.transpose() * input;
 
-            const double multiplier = std::pow(10.0, 10);
-             g(i) = round(g(i) * multiplier) / multiplier;
+            //const double multiplier = std::pow(10.0, 10);
+             //g(i) = round(g(i) * multiplier) / multiplier;
         }
         return g;
     }
@@ -148,7 +148,7 @@ z_result FacialReduction::findZ(const MatrixXd& newA, const VectorXd& b, int x_d
         eqA.row(x_dim + 1) = b;
         eqA.row(x_dim) = newA.col(ind);
 
-        int b_length = eqA.cols() >  x_dim + 2 ? eqA.cols() : x_dim + 2;
+        int b_length = max((int)eqA.cols(), x_dim);
         VectorXd eqb = VectorXd::Zero(b_length);
         eqb(x_dim) = 1;
 
@@ -201,10 +201,8 @@ z_result FacialReduction::findZ(const MatrixXd& newA, const VectorXd& b, int x_d
 MatrixXd FacialReduction::facialReduction(VectorXd z){
     int d = z.rows();
     vector<int> indices;
-    const double multiplier = std::pow(10.0, 5);
     for(int i = 0; i < d; i++){
-        z(i) = round(z(i) * multiplier) / multiplier;
-        if(z(i) <= 0) indices.push_back(i);
+        if(z(i) <= 1.0E-8) indices.push_back(i);
     }
     MatrixXd matrix (indices.size(), d);
     for(int i = 0; i < indices.size(); i++){
