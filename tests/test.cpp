@@ -213,3 +213,25 @@ TEST_CASE( "Check PolytopeWalk Results (pass)", "[require]" ){
     REQUIRE(res.cols() == 3);
 
 }
+
+
+TEST_CASE( "Check Simplex Case" ){
+    MatrixXd A (6, 4);
+    A << -1,  0,  0,  0, 0, -1,  0,  0, 0,  0, -1,  0, 0,  0,  0, -1, 1,  1,  1,  1, -1, -1, -1, -1;
+    VectorXd b(6);
+    b << 0,  0,  0,  0,  1, -1;
+
+    FacialReduction fr;
+
+    cout << "SIMPLEX" << endl;
+    problem_result res2 = fr.reduce(A, b);
+    
+    cout << res2.reduced_A << endl;
+    cout << res2.reduced_b << endl;
+    
+    REQUIRE(res2.reduced == true);
+    REQUIRE(res2.reduced_A.cols() == 3);
+    REQUIRE(res2.reduced_A.rows() == 4);
+    REQUIRE(res2.reduced_b.rows() == 4);
+
+}

@@ -4,7 +4,6 @@ MatrixXd Reducer::makeFullRank(const MatrixXd& mat){
     if(mat.rows() == mat.cols()){
         return mat; 
     }
-
     
     HouseholderQR <MatrixXd> qr(mat.cols(), mat.rows());
     qr.compute(mat.transpose());

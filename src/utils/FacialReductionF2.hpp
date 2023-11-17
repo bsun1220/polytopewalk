@@ -1,13 +1,13 @@
 
-#ifndef FACIALREDUCTION_HPP
-#define FACIALREDUCTION_HPP
+#ifndef FACIALREDUCTIONF2_HPP
+#define FACIALREDUCTIONF2_HPP
 
 #include "Reducer.hpp"
 
-class FacialReduction: public Reducer{
+class FacialReductionF2: public Reducer{
 
     public:
-        FacialReduction() : Reducer(){};
+        FacialReductionF2() : Reducer(){};
 
         /**
          * @brief converts A for the problem
@@ -35,9 +35,17 @@ class FacialReduction: public Reducer{
          /**
          * @brief Finds a Matrix V to convert AVv = b after receiving v
          * @param z
+         * @param x_dim
          * @return Matrix
          */
-        MatrixXd facialReduction(VectorXd z);
+        MatrixXd pickV(const VectorXd& z, int x_dim);
+
+         /**
+         * @brief Finds the Projection Matrix
+         * @param AV
+         * @return Matrix
+         */
+        MatrixXd pickP(const MatrixXd& AV);
 
          /**
          * @brief iteratively reduces dimension of the problem using recursion
