@@ -223,11 +223,7 @@ TEST_CASE( "Check Simplex Case" ){
 
     FacialReduction fr;
 
-    cout << "SIMPLEX" << endl;
     problem_result res2 = fr.reduce(A, b);
-    
-    cout << res2.reduced_A << endl;
-    cout << res2.reduced_b << endl;
     
     REQUIRE(res2.reduced == true);
     REQUIRE(res2.reduced_A.cols() == 3);

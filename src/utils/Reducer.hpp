@@ -28,8 +28,8 @@ struct problem_result{
     MatrixXd reduced_A;
     VectorXd reduced_b; 
     bool reduced;
-    VectorXd b_tilde;
-    MatrixXd M;
+    VectorXd z1;
+    MatrixXd Q;
 };
 
 class Reducer{

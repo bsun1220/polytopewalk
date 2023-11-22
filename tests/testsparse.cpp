@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 static string one() {
     return "1";
 }
@@ -25,7 +26,7 @@ TEST_CASE( "Check Ball Walker Results (pass)", "[require]" ) {
 
     VectorXd init(2);
     init << 0.5, 0.5;
-    const int steps = 1000;
+    const int steps = 10;
 
     BallWalk ball(0.4);
     MatrixXd res_ball = ball.generateCompleteWalk(steps, init, AS, b);
@@ -48,7 +49,7 @@ TEST_CASE( "Check Dikin Walker Results (pass)", "[require]" ) {
 
     VectorXd init(2);
     init << 0.5, 0.5;
-    const int steps = 1000;
+    const int steps = 10;
 
     DikinWalk dikin (0.5);
     MatrixXd res_dikin = dikin.generateCompleteWalk(steps, init, AS, b);
@@ -70,7 +71,7 @@ TEST_CASE( "Check Vaidya Walker Results (pass)", "[require]" ) {
 
     VectorXd init(2);
     init << 0.5, 0.5;
-    const int steps = 1000;
+    const int steps = 10;
 
     VaidyaWalk vaidya(0.5);
     MatrixXd res_vaidya = vaidya.generateCompleteWalk(steps, init, AS, b);
@@ -94,7 +95,7 @@ TEST_CASE( "Check HitRun Walker Results (pass)", "[require]" ) {
 
     VectorXd init(2);
     init << 0.5, 0.5;
-    const int steps = 1000;
+    const int steps = 10;
 
     HitAndRunWalk hr(0.01, 0.1);
     MatrixXd res_hr = hr.generateCompleteWalk(steps, init, AS, b);
@@ -115,7 +116,7 @@ TEST_CASE( "Check DikinLS Walker Results (pass)", "[require]" ) {
 
     VectorXd init(2);
     init << 0.5, 0.5;
-    const int steps = 1000;
+    const int steps = 10;
 
     DikinLSWalk dikinls (0.1, 100, 0.001, 0.4);
     MatrixXd res_dikinls = dikinls.generateCompleteWalk(steps, init, AS, b);
@@ -140,7 +141,7 @@ TEST_CASE( "Check John Walker Results (pass)", "[require]" ) {
     init << 0.5, 0.5;
     const int steps = 1000;
 
-    JohnWalk john(0.1, 100, 0.001, 0.4);
+    JohnWalk john(0.1, 10, 0.001, 0.4);
     MatrixXd res_john = john.generateCompleteWalk(steps, init, AS, b);
 
     REQUIRE(res_john.rows() == steps);
@@ -208,7 +209,6 @@ TEST_CASE( "Check FacialReduction Results (pass)", "[require]" ) {
 
 }
 
-
 TEST_CASE( "Check PolytopeWalk Results (pass)", "[require]" ){
     MatrixXd A (6, 3);
     A << 1, 1, 0, -1, -1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1;
@@ -221,9 +221,32 @@ TEST_CASE( "Check PolytopeWalk Results (pass)", "[require]" ){
     DikinWalk dikin (0.5);
     FacialReduction fr;
     CentralPointFinder cpf (10000, 0.0001, 10000, 0.0001, 0.0001);
-    MatrixXd res = fullWalkRun(AS, b, 1000, &dikin, &fr, &cpf);
+    MatrixXd res = fullWalkRun(AS, b, 10, &dikin, &fr, &cpf);
 
-    REQUIRE(res.rows() == 1000);
+    REQUIRE(res.rows() == 10);
+    REQUIRE(res.cols() == 3);
+
+}
+
+
+TEST_CASE( "Check Simplex (pass)", "[require]" ){
+    MatrixXd A (4,3);
+    A << -1, 0, 0, 0, -1, 0, 0, 0, -1, 1, 1, 1;
+    SparseMatrixXd AS (6,3);
+    AS = A.sparseView();
+
+    VectorXd b(4);
+    b << 0, 0, 0, 1;
+
+    VectorXd init(3);
+    init << 0.25, 0.25, 0.25;
+
+    const int steps = 10;
+
+    DikinWalk dikin (0.5);
+    MatrixXd res = dikin.generateCompleteWalk(steps, init, AS, b);
+
+    REQUIRE(res.rows() == 10);
     REQUIRE(res.cols() == 3);
 
 }

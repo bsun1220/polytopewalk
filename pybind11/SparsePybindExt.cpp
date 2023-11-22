@@ -129,8 +129,8 @@ PYBIND11_MODULE(sparsepolytopewalk, m) {
         .def_readwrite("reduced_A", &problem_result::reduced_A)
         .def_readwrite("reduced_b", &problem_result::reduced_b)
         .def_readwrite("reduced", &problem_result::reduced)
-        .def_readwrite("b_tilde", &problem_result::b_tilde)
-        .def_readwrite("M", &problem_result::M);
+        .def_readwrite("z1", &problem_result::z1)
+        .def_readwrite("Q", &problem_result::Q);
 
     py::class_<Reducer, PyReducer>(m, "SparseReducer")
         .def(py::init<>())

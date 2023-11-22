@@ -28,8 +28,8 @@ MatrixXd fullWalkRun(MatrixXd A, VectorXd b, int num_sim, RandomWalk* walk, Redu
     if (fr.reduced){
         MatrixXd reduced_A = fr.reduced_A;
         MatrixXd reduced_b = fr.reduced_b; 
-        VectorXd pb = fr.b_tilde;
-        MatrixXd M_inv = fr.M.inverse();
+        VectorXd z1 = fr.z1;
+        MatrixXd Q = fr.Q;
 
         VectorXd x = initializer->getInitialPoint(reduced_A, reduced_b);
 
@@ -38,16 +38,15 @@ MatrixXd fullWalkRun(MatrixXd A, VectorXd b, int num_sim, RandomWalk* walk, Redu
         MatrixXd results = walk->generateCompleteWalk(num_sim, x, reduced_SA, reduced_b);
         MatrixXd res(results.rows(), x_dim);
         for(int i = 0; i < results.rows(); i++){
-            VectorXd val (results.cols() + pb.rows());
+            VectorXd val (results.cols() + z1.rows());
             VectorXd row = results.row(i);
-            val << pb, row;
-            res.row(i) = (M_inv * val).head(x_dim);
+            val << z1, row;
+            res.row(i) = (Q * val).head(x_dim);
         }
         return res; 
 
 
     } else {
-
         VectorXd x = initializer->getInitialPoint(A, b);
         SparseMatrixXd SA = A.sparseView();
         MatrixXd res = walk->generateCompleteWalk(num_sim, x, SA, b);

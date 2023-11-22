@@ -15,34 +15,24 @@ z_result FacialReduction::findZ(const MatrixXd& newA, const VectorXd& b, int x_d
     if (x_dim + 2 > newA.rows()){
         return ans;
     }
-
     // setting up ineqA with extra column for delta
-    MatrixXd ineqA (newA.rows() + 1, newA.cols());
-    for(int i = 0; i < newA.rows(); i++){
-        ineqA.row(i) = -1 * newA.row(i);
+    MatrixXd ineqA (newA.cols() - x_dim, newA.rows() + 1);
+    for(int i = x_dim; i < newA.cols(); i++){
+        VectorXd temp_row (newA.rows() + 1);
+        temp_row << newA.col(i), 1;
+        ineqA.row(i - x_dim) = -1 * temp_row;
     }
-    VectorXd temp_row(newA.cols());
-    for(int i = 0; i < newA.cols(); i++){
-        temp_row(i) = -1;
-    }
-
-    ineqA.row(newA.rows()) = temp_row;
-    MatrixXd temp_m = ineqA.transpose();
-    ineqA = temp_m;
-
     for(int ind = x_dim; ind < d; ind++){
-        
          //setting up eqA
         MatrixXd eqA(x_dim + 2, newA.rows());
 
         for(int i = 0; i < x_dim; i++){
-                eqA.row(i) = newA.col(i);
+            eqA.row(i) = newA.col(i);
         }
         eqA.row(x_dim + 1) = b;
         eqA.row(x_dim) = newA.col(ind);
 
-        int b_length = max((int)eqA.cols(), x_dim);
-        VectorXd eqb = VectorXd::Zero(b_length);
+        VectorXd eqb = VectorXd::Zero(eqA.cols());
         eqb(x_dim) = 1;
 
         VectorXd init;
@@ -91,12 +81,17 @@ z_result FacialReduction::findZ(const MatrixXd& newA, const VectorXd& b, int x_d
     return ans;
 }
 
-MatrixXd FacialReduction::facialReduction(VectorXd z){
+MatrixXd FacialReduction::pickV(const VectorXd& z, int x_dim){
     int d = z.rows();
     vector<int> indices;
-    for(int i = 0; i < d; i++){
-        if(z(i) <= 1.0E-8) indices.push_back(i);
+    for(int i = 0; i < x_dim; i++){
+        indices.push_back(i); 
     }
+
+    for(int i = x_dim; i < d; i++){
+         if(z(i) <= 1.0E-8) indices.push_back(i);
+    }
+
     MatrixXd matrix (indices.size(), d);
     for(int i = 0; i < indices.size(); i++){
         VectorXd row = VectorXd::Zero(d);
@@ -106,18 +101,7 @@ MatrixXd FacialReduction::facialReduction(VectorXd z){
     return matrix.transpose();
 }
 
-fr_result FacialReduction::entireFacialReductionStep(MatrixXd A, VectorXd b, int x_dim){
-    z_result z_ans = findZ(A, b, x_dim);
-    if(!z_ans.found_sol){
-        fr_result f_ans;
-        f_ans.A = A;
-        f_ans.b = b;
-        return f_ans;
-    }
-
-    MatrixXd V = facialReduction(z_ans.z);
-    MatrixXd AV = A * V;
-
+MatrixXd FacialReduction::pickP(const MatrixXd& AV){
     vector<int> lst;
     HouseholderQR <MatrixXd> qr(AV.cols(), AV.rows());
     qr.compute(AV.transpose());
@@ -129,14 +113,31 @@ fr_result FacialReduction::entireFacialReductionStep(MatrixXd A, VectorXd b, int
         }
     }
 
-    MatrixXd proj (lst.size(), A.rows());
+    MatrixXd proj (lst.size(), AV.rows());
     for(int i = 0; i < lst.size(); i++){
-        VectorXd row = VectorXd::Zero(A.rows());
+        VectorXd row = VectorXd::Zero(AV.rows());
         row(lst[i]) = 1; 
         proj.row(i) = row; 
     }
-    A = proj * AV;
-    b = proj * b;
+    return proj;
+}
+
+fr_result FacialReduction::entireFacialReductionStep(MatrixXd A, VectorXd b, int x_dim){
+    z_result z_ans = findZ(A, b, x_dim);
+    if(!z_ans.found_sol){
+        fr_result f_ans;
+        f_ans.A = A;
+        f_ans.b = b;
+        return f_ans;
+    }
+
+    MatrixXd V = pickV(z_ans.z, x_dim);
+    MatrixXd AV = A * V;
+
+    MatrixXd P = pickP(AV);
+
+    A = P * AV;
+    b = P * b;
 
     return entireFacialReductionStep(A, b, x_dim);
 }
@@ -180,40 +181,30 @@ problem_result FacialReduction::reduce(MatrixXd A, VectorXd b){
     
     fr_result reduced = reduceSampling(M, res.b, res.A.cols() - x_dim);
 
-    cout << "Reduced A" << endl;
-    cout << reduced.A << endl;
-    cout << "Reduced b" << endl;
-    cout << reduced.b << endl;
-
     HouseholderQR <MatrixXd> qr(res.A.cols(), res.A.rows());
+    
     qr.compute(res.A.transpose());
-    MatrixXd q = qr.householderQ();
-    MatrixXd r = qr.matrixQR().triangularView<Eigen::Upper>();
-    
-    int d = r.rows();
-    int n = r.cols();
+    MatrixXd Q = qr.householderQ();
+    MatrixXd R = qr.matrixQR().triangularView<Eigen::Upper>();
+    int d = R.rows();
+    int n = R.cols();
 
-    MatrixXd new_r (r.cols(), r.cols());
-    for(int i = 0; i < r.cols(); i++){
-        new_r.row(i) = r.row(i);
-    }
-    VectorXd z1 = new_r.transpose().inverse() * res.b;
+    MatrixXd newR = R.block(0, 0, R.cols(), R.cols());
+    VectorXd z1 = newR.transpose().inverse() * res.b;
     
-    MatrixXd Q1 (d, n);
-    MatrixXd Q2 (d, d-n);
-    for(int i = 0; i < n; i++){
-        Q1.col(i) = q.col(i);
-    }
-    for(int i = d; i < d - n; i++){
-        Q2.col(i - d) = q.col(i);
-    }
+    MatrixXd Q1 = Q.block(0, 0, Q.rows(), n);
+    MatrixXd Q2 = Q.block(0, n, Q.rows(), d - n);
+
+    MatrixXd reduced_A = -1 * Q2.block(x_dim, 0, d - x_dim, d - n);
+    VectorXd reduced_b = (Q1 * z1).tail(d - x_dim);
+
 
     problem_result ans;
     ans.reduced = true; 
     ans.reduced_A = reduced.A;
     ans.reduced_b = reduced.b;
-    ans.b_tilde = res.b;
-    ans.M = M;
+    ans.z1 = z1;
+    ans.Q = Q;
     return ans;
     
 }

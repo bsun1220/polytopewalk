@@ -35,9 +35,17 @@ class FacialReduction: public Reducer{
          /**
          * @brief Finds a Matrix V to convert AVv = b after receiving v
          * @param z
+         * @param x_dim
          * @return Matrix
          */
-        MatrixXd facialReduction(VectorXd z);
+        MatrixXd pickV(const VectorXd& z, int x_dim);
+
+         /**
+         * @brief Finds the Projection Matrix
+         * @param AV
+         * @return Matrix
+         */
+        MatrixXd pickP(const MatrixXd& AV);
 
          /**
          * @brief iteratively reduces dimension of the problem using recursion
