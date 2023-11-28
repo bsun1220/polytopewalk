@@ -68,12 +68,9 @@ z_result FacialReduction::findZ(const MatrixXd& newA, const VectorXd& b, int x_d
         VectorXd sol = lp.GetOptVariables()->GetValues();
 
         if (sol(sol.rows() - 1) <= 0){
-            VectorXd ans_v (sol.rows() - 1);
-            for(int i = 0; i < ans_v.rows(); i++){
-                ans_v(i) = sol(i);
-            }
+            sol = sol.head(sol.rows() - 1);
             ans.found_sol = true; 
-            ans.z = (newA.transpose() * ans_v);
+            ans.z = (newA.transpose() * sol);
             return ans;
         }
     }
@@ -142,29 +139,6 @@ fr_result FacialReduction::entireFacialReductionStep(MatrixXd A, VectorXd b, int
     return entireFacialReductionStep(A, b, x_dim);
 }
 
-fr_result FacialReduction::reduceSampling(const MatrixXd& M, const VectorXd& b, int delta_dim){
-    MatrixXd M_inv = M.inverse();
-    int row = M_inv.rows() - delta_dim;
-    int gamma = M_inv.rows() - b.rows();
-
-    MatrixXd temp1(M_inv.rows() - row, M_inv.cols() - gamma);
-    for(int i = 0; i < temp1.rows(); i++){
-        for(int k = 0; k < temp1.cols(); k++){
-            temp1(i, k) = M_inv(i + row, k);
-        }
-    }
-    MatrixXd temp2(M_inv.rows() - row, gamma);
-    for(int i = 0; i < temp2.rows(); i++){
-        for(int k = 0; k < temp2.cols(); k++){
-            temp2(i, k) = M_inv(i + row, k + M_inv.cols() - gamma);
-        }
-    }
-    fr_result ans;
-    ans.A = -1 * temp2;
-    ans.b = temp1 * b;
-    return ans;
-}
-
 problem_result FacialReduction::reduce(MatrixXd A, VectorXd b){
     MatrixXd newA = equalConversion(A);
     int x_dim = A.cols();
@@ -176,10 +150,6 @@ problem_result FacialReduction::reduce(MatrixXd A, VectorXd b){
         ans.reduced_b = b;
         return ans;
     }
-
-    MatrixXd M = makeFullRank(res.A);
-    
-    fr_result reduced = reduceSampling(M, res.b, res.A.cols() - x_dim);
 
     HouseholderQR <MatrixXd> qr(res.A.cols(), res.A.rows());
     
@@ -198,11 +168,10 @@ problem_result FacialReduction::reduce(MatrixXd A, VectorXd b){
     MatrixXd reduced_A = -1 * Q2.block(x_dim, 0, d - x_dim, d - n);
     VectorXd reduced_b = (Q1 * z1).tail(d - x_dim);
 
-
     problem_result ans;
     ans.reduced = true; 
-    ans.reduced_A = reduced.A;
-    ans.reduced_b = reduced.b;
+    ans.reduced_A = reduced_A;
+    ans.reduced_b = reduced_b;
     ans.z1 = z1;
     ans.Q = Q;
     return ans;

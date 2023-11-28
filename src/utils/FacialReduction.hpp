@@ -55,13 +55,6 @@ class FacialReduction: public Reducer{
          */
         fr_result entireFacialReductionStep(MatrixXd A, VectorXd b, int x_dim);
 
-         /**
-         * @brief completes the square to find new A, b for the reduced polytope
-         * @param A
-         * @return Matrix A, Vector b
-         */
-        fr_result reduceSampling(const MatrixXd& M, const VectorXd& b, int delta_dim);
-
 };
 
 #endif
