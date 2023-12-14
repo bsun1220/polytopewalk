@@ -11,8 +11,7 @@ class BarrierWalk : public RandomWalk{
          * @param rp spread parameter
          */
         BarrierWalk(const float rp) : R(rp), RandomWalk(){
-            term_sample = 0;
-            term_density = 0;
+
         }
 
         /**
@@ -33,6 +32,14 @@ class BarrierWalk : public RandomWalk{
          * @return Matrix
          */
         MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
+
+         /**
+         * @brief set Dist Term
+         * @param d
+         * @param n
+         * @return void
+         */
+        virtual void setDistTerm(int d, int n);
     
     protected:
 
@@ -40,15 +47,12 @@ class BarrierWalk : public RandomWalk{
          * @brief sptead parameter
          */
         const float R;
-        /**
-         * @brief term_sample for coefficient in sample function
-         */
-        float term_sample{};
+
 
         /**
-         * @brief term_density for coefficient in density function
+         * @brief normalized spread parameter
          */
-        float term_density{};
+        float DIST_TERM;
 
         /**
          * @brief represents global variable b - Ax
@@ -69,20 +73,6 @@ class BarrierWalk : public RandomWalk{
          * @brief weights generated from generateWeights function
          */
         MatrixXd weights{};
-
-        /**
-         * @brief set term sample by indicated value
-         * @param a
-         * @return void
-         */
-        void setTs(float a);
-
-        /**
-         * @brief set term density by indicated value
-         * @param b
-         * @return void
-         */
-        void setTd(float b);
 
         /**
          * @brief generates a gaussian random vector with d dimension

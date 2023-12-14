@@ -24,6 +24,14 @@ class JohnWalk: public BarrierWalk{
          * @return void
          */
         void printType() override;
+
+        /**
+         * @brief set Dist Term for John Walk
+         * @param d
+         * @param n
+         * @return void
+         */
+        void setDistTerm(int d, int n) override;
     
     protected:
         /**
@@ -40,6 +48,7 @@ class JohnWalk: public BarrierWalk{
          * @brief stops gradient descent if it reaches under this number
          */
         const float GRADLIM;
+
 
         /**
          * @brief generate weights when calculating Hessian matrix

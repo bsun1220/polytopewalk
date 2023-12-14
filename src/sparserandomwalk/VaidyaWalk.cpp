@@ -1,7 +1,12 @@
 #include "VaidyaWalk.hpp"
 
-void VaidyaWalk::generateWeight(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b){
 
+void VaidyaWalk::setDistTerm(int d, int n){
+    DIST_TERM = R*R/(sqrt(d * n));
+}
+
+
+void VaidyaWalk::generateWeight(const VectorXd& x, const SparseMatrixXd& A, const VectorXd& b){
     SparseMatrixXd I(A.rows(), A.rows());
     for(int i = 0; i < A.rows(); i++){
         I.coeffRef(i, i) = 1;

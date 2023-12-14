@@ -58,6 +58,15 @@ public:
                 b
             );
         }
+    void setDistTerm(int d, int n) override{
+            PYBIND11_OVERRIDE(
+                void,
+                BarrierWalkBase,
+                setDistTerm,
+                d,
+                n
+            );
+    }
 };
 
 class PyReducer : public Reducer{

@@ -1,5 +1,9 @@
 #include "VaidyaWalk.hpp"
 
+void VaidyaWalk::setDistTerm(int d, int n){
+    DIST_TERM = R*R/(sqrt(d * n));
+}
+
 void VaidyaWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
     generateDikinHessian(x, A, b);
     FullPivLU<MatrixXd> lu(dhess);

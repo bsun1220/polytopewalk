@@ -24,7 +24,15 @@ class JohnWalk: public BarrierWalk{
          * @return void
          */
         void printType() override;
-    
+
+        /**
+         * @brief set Dist Term for John Walk
+         * @param d
+         * @param n
+         * @return void
+         */
+        void setDistTerm(int d, int n) override;
+
     protected:
         /**
          * @brief step size for gradient descent

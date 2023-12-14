@@ -11,6 +11,22 @@ class DikinWalk: public BarrierWalk{
         DikinWalk(const float rp) : BarrierWalk(rp){}
 
         /**
+         * @brief print dikin
+         * @return void
+         */
+        void printType() override;
+
+        /**
+         * @brief set Dist Term for Dikin Walk
+         * @param d
+         * @param n
+         * @return void
+         */
+        void setDistTerm(int d, int n) override;
+
+    protected:
+
+        /**
          * @brief returns weight for DikinWalk (Identity Matrix)
          * @param x point
          * @param A polytope matrix
@@ -19,11 +35,6 @@ class DikinWalk: public BarrierWalk{
          */
         void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd&b) override;
 
-        /**
-         * @brief print dikin
-         * @return void
-         */
-        void printType() override;
 };
 
 

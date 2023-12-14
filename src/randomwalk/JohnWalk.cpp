@@ -1,5 +1,9 @@
 #include "JohnWalk.hpp"
 
+void JohnWalk::setDistTerm(int d, int n){
+    DIST_TERM = R*R/(pow(d, 1.5));
+}
+
 
 void JohnWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b ){
     float alpha = 1 - 1/(log2(2 * A.rows() / A.cols()));

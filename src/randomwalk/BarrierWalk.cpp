@@ -2,12 +2,8 @@
 #include <Eigen/SparseCholesky>
 
 
-void BarrierWalk::setTs(float a){
-    term_sample = a; 
-}
-
-void BarrierWalk::setTd(float b){
-    term_density = b; 
+void BarrierWalk::setDistTerm(int d, int n){
+    DIST_TERM = R*R/n;
 }
 
 VectorXd BarrierWalk::generateGaussianRV(int d){
@@ -48,7 +44,7 @@ float BarrierWalk::generateProposalDensity(const VectorXd& x, const VectorXd& z,
     LLT<MatrixXd> cholesky(hess);
     MatrixXd L = cholesky.matrixL();
 
-    return L.diagonal().prod() * exp(term_density * localNorm(x - z, hess));
+    return L.diagonal().prod() * exp((-0.5/DIST_TERM) * localNorm(x - z, hess));
 }
 
 void BarrierWalk::generateSample(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
@@ -57,7 +53,7 @@ void BarrierWalk::generateSample(const VectorXd& x, const MatrixXd& A, const Vec
     MatrixXd L = cholesky.matrixL();
     FullPivLU<MatrixXd> lu(L);
     VectorXd direction = generateGaussianRV(x.rows());
-    z = x + term_sample * (lu.solve(direction));
+    z = x + sqrt(DIST_TERM) * (lu.solve(direction));
 }
 
 MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b){
@@ -67,11 +63,7 @@ MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x, con
     uniform_real_distribution<> dis(0.0, 1.0);
     float one = 1.0;
 
-    float constant = (R * R)/b.rows();
-    float td = (-0.5 / constant);
-    float ts = sqrt(constant);
-    BarrierWalk::setTs(ts);
-    BarrierWalk::setTd(td);
+    setDistTerm(A.cols(), A.rows());
 
     for(int i = 0; i < num_steps; i++){
         generateSample(x, A, b);

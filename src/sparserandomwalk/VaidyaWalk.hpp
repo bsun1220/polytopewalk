@@ -15,8 +15,17 @@ class VaidyaWalk: public BarrierWalk{
          * @return void
          */
         void printType() override;
+
+        /**
+         * @brief set Dist Term for Vaidya Walk
+         * @param d
+         * @param n
+         * @return void
+         */
+        void setDistTerm(int d, int n) override;
     
     protected:
+
          /**
          * @brief global variable to update dikin hessian
          */
