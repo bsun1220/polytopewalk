@@ -1,0 +1,99 @@
+#include "ConstraintBarrierWalk.hpp"
+
+SparseMatrixXd ConstraintBarrierWalk::generateG(
+    const VectorXd& x, 
+    const SparseMatrixXd& A,
+    int k
+){
+    return SparseMatrixXd(VectorXd::Ones(A.cols()).asDiagonal());
+}
+
+void ConstraintBarrierWalk::setDistTerm(int d, int n){
+    DIST_TERM = 0;
+}
+
+VectorXd ConstraintBarrierWalk::generateSample(
+    const VectorXd& x, 
+    const SparseMatrixXd& A, 
+    int k
+){
+    SparseMatrixXd G = generateG(x, A, k);
+    SparseMatrixXd G_inv_sqrt = SparseMatrixXd(VectorXd(G.diagonal()).cwiseInverse().cwiseSqrt().asDiagonal());
+    
+    SparseMatrixXd AG_inv_sqrt = A * G_inv_sqrt;
+
+    VectorXd rand = generateGaussianRV(A.cols());
+
+    SparseLU<SparseMatrixXd> chol (AG_inv_sqrt * AG_inv_sqrt.transpose());
+    
+    VectorXd z = AG_inv_sqrt * rand;
+
+    z = AG_inv_sqrt.transpose() * chol.solve(z);
+    z = G_inv_sqrt * (rand - z);
+    z = x + sqrt(DIST_TERM) * z;
+
+    return z; 
+}
+
+double ConstraintBarrierWalk::generateProposalDensity(
+    const VectorXd& x, 
+    const VectorXd& z, 
+    const SparseMatrixXd& A, 
+    int k
+){
+    SparseMatrixXd G = generateG(x, A, k);
+    SparseMatrixXd G_inv_sqrt = SparseMatrixXd(VectorXd(G.diagonal()).cwiseInverse().cwiseSqrt().asDiagonal());
+    SparseMatrixXd AG_inv_sqrt = A * G_inv_sqrt;
+
+    double det1 = G.diagonal().prod();
+
+    SimplicialLLT<SparseMatrixXd> d2; 
+    SparseMatrixXd mat = AG_inv_sqrt * AG_inv_sqrt.transpose();
+    d2.analyzePattern(mat);
+    d2.factorize(mat);
+
+    double det2 = SparseMatrixXd(d2.matrixL()).diagonal().prod();
+
+    double det = det1 * det2; 
+
+    VectorXd diff = z - x;
+    VectorXd Qx = A * diff; 
+    SparseLU<SparseMatrixXd> A_solver (A * A.transpose());
+    Qx = A_solver.solve(Qx);
+    Qx = A.transpose() * Qx;
+    Qx = diff - Qx; 
+
+    double dist = Qx.transpose() * (G * Qx);
+    return sqrt(det) * exp(-0.5/DIST_TERM * dist);
+}
+
+MatrixXd ConstraintBarrierWalk::generateCompleteWalk(
+    const int num_steps, 
+    const VectorXd& init, 
+    const SparseMatrixXd& A, 
+    const VectorXd& b, 
+    int k
+){
+    MatrixXd results = MatrixXd::Zero(num_steps, A.cols());
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_real_distribution<> dis(0.0, 1.0);
+    setDistTerm(A.cols() - A.rows(), k);
+    VectorXd x = init;
+    
+    for(int i = 0; i < num_steps; i++){
+
+        VectorXd z = generateSample(x, A, k);
+        if (inPolytope(z, k)){
+            double g_x_z = generateProposalDensity(x, z, A, k);
+            double g_z_x = generateProposalDensity(z, x, A, k);
+            double alpha = min(1.0, g_z_x/g_x_z);
+            double val = dis(gen);
+            x = val < alpha ? z : x; 
+        }
+        results.row(i) = x.transpose(); 
+    }
+
+    return results; 
+
+}

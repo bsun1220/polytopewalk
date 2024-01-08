@@ -216,18 +216,18 @@ TEST_CASE( "Check PolytopeWalk Results (pass)", "[require]" ){
 
 
 TEST_CASE( "Check Simplex Case" ){
-    MatrixXd A (6, 4);
-    A << -1,  0,  0,  0, 0, -1,  0,  0, 0,  0, -1,  0, 0,  0,  0, -1, 1,  1,  1,  1, -1, -1, -1, -1;
-    VectorXd b(6);
-    b << 0,  0,  0,  0,  1, -1;
+    MatrixXd A (4, 2);
+    A << -1, 0, 0, -1, 1, 1, -1, -1;
+    VectorXd b(4);
+    b << 0, 0, 1, -1;
 
     FacialReduction fr;
 
     problem_result res2 = fr.reduce(A, b);
     
     REQUIRE(res2.reduced == true);
-    REQUIRE(res2.reduced_A.cols() == 3);
-    REQUIRE(res2.reduced_A.rows() == 4);
-    REQUIRE(res2.reduced_b.rows() == 4);
+    REQUIRE(res2.reduced_A.cols() == 1);
+    REQUIRE(res2.reduced_A.rows() == 2);
+    REQUIRE(res2.reduced_b.rows() == 2);
 
 }

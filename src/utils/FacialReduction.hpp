@@ -17,20 +17,28 @@ class FacialReduction: public Reducer{
          */
         problem_result reduce(MatrixXd A, VectorXd b) override;
 
-    protected:
         /**
          * @brief converts A for the problem
          * @param A
          * @return Matrix
          */
         MatrixXd equalConversion(const MatrixXd& A);
-
          /**
          * @brief finds a vector z satisfying A^Ty = [0 z], z in R^n, z >= 0, z != 0, <b, y> = 0
          * @param A
          * @return Matrix
          */
         z_result findZ(const MatrixXd& newA, const VectorXd& b, int x_dim);
+
+         /**
+         * @brief iteratively reduces dimension of the problem using recursion
+         * @param A
+         * @param b
+         * @return Matrix A, Vector b
+         */
+        fr_result entireFacialReductionStep(MatrixXd A, VectorXd b, int x_dim);
+
+    protected:
 
          /**
          * @brief Finds a Matrix V to convert AVv = b after receiving v
@@ -46,14 +54,6 @@ class FacialReduction: public Reducer{
          * @return Matrix
          */
         MatrixXd pickP(const MatrixXd& AV);
-
-         /**
-         * @brief iteratively reduces dimension of the problem using recursion
-         * @param A
-         * @param b
-         * @return Matrix A, Vector b
-         */
-        fr_result entireFacialReductionStep(MatrixXd A, VectorXd b, int x_dim);
 
 };
 

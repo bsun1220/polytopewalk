@@ -88,7 +88,15 @@ class ExConstraint1 : public ConstraintSet{
         }
         return b;
     }
-    void FillJacobianBlock (string var_set, Jacobian& jac_block) const override{}
+    void FillJacobianBlock (string var_set, Jacobian& jac_block) const override{
+        for(int i = 0; i < A.rows(); i++){
+            for(int j = 0; j < A.cols(); j++){
+                if (A.coeff(i, j) != 0){
+                    jac_block.coeffRef(i, j) = A.coeff(i, j);
+                }
+            }
+        }
+    }
 
 };
 
@@ -115,7 +123,15 @@ class ExConstraint2 : public ConstraintSet{
         return bound;
     }
 
-    void FillJacobianBlock (string var_set, Jacobian& jac_block) const override{}
+    void FillJacobianBlock (string var_set, Jacobian& jac_block) const override{
+        for(int i = 0; i < A.rows(); i++){
+            for(int j = 0; j < A.cols(); j++){
+                if (A.coeff(i, j) != 0){
+                    jac_block.coeffRef(i, j) = A.coeff(i, j);
+                }
+            }
+        }
+    }
 
 };
 
@@ -129,7 +145,10 @@ class ExCost : public CostTerm{
         VectorXd x = GetVariables()->GetComponent("var_set1")->GetValues();
         return x(x.rows() - 1);
     };
-    void FillJacobianBlock (string var_set, Jacobian& jac_block) const override{}
+    void FillJacobianBlock (string var_set, Jacobian& jac_block) const override{
+        VectorXd x = GetVariables()->GetComponent("var_set1")->GetValues();
+        jac_block.coeffRef(0, x.rows() - 1) = 1; 
+    }
 };
 
 

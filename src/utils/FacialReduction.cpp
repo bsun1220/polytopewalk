@@ -11,7 +11,6 @@ z_result FacialReduction::findZ(const MatrixXd& newA, const VectorXd& b, int x_d
     int d = newA.cols();
     z_result ans;
     ans.found_sol = false;
-
     if (x_dim + 2 > newA.rows()){
         return ans;
     }
@@ -22,6 +21,7 @@ z_result FacialReduction::findZ(const MatrixXd& newA, const VectorXd& b, int x_d
         temp_row << newA.col(i), 1;
         ineqA.row(i - x_dim) = -1 * temp_row;
     }
+
     for(int ind = x_dim; ind < d; ind++){
          //setting up eqA
         MatrixXd eqA(x_dim + 2, newA.rows());
@@ -42,18 +42,24 @@ z_result FacialReduction::findZ(const MatrixXd& newA, const VectorXd& b, int x_d
         if (!lu.isInvertible()) continue;
         //create init with last entry as delta
         init = lu.solve(eqb);
-        
+
         double delta = ((-1 * newA).transpose() * init).maxCoeff();
         VectorXd temp (init.rows() + 1);
         temp << init, delta;
         init = temp;
-
+        
         //add one column for delta
         MatrixXd temp_eqA (eqA.rows(), eqA.cols() + 1);
         temp_eqA << eqA, VectorXd::Zero(eqA.rows());
         eqA = temp_eqA;
-
         string name = "var_set1";
+        if(init(init.rows() - 1) <= 0){
+            init = init.head(init.rows() - 1);
+            ans.found_sol = true; 
+            ans.z = (newA.transpose() * init);
+            return ans;
+        }
+
         Problem lp;
         lp.AddVariableSet(make_shared<ExVariables>(n + 1, name, init));
         lp.AddConstraintSet(make_shared<ExConstraint1>(ineqA.rows(),name,ineqA));
@@ -66,7 +72,6 @@ z_result FacialReduction::findZ(const MatrixXd& newA, const VectorXd& b, int x_d
         ipopt.Solve(lp);
 
         VectorXd sol = lp.GetOptVariables()->GetValues();
-
         if (sol(sol.rows() - 1) <= 0){
             sol = sol.head(sol.rows() - 1);
             ans.found_sol = true; 
@@ -127,15 +132,12 @@ fr_result FacialReduction::entireFacialReductionStep(MatrixXd A, VectorXd b, int
         f_ans.b = b;
         return f_ans;
     }
-
     MatrixXd V = pickV(z_ans.z, x_dim);
     MatrixXd AV = A * V;
-
     MatrixXd P = pickP(AV);
 
     A = P * AV;
     b = P * b;
-
     return entireFacialReductionStep(A, b, x_dim);
 }
 
@@ -172,6 +174,7 @@ problem_result FacialReduction::reduce(MatrixXd A, VectorXd b){
     ans.reduced = true; 
     ans.reduced_A = reduced_A;
     ans.reduced_b = reduced_b;
+    
     ans.z1 = z1;
     ans.Q = Q;
     return ans;
