@@ -18,13 +18,19 @@ VectorXd ConstraintBarrierWalk::generateSample(
     int k
 ){
     SparseMatrixXd G = generateG(x, A, k);
+    for(int i = 0; i < G.rows(); i++){
+        G.coeffRef(i, i) += ERR;
+    }
+
     SparseMatrixXd G_inv_sqrt = SparseMatrixXd(VectorXd(G.diagonal()).cwiseInverse().cwiseSqrt().asDiagonal());
     
     SparseMatrixXd AG_inv_sqrt = A * G_inv_sqrt;
 
     VectorXd rand = generateGaussianRV(A.cols());
-
-    SparseLU<SparseMatrixXd> chol (AG_inv_sqrt * AG_inv_sqrt.transpose());
+    SparseMatrixXd res = AG_inv_sqrt * AG_inv_sqrt.transpose();
+    SimplicialLLT<SparseMatrixXd> chol;
+    chol.analyzePattern(res);
+    chol.factorize(res);
     
     VectorXd z = AG_inv_sqrt * rand;
 
@@ -42,6 +48,9 @@ double ConstraintBarrierWalk::generateProposalDensity(
     int k
 ){
     SparseMatrixXd G = generateG(x, A, k);
+    for(int i = 0; i < G.rows(); i++){
+        G.coeffRef(i, i) += ERR;
+    }
     SparseMatrixXd G_inv_sqrt = SparseMatrixXd(VectorXd(G.diagonal()).cwiseInverse().cwiseSqrt().asDiagonal());
     SparseMatrixXd AG_inv_sqrt = A * G_inv_sqrt;
 
@@ -58,7 +67,6 @@ double ConstraintBarrierWalk::generateProposalDensity(
 
     VectorXd diff = z - x;
     VectorXd Qx = A * diff; 
-    SparseLU<SparseMatrixXd> A_solver (A * A.transpose());
     Qx = A_solver.solve(Qx);
     Qx = A.transpose() * Qx;
     Qx = diff - Qx; 
@@ -80,7 +88,7 @@ MatrixXd ConstraintBarrierWalk::generateCompleteWalk(
     uniform_real_distribution<> dis(0.0, 1.0);
     setDistTerm(A.cols() - A.rows(), k);
     VectorXd x = init;
-    
+    A_solver.compute(A * A.transpose());
     for(int i = 0; i < num_steps; i++){
 
         VectorXd z = generateSample(x, A, k);

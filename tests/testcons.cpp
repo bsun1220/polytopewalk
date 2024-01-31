@@ -1,51 +1,27 @@
 #include "constraintwalk/SparseFacialReduction.hpp"
-#include "utils/FacialReduction.hpp"
 #include "constraintwalk/SparseCenter.hpp"
+#include "constraintwalk/ConstraintDikinWalk.hpp"
+#include "constraintwalk/ConstraintVaidyaWalk.hpp"
+#include "constraintwalk/ConstraintDikinLSWalk.hpp"
+#include "constraintwalk/ConstraintJohnWalk.hpp"
 
 int main(){
-    FacialReduction fr; 
-    SparseFacialReduction sfr; 
 
-    MatrixXd A1 (6, 3);
-    A1 << 1, 1, 0, -1, -1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1;
+    SparseMatrixXd A (4, 6);
+    A.coeffRef(0, 0) = 1;
+    A.coeffRef(0, 2) = 1;
+    A.coeffRef(1, 1) = 1;
+    A.coeffRef(1, 3) = 1;
+    A.coeffRef(2, 0) = -1;
+    A.coeffRef(2, 4) = 1;
+    A.coeffRef(3, 1) = -1;
+    A.coeffRef(3, 5) = 1;
+    VectorXd b (4);
+    b << 1, 1, 1, 1;
+    VectorXd x (6);
+    x << 0, 0, 1, 1, 1, 1;
 
-    VectorXd b1(6);
-    b1 << 1, -1, 1, 1, 1, 1;
-
-    A1 = fr.equalConversion(A1);
-    fr_result res = fr.entireFacialReductionStep(A1, b1, 3);
-
-    SparseMatrixXd SA1 = A1.sparseView();
-    fr_res sfr_res = sfr.entireFacialReductionStep(SA1, b1, 3);
-    
-    MatrixXd A2(6,3);
-    A2 << 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 1, 0, 0, -1;
-    cout << "START" << endl;
-    VectorXd b2(6);
-    b2 << 1, 1, 0, 0, 0, 0;
-    A2 = fr.equalConversion(A2); 
-    res = fr.entireFacialReductionStep(A2, b2, 3);
-    cout << "A" << endl;
-    cout << res.A << endl;
-    cout << "b" << endl;
-    cout << res.b << endl;
-    cout << "---" << endl;
-
-    SparseMatrixXd SA2 = A2.sparseView();
-    sfr_res = sfr.entireFacialReductionStep(SA2, b2, 3);
-    cout << "A" << endl;
-    cout << MatrixXd(sfr_res.A) << endl;
-    cout << "b" << endl;
-    cout << sfr_res.b << endl;
-
-
-    MatrixXd prop_A (1,4);
-    prop_A << 1,1,1,1;
-    VectorXd b(1);
-    b << 1; 
-    SparseMatrixXd A = prop_A.sparseView();
-    SparseCenter sp;
-    VectorXd sol = sp.getInitialPoint(A, b, 4);
-    cout << sol << endl;
-
+    ConstraintDikinLSWalk cd(0.0001, 0.4, 0.01, 0.1, 1000);
+    MatrixXd res = cd.generateCompleteWalk(10, x, A, b, 4);
+    cout << res << endl;
 }

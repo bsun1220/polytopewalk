@@ -35,5 +35,6 @@ VectorXd SparseCenter::getInitialPoint(SparseMatrixXd A, VectorXd b, int k){
         return sol; 
     }
     cout << "NO CENTER FOUND" << endl;
+    return sol;
     
 }

@@ -36,8 +36,7 @@ z_result FacialReduction::findZ(const MatrixXd& newA, const VectorXd& b, int x_d
         eqb(x_dim) = 1;
 
         VectorXd init;
-        eqA = makeFullRank(eqA);
-        FullPivLU <MatrixXd> lu(eqA);
+        FullPivLU <MatrixXd> lu(makeFullRank(eqA));
         //if eqA is not invertible skip the step
         if (!lu.isInvertible()) continue;
         //create init with last entry as delta

@@ -73,7 +73,6 @@ class ExConstraint1 : public ConstraintSet{
     ExConstraint1(int num_dim, string name, const MatrixXd& A_param) : ConstraintSet(num_dim, name){
         // A is d by n matrix
         A = A_param;
-        
     }
 
     VectorXd GetValues() const override{
@@ -89,9 +88,13 @@ class ExConstraint1 : public ConstraintSet{
         return b;
     }
     void FillJacobianBlock (string var_set, Jacobian& jac_block) const override{
+
         for(int i = 0; i < A.rows(); i++){
             for(int j = 0; j < A.cols(); j++){
                 if (A.coeff(i, j) != 0){
+                    if (jac_block.coeffRef(i, j) != 0){
+                        return;
+                    }
                     jac_block.coeffRef(i, j) = A.coeff(i, j);
                 }
             }
@@ -127,6 +130,9 @@ class ExConstraint2 : public ConstraintSet{
         for(int i = 0; i < A.rows(); i++){
             for(int j = 0; j < A.cols(); j++){
                 if (A.coeff(i, j) != 0){
+                    if (jac_block.coeffRef(i, j) != 0){
+                        return;
+                    }
                     jac_block.coeffRef(i, j) = A.coeff(i, j);
                 }
             }
@@ -137,7 +143,9 @@ class ExConstraint2 : public ConstraintSet{
 
 class ExCost : public CostTerm{
     public:
+
     ExCost(string name) : CostTerm(name) {
+
     }
     
     double GetCost() const override

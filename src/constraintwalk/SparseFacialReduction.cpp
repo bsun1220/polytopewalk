@@ -32,7 +32,6 @@ z_res SparseFacialReduction::findZ(const SparseMatrixXd& A, const VectorXd& b, i
 
         SparseQR<SparseMatrixXd, COLAMDOrdering<SparseMatrix<double>::StorageIndex>> solver (eqA.block(0, 0, x_dim + 2, n));
         VectorXd init = solver.solve(eqb);
-
         double delta = ((-1 * A).transpose() * init).maxCoeff();
         VectorXd temp (init.rows() + 1);
         temp << init, delta;
@@ -62,7 +61,6 @@ z_res SparseFacialReduction::findZ(const SparseMatrixXd& A, const VectorXd& b, i
         ipopt.Solve(lp);
 
         VectorXd sol = lp.GetOptVariables()->GetValues();
-
         if (sol(sol.rows() - 1) <= 0){
             sol = sol.head(sol.rows() - 1);
             ans.found_sol = true; 

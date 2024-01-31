@@ -3,6 +3,8 @@
 #include <constraintwalk/ConstraintWalk.hpp>
 #include <constraintwalk/ConstraintBarrierWalk.hpp>
 #include <constraintwalk/ConstraintDikinWalk.hpp>
+#include <constraintwalk/ConstraintJohnWalk.hpp>
+#include <constraintwalk/ConstraintDikinLSWalk.hpp>
 #include <constraintwalk/ConstraintVaidyaWalk.hpp>
 #include <constraintwalk/ConstraintHitRun.hpp>
 #include <constraintwalk/ConstraintBallWalk.hpp>
@@ -79,7 +81,7 @@ PYBIND11_MODULE(conspolytopewalk, m) {
     m.doc() = "pybind11 sparse constraint walk library";
     
     py::class_<ConstraintWalk, PyConstraintWalk<>>(m, "ConstraintWalk")
-        .def(py::init<const double>(), py::arg("err") = 0.000001)
+        .def(py::init<const double>(), py::arg("err") = 0.0000001)
         .def("generateCompleteWalk", &ConstraintWalk::generateCompleteWalk);
     
     py::class_<ConstraintBallWalk, ConstraintWalk>(m, "ConstraintBallWalk")
@@ -90,15 +92,23 @@ PYBIND11_MODULE(conspolytopewalk, m) {
         py::arg("err") = 0.01, py::arg("r") = 0.5);
 
     py::class_<ConstraintBarrierWalk, ConstraintWalk, PyConsBarrierWalk<>>(m, "ConstraintBarrierWalk")
-        .def(py::init<const double, const double>(), py::arg("err") = 0.000001, py::arg("r") = 0.5)
+        .def(py::init<const double, const double>(), py::arg("err") = 0.0000001, py::arg("r") = 0.5)
         .def("generateG", &ConstraintBarrierWalk::generateG)
         .def("generateCompleteWalk", &ConstraintWalk::generateCompleteWalk);
     
     py::class_<ConstraintDikinWalk, ConstraintBarrierWalk, PyConsBarrierWalk<ConstraintDikinWalk>>(m, "ConstraintDikinWalk")
-        .def(py::init<const double, const double>(), py::arg("err") = 0.000001, py::arg("r") = 0.5);
+        .def(py::init<const double, const double>(), py::arg("err") = 0.0000001, py::arg("r") = 0.5);
     
     py::class_<ConstraintVaidyaWalk, ConstraintBarrierWalk, PyConsBarrierWalk<ConstraintVaidyaWalk>>(m, "ConstraintVaidyaWalk")
-        .def(py::init<const double, const double>(), py::arg("err") = 0.000001, py::arg("r") = 0.5);
+        .def(py::init<const double, const double>(), py::arg("err") = 0.0000001, py::arg("r") = 0.5);
+    
+    py::class_<ConstraintJohnWalk, ConstraintBarrierWalk, PyConsBarrierWalk<ConstraintJohnWalk>>(m, "ConstraintJohnWalk")
+        .def(py::init<double, double, double, double, int>(), py::arg("err") = 0.0000001, py::arg("r") = 0.5, 
+            py::arg("g_lim") = 0.01, py::arg("step_size") = 0.1, py::arg("max_iter") = 1000);
+    
+    py::class_<ConstraintDikinLSWalk, ConstraintBarrierWalk, PyConsBarrierWalk<ConstraintDikinLSWalk>>(m, "ConstraintDikinLSWalk")
+        .def(py::init<double, double, double, double, int>(), py::arg("err") = 0.0000001, py::arg("r") = 0.5, 
+            py::arg("g_lim") = 0.01, py::arg("step_size") = 0.1, py::arg("max_iter") = 1000);
     
     py::class_<SparseCenter>(m, "SparseCenter")
         .def(py::init<>())

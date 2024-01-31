@@ -26,6 +26,7 @@ class ConstraintBarrierWalk : public ConstraintWalk{
     protected:
         double DIST_TERM; 
         double R; 
+        SparseLU<SparseMatrixXd> A_solver;
 
         VectorXd generateSample(
             const VectorXd& x, 

@@ -56,9 +56,13 @@ class SparseExConstraint1 : public ConstraintSet{
             }
             return b;
         }
+        
         void FillJacobianBlock (string var_set, Jacobian& jac_block) const override{
             for(int k = 0; k < A.outerSize(); k++){
                 for(SparseMatrixXd::InnerIterator it(A, k); it; ++it){
+                    if (jac_block.coeffRef(it.row(), it.col()) != 0){
+                        return; 
+                    }
                     jac_block.coeffRef(it.row(), it.col()) = A.coeff(it.row(), it.col());
                 }
             }
@@ -71,6 +75,7 @@ class SparseExConstraint2 : public ConstraintSet{
         SparseMatrixXd A;
         VectorXd b;
         string name;
+   
         SparseExConstraint2(int num_dim, string name_, const SparseMatrixXd& A_param, const VectorXd& b_param) : ConstraintSet(num_dim, name_){
             A = A_param;
             b = b_param;
@@ -93,9 +98,13 @@ class SparseExConstraint2 : public ConstraintSet{
         void FillJacobianBlock (string var_set, Jacobian& jac_block) const override{
             for(int k = 0; k < A.outerSize(); k++){
                 for(SparseMatrixXd::InnerIterator it(A, k); it; ++it){
+                    if (jac_block.coeffRef(it.row(), it.col()) != 0){
+                        return; 
+                    }
                     jac_block.coeffRef(it.row(), it.col()) = A.coeff(it.row(), it.col());
                 }
             }
+
         }
 
 };
@@ -103,6 +112,7 @@ class SparseExConstraint2 : public ConstraintSet{
 class SparseExCost : public CostTerm{
     public:
         string name;
+
         SparseExCost(string name_) : CostTerm(name_) {
             name = name_; 
         }
@@ -111,10 +121,12 @@ class SparseExCost : public CostTerm{
         {
             VectorXd x = GetVariables()->GetComponent(name)->GetValues();
             return x(x.rows() - 1);
-        };
+        }
+
         void FillJacobianBlock (string var_set, Jacobian& jac_block) const override{
             VectorXd x = GetVariables()->GetComponent(name)->GetValues();
             jac_block.coeffRef(0, x.rows() - 1) = 1.0; 
+
         }
     
 };
