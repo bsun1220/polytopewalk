@@ -17,19 +17,9 @@ add_subdirectory("src")
 # set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 #add_subdirectory ("docs")
 
-#pybind11_add_module(${PROJECT_NAME} MODULE pybind11/PybindExt.cpp)
-#target_link_libraries(${PROJECT_NAME} PUBLIC randomwalk pybind11::module Eigen3::Eigen ifopt::ifopt_ipopt utils)
-#target_include_directories(${PROJECT_NAME} PRIVATE ${Eigen3_INCLUDE_DIRS})
-#install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION .)
-
-#pybind11_add_module(sparsepolytopewalk MODULE pybind11/SparsePybindExt.cpp)
-#target_link_libraries(sparsepolytopewalk PUBLIC sparserandomwalk pybind11::module Eigen3::Eigen ifopt::ifopt_ipopt utils)
-#target_include_directories(sparsepolytopewalk PRIVATE ${Eigen3_INCLUDE_DIRS})
-#install(TARGETS sparsepolytopewalk LIBRARY DESTINATION .)
-
-pybind11_add_module(conspolytopewalk MODULE pybind11/ConstraintPybindExt.cpp)
-target_link_libraries(conspolytopewalk PUBLIC constraintwalk pybind11::module Eigen3::Eigen)
-target_include_directories(conspolytopewalk PRIVATE ${Eigen3_INCLUDE_DIRS})
-install(TARGETS conspolytopewalk LIBRARY DESTINATION .)
+pybind11_add_module(${PROJECT_NAME} MODULE pybind11/PybindExt.cpp)
+target_link_libraries(${PROJECT_NAME} PUBLIC utils dense sparse pybind11::module Eigen3::Eigen ifopt::ifopt_ipopt)
+target_include_directories(${PROJECT_NAME} PRIVATE ${Eigen3_INCLUDE_DIRS})
+install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION .)
 
 add_subdirectory("tests")

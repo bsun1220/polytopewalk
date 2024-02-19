@@ -1,0 +1,55 @@
+
+#ifndef VAIDYAWALK_HPP
+#define VAIDYAWALK_HPP
+
+#include "BarrierWalk.hpp"
+
+class VaidyaWalk: public BarrierWalk{
+
+    public:
+        /**
+         * @brief constructor for Vaidya Walk class
+         * @param r spread parameter
+         */
+        VaidyaWalk(const double r) : BarrierWalk(r){}  
+
+        /**
+         * @brief print general type 
+         * @return void
+         */
+        void printType() override;
+
+        /**
+         * @brief returns weight for Vaidya Walk (leverage score calculation)
+         * @param x center vector
+         * @param A polytope matrix
+         * @param b polytope vector
+         * @return void
+         */
+        void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
+    
+    protected:
+         /**
+         * @brief global variable to update dikin hessian
+         */
+        MatrixXd dhess {};
+
+        /**
+         * @brief set Dist Term for Vaidya Walk
+         * @param d (dimension)
+         * @param n (number of constraints)
+         * @return void
+         */
+        void setDistTerm(int d, int n) override;
+
+        /**
+         * @brief returns Dikin Hessian around vector x
+         * @param x center vector
+         * @param A polytope matrix (Ax <= b)
+         * @param b polytope vector (Ax <= b)
+         * @return void
+         */
+        void generateDikinHessian(const VectorXd& x, const MatrixXd& A, const VectorXd& b);
+};
+
+#endif

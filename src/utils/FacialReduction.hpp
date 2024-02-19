@@ -1,59 +1,75 @@
+#ifndef SPARSE_FR_HPP
+#define SPARSE_FR_HPP
 
-#ifndef FACIALREDUCTION_HPP
-#define FACIALREDUCTION_HPP
+#include "SparseLP.hpp"
 
-#include "Reducer.hpp"
+struct z_res{
+    bool found_sol; 
+    VectorXd z; 
+};
 
-class FacialReduction: public Reducer{
+struct fr_res{
+    SparseMatrixXd A;
+    VectorXd b; 
+};
 
+struct res{
+    SparseMatrixXd sparse_A;
+    VectorXd sparse_b; 
+    SparseMatrixXd saved_V; 
+    MatrixXd dense_A;
+    VectorXd dense_b; 
+    MatrixXd Q; 
+    VectorXd z1;
+};
+
+class FacialReduction {
     public:
-        FacialReduction() : Reducer(){};
-
+        FacialReduction(){}
         /**
-         * @brief converts A for the problem
-         * @param A
-         * @param b
-         * @return problem_result object for reducedA, reducedb, reduced value, originalA, originalb
+         * @brief completes facial reduction on Ax = b, x >=_c 0
+         * @param A polytope matrix (Ax = b)
+         * @param b polytope vector (Ax = b)
+         * @param k k values >= 0 constraint
+         * @param sparse decision to choose full-dimensional or constraint formulation
+         * @return res
          */
-        problem_result reduce(MatrixXd A, VectorXd b) override;
-
-        /**
-         * @brief converts A for the problem
-         * @param A
-         * @return Matrix
-         */
-        MatrixXd equalConversion(const MatrixXd& A);
-         /**
-         * @brief finds a vector z satisfying A^Ty = [0 z], z in R^n, z >= 0, z != 0, <b, y> = 0
-         * @param A
-         * @return Matrix
-         */
-        z_result findZ(const MatrixXd& newA, const VectorXd& b, int x_dim);
-
-         /**
-         * @brief iteratively reduces dimension of the problem using recursion
-         * @param A
-         * @param b
-         * @return Matrix A, Vector b
-         */
-        fr_result entireFacialReductionStep(MatrixXd A, VectorXd b, int x_dim);
-
+        res reduce(SparseMatrixXd A, VectorXd b, int k, bool sparse);
+    
     protected:
-
-         /**
-         * @brief Finds a Matrix V to convert AVv = b after receiving v
-         * @param z
-         * @param x_dim
-         * @return Matrix
+        /**
+         * @brief finds a vector z satisfying A^Ty = [0 z], z in R^n, z >= 0, z != 0, <b, y> = 0
+         * @param A polytope matrix (Ax = b)
+         * @param b polytope vector (Ax = b)
+         * @param int k values >= 0 constraint
+         * @return z_res
          */
-        MatrixXd pickV(const VectorXd& z, int x_dim);
+        z_res findZ(const SparseMatrixXd& A, const VectorXd& b, int k);
 
-         /**
-         * @brief Finds the Projection Matrix
-         * @param AV
-         * @return Matrix
+        /**
+         * @brief finds supports with z vector
+         * @param z vector
+         * @param int k values >= 0 constraint
+         * @return SparseMatrixXd 
          */
-        MatrixXd pickP(const MatrixXd& AV);
+        SparseMatrixXd pickV(const VectorXd& z, int k);
+
+        /**
+         * @brief removes redundant constraints in AV
+         * @param AV matrix to remove redundant constraints
+         * @return SparseMatrixXd 
+         */
+        SparseMatrixXd pickP(const SparseMatrixXd& AV);
+
+        /**
+         * @brief iteratively reduces dimension of the problem using recursion
+         * @param A polytope matrix (Ax = b)
+         * @param b polytope vector (Ax = b)
+         * @param int k values >= 0 constraint
+         * @return fr_res
+         */
+        fr_res entireFacialReductionStep(SparseMatrixXd A, VectorXd b, int k);
+        SparseMatrixXd savedV;
 
 };
 

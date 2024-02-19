@@ -9,10 +9,5 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-#add_executable(test_pw ${TESTS_DIR}/test.cpp)
-#add_executable(test_sparse ${TESTS_DIR}/testsparse.cpp)
-add_executable(test_cons ${TESTS_DIR}/testcons.cpp)
-
-#target_link_libraries(test_pw PRIVATE randomwalk utils Catch2::Catch2WithMain)
-#target_link_libraries(test_sparse PRIVATE sparserandomwalk utils Catch2::Catch2WithMain)
-target_link_libraries(test_cons PRIVATE constraintwalk utils)
+add_executable(test ${TESTS_DIR}/test.cpp)
+target_link_libraries(test PRIVATE utils dense sparse Catch2::Catch2WithMain)
