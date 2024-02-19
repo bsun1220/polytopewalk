@@ -272,7 +272,7 @@ TEST_CASE( "Test All Sparse Combinations", "[require]" ){
     SparseVaidyaWalk vaidya(0.00001, 0.5);
     SparseDikinWalk dikin(0.00001, 0.5);
     SparseBallWalk ball(0.5);
-    SparseHitAndRun hitrun(0.00001, 0.5);
+    SparseHitAndRun hitrun(0.01, 0.5);
 
     MatrixXd walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &john);
     walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikinls);
