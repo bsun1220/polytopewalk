@@ -13,13 +13,14 @@ MatrixXd SparseBallWalk::generateCompleteWalk(
     SparseMatrixXd I = SparseMatrixXd(VectorXd::Ones(A.cols()).asDiagonal());
 
     VectorXd x = init;
+    int d = A.cols() - A.rows();
     for (int i = 0; i < num_steps; i++){
         VectorXd rand = generateGaussianRV(A.cols()); 
         VectorXd z;
         z = A * rand; 
         z = rand - A.transpose() * A_solver.solve(z);
         z /= z.norm(); 
-        z = R * z + x; 
+        z = R/sqrt(d) * z + x; 
 
         if (inPolytope(z, k)){
             x = z;
