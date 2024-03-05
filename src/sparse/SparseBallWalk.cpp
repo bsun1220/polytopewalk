@@ -14,7 +14,8 @@ MatrixXd SparseBallWalk::generateCompleteWalk(
 
     VectorXd x = init;
     int d = A.cols() - A.rows();
-    for (int i = 0; i < num_steps; i++){
+    int total = num_steps * THIN;
+    for (int i = 1; i <= total; i++){
         VectorXd rand = generateGaussianRV(A.cols()); 
         VectorXd z;
         z = A * rand; 
@@ -25,7 +26,9 @@ MatrixXd SparseBallWalk::generateCompleteWalk(
         if (inPolytope(z, k)){
             x = z;
         }
-        results.row(i) = x; 
+        if (i % THIN == 0){
+            results.row((int)i/THIN - 1) = x; 
+        }
     }
     return results; 
 }

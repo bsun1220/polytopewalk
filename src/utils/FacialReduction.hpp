@@ -25,7 +25,7 @@ struct res{
 
 class FacialReduction {
     public:
-        FacialReduction(){}
+        FacialReduction(int max_iter = 3000, double tol = 1e-8, double s_max = 100) : MAX_ITER(max_iter), TOL(tol), S_MAX(s_max){}
         /**
          * @brief completes facial reduction on Ax = b, x >=_c 0
          * @param A polytope matrix (Ax = b)
@@ -70,7 +70,9 @@ class FacialReduction {
          */
         fr_res entireFacialReductionStep(SparseMatrixXd A, VectorXd b, int k);
         SparseMatrixXd savedV;
-
+        const int MAX_ITER;
+        const double TOL;
+        const double S_MAX;
 };
 
 #endif

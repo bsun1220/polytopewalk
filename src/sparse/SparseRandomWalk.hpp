@@ -8,8 +8,9 @@ class SparseRandomWalk{
         /**
          * @brief Random Walk Superclass implementation
          * @param err error constant
+         * @param thin thing constant
          */
-        SparseRandomWalk(const double err) : ERR(err){}
+        SparseRandomWalk(double err = 1e-6, int thin = 1) : ERR(err), THIN(thin) {}
     
         /**
          * @brief Generate values from the RandomWalk
@@ -47,6 +48,11 @@ class SparseRandomWalk{
          * @brief error constant 
          */
         const double ERR; 
+
+        /**
+         * @brief include every ___ sample
+         */
+        const int THIN; 
 };
 
 #endif

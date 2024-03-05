@@ -10,8 +10,9 @@ class SparseVaidyaWalk : public SparseBarrierWalk{
          * @brief constructor for Vaidya Walk class
          * @param err error constant
          * @param r spread parameter
+         * @param thin thin parameter
          */
-        SparseVaidyaWalk(const double err, const double r) : SparseBarrierWalk(err, r) {}
+        SparseVaidyaWalk(double r, double err = 1e-6, int thin = 1) : SparseBarrierWalk(r, err, thin) {}
 
         /**
          * @brief generate weight (leverage score calculation)

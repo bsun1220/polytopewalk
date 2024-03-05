@@ -9,7 +9,7 @@ class BallWalk: public RandomWalk{
 
     public:
 
-        BallWalk(const double r) : R(r), RandomWalk() {
+        BallWalk(double r, int thin = 1) : R(r), RandomWalk(thin) {
             
         }
 

@@ -12,7 +12,7 @@ class HitAndRun: public RandomWalk{
          * @param err error hyperparameter
          * @param r spread hyperparamter
          */
-        HitAndRun(const double err, const double r) : ERR(err), R(r), RandomWalk() {
+        HitAndRun(double r, double err = 1e-6, int thin = 1) : ERR(err), R(r), RandomWalk(thin) {
 
         }
 

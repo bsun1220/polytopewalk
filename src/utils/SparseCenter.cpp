@@ -31,6 +31,9 @@ VectorXd SparseCenter::getInitialPoint(SparseMatrixXd A, VectorXd b, int k){
     IpoptSolver ipopt;
     ipopt.SetOption("print_level", 0);
     ipopt.SetOption("sb", "yes");
+    ipopt.SetOption("max_iter", MAX_ITER);
+    ipopt.SetOption("tol", TOL);
+    ipopt.SetOption("s_max", S_MAX);
     ipopt.Solve(lp);
     VectorXd sol = lp.GetOptVariables()->GetValues();
     if (sol(sol.rows() - 1) <= 0){

@@ -14,11 +14,9 @@
 #include "sparse/SparseBallWalk.hpp"
 #include "sparse/SparseHitRun.hpp"
 
-MatrixXd denseFullWalkRun(SparseMatrixXd A, VectorXd b, int k, int num_sim, RandomWalk* walk){
-    FacialReduction fr;
-    res fr_result = fr.reduce(A, b, k, false);
-    DenseCenter init; 
-    VectorXd x = init.getInitialPoint(fr_result.dense_A, fr_result.dense_b);
+MatrixXd denseFullWalkRun(SparseMatrixXd A, VectorXd b, int k, int num_sim, RandomWalk* walk, FacialReduction* fr, DenseCenter* init){
+    res fr_result = fr->reduce(A, b, k, false);
+    VectorXd x = init->getInitialPoint(fr_result.dense_A, fr_result.dense_b);
     MatrixXd steps = walk->generateCompleteWalk(num_sim, x, fr_result.dense_A, fr_result.dense_b);
     MatrixXd res(num_sim, A.cols());
     for(int i = 0; i < num_sim; i++){
@@ -30,12 +28,10 @@ MatrixXd denseFullWalkRun(SparseMatrixXd A, VectorXd b, int k, int num_sim, Rand
     return res; 
 }
 
-MatrixXd sparseFullWalkRun(SparseMatrixXd A, VectorXd b, int k, int num_sim, SparseRandomWalk* walk){
-    FacialReduction fr;
-    res fr_result = fr.reduce(A, b, k, true);
+MatrixXd sparseFullWalkRun(SparseMatrixXd A, VectorXd b, int k, int num_sim, SparseRandomWalk* walk, FacialReduction* fr, SparseCenter* init){
+    res fr_result = fr->reduce(A, b, k, true);
     int new_k = fr_result.sparse_A.rows() - (A.rows() - k);
-    SparseCenter init; 
-    VectorXd x = init.getInitialPoint(fr_result.sparse_A, fr_result.sparse_b, new_k);
+    VectorXd x = init->getInitialPoint(fr_result.sparse_A, fr_result.sparse_b, new_k);
     MatrixXd steps = walk->generateCompleteWalk(num_sim, x, fr_result.sparse_A, fr_result.sparse_b, new_k);
     MatrixXd res(num_sim, A.cols());
     for(int i = 0; i < num_sim; i++){

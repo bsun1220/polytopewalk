@@ -14,7 +14,7 @@ class JohnWalk: public BarrierWalk{
          * @param step_size size of gradient descent step
          * @param max_iter maximum number of iterations in gradient descent
          */
-        JohnWalk(const double r, const double g_lim, const double step_size, const int max_iter) : STEPSIZE(step_size), MAXITER(max_iter), GRADLIM(g_lim), BarrierWalk(r){
+        JohnWalk(double r, double g_lim = 0.01, double step_size = 0.1, int max_iter = 100, int thin = 1) : STEPSIZE(step_size), MAXITER(max_iter), GRADLIM(g_lim), BarrierWalk(r, thin){
 
 
         }

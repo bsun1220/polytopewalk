@@ -8,8 +8,9 @@ class SparseBallWalk : public SparseRandomWalk{
         /**
          * @brief SparseBall Walk class
          * @param r spread parameter
+         * @param thin thin parameter
          */
-        SparseBallWalk(const double r) : R(r), SparseRandomWalk(0.0){}
+        SparseBallWalk(double r, int thin = 1) : R(r), SparseRandomWalk(0.0, thin){}
 
          /**
          * @brief Generate values from the Ball walk

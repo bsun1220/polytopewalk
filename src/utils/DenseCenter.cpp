@@ -22,9 +22,15 @@ VectorXd DenseCenter::getInitialPoint(MatrixXd A, VectorXd b){
     IpoptSolver ipopt;
     ipopt.SetOption("print_level", 0);
     ipopt.SetOption("sb", "yes");
+    ipopt.SetOption("max_iter", MAX_ITER);
+    ipopt.SetOption("tol", TOL);
+    ipopt.SetOption("s_max", S_MAX);
+
     ipopt.Solve(lp);
     
     VectorXd sol = lp.GetOptVariables()->GetValues();
+
+    
     VectorXd temp = sol.head(sol.rows() - 1);
     sol = temp; 
     return sol; 

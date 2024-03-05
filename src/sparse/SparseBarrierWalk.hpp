@@ -9,8 +9,9 @@ class SparseBarrierWalk : public SparseRandomWalk{
          * @brief SparseBarrierWalk class
          * @param err error term parameter
          * @param r spread parameter
+         * @param thing thin parameter
          */
-        SparseBarrierWalk(const double err, const double r) : R(r), SparseRandomWalk(err) {}
+        SparseBarrierWalk(double r, double err = 1e-6, int thin = 1) : R(r), SparseRandomWalk(err, thin) {}
 
         /**
          * @brief generate weight for slack inverse

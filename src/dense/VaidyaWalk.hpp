@@ -10,8 +10,9 @@ class VaidyaWalk: public BarrierWalk{
         /**
          * @brief constructor for Vaidya Walk class
          * @param r spread parameter
+         * @param thin thin constant
          */
-        VaidyaWalk(const double r) : BarrierWalk(r){}  
+        VaidyaWalk(double r, int thin = 1) : BarrierWalk(r, thin){}  
 
         /**
          * @brief print general type 

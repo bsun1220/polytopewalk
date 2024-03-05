@@ -10,7 +10,7 @@ class SparseHitAndRun : public SparseRandomWalk{
          * @param err error constant
          * @param r spread parameter
          */
-        SparseHitAndRun(const double err, const double r) : R(r), SparseRandomWalk(err) {}
+        SparseHitAndRun(double r, double err = 1e-6, int thin = 1) : R(r), SparseRandomWalk(err, thin) {}
 
          /**
          * @brief Generate values from the Hit and Run

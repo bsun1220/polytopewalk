@@ -59,6 +59,9 @@ z_res FacialReduction::findZ(const SparseMatrixXd& A, const VectorXd& b, int x_d
         IpoptSolver ipopt;
         ipopt.SetOption("print_level", 0);
         ipopt.SetOption("sb", "yes");
+        ipopt.SetOption("max_iter", MAX_ITER);
+        ipopt.SetOption("tol", TOL);
+        ipopt.SetOption("s_max", S_MAX);
         ipopt.Solve(lp);
 
         VectorXd sol = lp.GetOptVariables()->GetValues();

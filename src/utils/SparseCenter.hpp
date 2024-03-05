@@ -6,7 +6,9 @@
 
 class SparseCenter {
     public:
-        SparseCenter(){}
+        SparseCenter(int max_iter = 3000, double tol = 1e-8, double s_max = 100.0) : MAX_ITER(max_iter), TOL(tol), S_MAX(s_max) {
+
+        }
 
         /**
          * @brief Finds analytical center Ax = b, x >=_k 0 
@@ -16,6 +18,11 @@ class SparseCenter {
          * @return VectorXd 
          */
         VectorXd getInitialPoint(SparseMatrixXd A, VectorXd b, int k);
+
+    protected:
+        const int MAX_ITER;
+        const double TOL;
+        const double S_MAX;
 };
 
 #endif

@@ -97,8 +97,8 @@ MatrixXd SparseBarrierWalk::generateCompleteWalk(
     setDistTerm(A.cols() - A.rows(), k);
     VectorXd x = init;
     A_solver.compute(A * A.transpose());
-    for(int i = 0; i < num_steps; i++){
-
+    int total = num_steps * THIN; 
+    for(int i = 1; i <= total; i++){
         VectorXd z = generateSample(x, A, k);
         if (inPolytope(z, k)){
             double g_x_z = generateProposalDensity(x, z, A, k);
@@ -107,7 +107,9 @@ MatrixXd SparseBarrierWalk::generateCompleteWalk(
             double val = dis(gen);
             x = val < alpha ? z : x; 
         }
-        results.row(i) = x.transpose(); 
+        if (i % THIN == 0){
+            results.row((int)i/THIN - 1) = x.transpose(); 
+        }
     }
 
     return results; 

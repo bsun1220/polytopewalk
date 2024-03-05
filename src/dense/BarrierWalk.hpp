@@ -9,8 +9,9 @@ class BarrierWalk : public RandomWalk{
         /**
          * @brief BarrierWalk class
          * @param r spread parameter
+         * @param thin thin constant
          */
-        BarrierWalk(const double r) : R(r), RandomWalk(){
+        BarrierWalk(double r, int thin = 1) : R(r), RandomWalk(thin){
 
         }
 

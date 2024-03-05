@@ -169,9 +169,9 @@ TEST_CASE( "Check Centering Algorithm", "[require]" ){
 
 TEST_CASE( "Check Weight Properties", "[require]" ){
     //Vaidya, John, DikinLS
-    SparseVaidyaWalk vaidya_sparse(0.00001, 0.5);
-    SparseDikinLSWalk dikinls_sparse(0.00001, 3, 0.001, 0.01, 10000);
-    SparseJohnWalk john_sparse(0.00001, 0.5, 0.001, 0.01, 10000);
+    SparseVaidyaWalk vaidya_sparse(0.5);
+    SparseDikinLSWalk dikinls_sparse(1.0, 0.001, 0.01, 10000);
+    SparseJohnWalk john_sparse(0.5, 0.001, 0.01, 10000);
 
     VectorXd simplex_start (3);
     simplex_start << 0.33, 0.34, 0.33;
@@ -242,56 +242,60 @@ TEST_CASE( "Test All Dense Combinations", "[require]" ){
     VaidyaWalk vaidya(0.5);
     DikinWalk dikin(0.5);
     BallWalk ball(0.5);
-    HitAndRun hitrun(0.001, 0.5);
+    HitAndRun hitrun(0.5, 0.001);
+    DenseCenter dc;
+    FacialReduction fr; 
 
-    MatrixXd walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &john);
-    walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikinls);
-    walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &vaidya);
-    walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikin);
-    walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &ball);
-    walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &hitrun);
+    MatrixXd walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &john, &fr, &dc);
+    walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikinls, &fr, &dc);
+    walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &vaidya, &fr, &dc);
+    walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikin, &fr, &dc);
+    walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &ball, &fr, &dc);
+    walk_res = denseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &hitrun, &fr, &dc);
 
-    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &john);
-    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikinls);
-    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &vaidya);
-    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikin);
-    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &ball);
-    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &hitrun);
+    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &john, &fr, &dc);
+    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikinls, &fr, &dc);
+    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &vaidya, &fr, &dc);
+    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikin, &fr, &dc);
+    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &ball, &fr, &dc);
+    walk_res = denseFullWalkRun(hc.A, hc.b, hc.k, 100, &hitrun, &fr, &dc);
 
-    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &john);
-    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikinls);
-    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &vaidya);
-    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikin);
-    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &ball);
-    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &hitrun);
+    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &john, &fr, &dc);
+    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikinls, &fr, &dc);
+    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &vaidya, &fr, &dc);
+    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikin, &fr, &dc);
+    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &ball, &fr, &dc);
+    walk_res = denseFullWalkRun(birk.A, birk.b, birk.k, 100, &hitrun, &fr, &dc);
 }
 
 TEST_CASE( "Test All Sparse Combinations", "[require]" ){
-    SparseJohnWalk john(0.00001, 0.5, 0.001, 0.01, 100);
-    SparseDikinLSWalk dikinls(0.00001, 3.0, 0.001, 0.01, 100);
-    SparseVaidyaWalk vaidya(0.00001, 0.5);
-    SparseDikinWalk dikin(0.00001, 0.5);
+    SparseJohnWalk john(0.5);
+    SparseDikinLSWalk dikinls(3.0);
+    SparseVaidyaWalk vaidya(0.5);
+    SparseDikinWalk dikin(0.5);
     SparseBallWalk ball(0.5);
-    SparseHitAndRun hitrun(0.01, 0.5);
+    SparseHitAndRun hitrun(0.5);
+    SparseCenter sc;
+    FacialReduction fr; 
 
-    MatrixXd walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &john);
-    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikinls);
-    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &vaidya);
-    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikin);
-    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &ball);
-    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &hitrun);
+    MatrixXd walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &john, &fr, &sc);
+    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikinls, &fr, &sc);
+    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &vaidya, &fr, &sc);
+    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikin, &fr, &sc);
+    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &ball, &fr, &sc);
+    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &hitrun, &fr, &sc);
 
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &john);
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikinls);
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &vaidya);
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikin);
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &ball);
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &hitrun);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &john, &fr, &sc);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikinls, &fr, &sc);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &vaidya, &fr, &sc);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikin, &fr, &sc);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &ball, &fr, &sc);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &hitrun, &fr, &sc);
 
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &john);
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikinls);
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &vaidya);
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikin);
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &ball);
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &hitrun);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &john, &fr, &sc);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikinls, &fr, &sc);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &vaidya, &fr, &sc);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikin, &fr, &sc);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &ball, &fr, &sc);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &hitrun, &fr, &sc);
 }

@@ -8,8 +8,9 @@ class RandomWalk{
     
         /**
          * @brief Random Walk Superclass implementation
+         * @param thin thin constant
          */
-        RandomWalk(){}
+        RandomWalk(int thin = 1) : THIN(thin){}
 
         /**
          * @brief Generate values from the walk
@@ -44,6 +45,11 @@ class RandomWalk{
          * @return void
          */
         virtual void printType();
+
+        /**
+         * @brief only include every __ sample
+         */
+        const int THIN;
 };
 
 #endif
