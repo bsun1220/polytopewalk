@@ -62,16 +62,16 @@ double SparseBarrierWalk::generateProposalDensity(
     SparseMatrixXd G_inv_sqrt = SparseMatrixXd(VectorXd(G.diagonal()).cwiseInverse().cwiseSqrt().asDiagonal());
     SparseMatrixXd AG_inv_sqrt = A * G_inv_sqrt;
 
-    double det1 = G.diagonal().prod();
+    double det1 = G.diagonal().array().log().sum();
 
     SimplicialLLT<SparseMatrixXd> d2; 
     SparseMatrixXd mat = AG_inv_sqrt * AG_inv_sqrt.transpose();
     d2.analyzePattern(mat);
     d2.factorize(mat);
 
-    double det2 = SparseMatrixXd(d2.matrixL()).diagonal().prod();
+    double det2 = 2 * SparseMatrixXd(d2.matrixL()).diagonal().array().log().sum();
 
-    double det = det1 * det2; 
+    double det = det1 + det2; 
 
     VectorXd diff = z - x;
     VectorXd Qx = A * diff; 
@@ -80,7 +80,7 @@ double SparseBarrierWalk::generateProposalDensity(
     Qx = diff - Qx; 
 
     double dist = Qx.transpose() * (G * Qx);
-    return sqrt(det) * exp(-0.5/DIST_TERM * dist);
+    return 0.5 * det -0.5/DIST_TERM * dist;
 }
 
 MatrixXd SparseBarrierWalk::generateCompleteWalk(
@@ -103,7 +103,7 @@ MatrixXd SparseBarrierWalk::generateCompleteWalk(
         if (inPolytope(z, k)){
             double g_x_z = generateProposalDensity(x, z, A, k);
             double g_z_x = generateProposalDensity(z, x, A, k);
-            double alpha = min(1.0, g_z_x/g_x_z);
+            double alpha = min(1.0, exp(g_z_x - g_x_z));
             double val = dis(gen);
             x = val < alpha ? z : x; 
         }

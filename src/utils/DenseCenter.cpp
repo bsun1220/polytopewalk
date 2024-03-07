@@ -29,8 +29,6 @@ VectorXd DenseCenter::getInitialPoint(MatrixXd A, VectorXd b){
     ipopt.Solve(lp);
     
     VectorXd sol = lp.GetOptVariables()->GetValues();
-
-    
     VectorXd temp = sol.head(sol.rows() - 1);
     sol = temp; 
     return sol; 

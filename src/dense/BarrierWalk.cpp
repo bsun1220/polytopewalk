@@ -41,8 +41,9 @@ double BarrierWalk::generateProposalDensity(const VectorXd& x, const VectorXd& z
 
     LLT<MatrixXd> cholesky(hess);
     MatrixXd L = cholesky.matrixL();
-
-    return L.diagonal().prod() * exp((-0.5/DIST_TERM) * localNorm(x - z, hess));
+    double det = L.diagonal().array().log().sum(); 
+    double dist = -(0.5/DIST_TERM) * localNorm(x - z, hess);
+    return det + dist; 
 }
 
 void BarrierWalk::generateSample(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
@@ -68,7 +69,7 @@ MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x, con
         if(inPolytope(z, A, b)){
             double g_x_z = generateProposalDensity(x, z, A, b);
             double g_z_x = generateProposalDensity(z, x, A, b);
-            double alpha = min(one, g_z_x/g_x_z);
+            double alpha = min(one, exp(g_z_x-g_x_z));
             double val = dis(gen);
             x = val < alpha ? z : x;
         }
