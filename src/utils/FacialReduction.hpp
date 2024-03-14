@@ -30,10 +30,11 @@ class FacialReduction {
          * @param max_iter maximum iterations during linear program
          * @param tol tolerance term
          * @param s_max error term
-         * @param err error sensitivity for parameter calculation
+         * @param err_lp error sensitivity for lp calculation
+         * @param err_dc error sensitivity for decomposition calculation
          * @return res
          */
-        FacialReduction(int max_iter = 3000, double tol = 1e-8, double s_max = 100, double err = 1e-8) : MAX_ITER(max_iter), TOL(tol), S_MAX(s_max), ERR(err){}
+        FacialReduction(int max_iter = 3000, double tol = 1e-8, double s_max = 100, double err_lp = 1e-8, double err_dc = 1e-5) : MAX_ITER(max_iter), TOL(tol), S_MAX(s_max), ERR_LP(err_lp),  ERR_DC(err_dc){}
         /**
          * @brief completes facial reduction on Ax = b, x >=_c 0
          * @param A polytope matrix (Ax = b)
@@ -101,7 +102,12 @@ class FacialReduction {
          /**
          * @brief error parameter
          */
-        const double ERR; 
+        const double ERR_LP; 
+
+        /**
+         * @brief error parameter
+         */
+        const double ERR_DC; 
 
         /**
          * @brief save last index

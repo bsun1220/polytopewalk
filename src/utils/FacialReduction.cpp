@@ -35,13 +35,13 @@ z_res FacialReduction::findZ(const SparseMatrixXd& A, const VectorXd& b, int x_d
         temp << init, delta;
         init = temp; 
 
-        if((eqA * init - eqb).cwiseAbs().maxCoeff() > ERR){
+        if((eqA * init - eqb).cwiseAbs().maxCoeff() > ERR_LP){
             eqA = eqA.transpose();
             global_index ++; 
             continue;
         }
 
-        if(init(init.rows() - 1) <= ERR){
+        if(init(init.rows() - 1) <= ERR_LP){
             VectorXd temp = init.head(init.rows() - 1);
             init = temp;
             ans.found_sol = true; 
@@ -52,8 +52,8 @@ z_res FacialReduction::findZ(const SparseMatrixXd& A, const VectorXd& b, int x_d
         string name = "var_set1";
         Problem lp;
         lp.AddVariableSet(make_shared<SparseExVariables>(n + 1, name, init));
-        lp.AddConstraintSet(make_shared<SparseExConstraint1>(ineqA.rows(),name,ineqA, ERR));
-        lp.AddConstraintSet(make_shared<SparseExConstraint2>(eqA.rows(),name,eqA,eqb, ERR));
+        lp.AddConstraintSet(make_shared<SparseExConstraint1>(ineqA.rows(),name,ineqA, ERR_LP));
+        lp.AddConstraintSet(make_shared<SparseExConstraint2>(eqA.rows(),name,eqA,eqb, ERR_LP));
         lp.AddCostSet(make_shared<SparseExCost>(name));
         IpoptSolver ipopt;
         ipopt.SetOption("print_level", 0);
@@ -79,7 +79,7 @@ z_res FacialReduction::findZ(const SparseMatrixXd& A, const VectorXd& b, int x_d
             continue; 
         }
 
-        if (sol(sol.rows() - 1) <= ERR){
+        if (sol(sol.rows() - 1) <= ERR_LP){
             VectorXd temp = sol.head(sol.rows() - 1);
             sol = temp;
             ans.found_sol = true; 
@@ -101,7 +101,7 @@ SparseMatrixXd FacialReduction::pickV(const VectorXd& z, int x_dim){
         indices.push_back(T(indices.size(), i, 1)); 
     }
     for(int i = x_dim; i < d; i++){
-         if(z(i) < ERR) indices.push_back(T(indices.size(), i, 1)); 
+         if(z(i) < ERR_DC) indices.push_back(T(indices.size(), i, 1)); 
     }
     SparseMatrixXd mat(indices.size(), d);
     mat.setFromTriplets(indices.begin(), indices.end());
@@ -116,7 +116,7 @@ SparseMatrixXd FacialReduction::pickP(const SparseMatrixXd& AV){
 
     vector<T> indices;
     for (int i = 0; i < min(R.cols(), R.rows()); i++){
-        if (abs(R.coeffRef(i, i)) > ERR){
+        if (abs(R.coeffRef(i, i)) > ERR_DC){
             indices.push_back(T(indices.size(), solver.colsPermutation().indices()(i), 1));
         }
     }
