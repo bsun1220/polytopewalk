@@ -190,7 +190,7 @@ PYBIND11_MODULE(polytopewalk, m) {
     
     py::class_<FacialReduction>(m, "FacialReduction")
         .def(py::init<int, double, double, double>(),
-        py::arg("max_iter") = 3000, py::arg("tol") = 1e-8, py::arg("s_max") = 100, py::arg("err") = 1e-5)
+        py::arg("max_iter") = 3000, py::arg("tol") = 1e-8, py::arg("s_max") = 100, py::arg("err") = 1e-8)
         .def("reduce", &FacialReduction::reduce);
     
     py::class_<res>(m, "res")
