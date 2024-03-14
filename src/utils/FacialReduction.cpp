@@ -9,21 +9,21 @@ z_res FacialReduction::findZ(const SparseMatrixXd& A, const VectorXd& b, int x_d
 
     SparseMatrixXd ineqA(n + 1, d-x_dim);
     for(int i = x_dim; i < d; i++){
-        ineqA.col(i - x_dim) = -1 * A.col(i);
+        ineqA.col(i - x_dim) = -1 * A.col(i)/A.col(i).norm();
     }
     ineqA = ineqA.transpose();
     ineqA.col(n) = (-1 * VectorXd::Ones(d-x_dim)).sparseView();
 
     SparseMatrixXd eqA(n + 1, x_dim + 2);
     for(int j = 0; j < x_dim; j++){
-        eqA.col(j) = A.col(j);
+        eqA.col(j) = A.col(j)/A.col(j).norm();
     }
-    eqA.col(x_dim + 1) = b.sparseView();
+    eqA.col(x_dim + 1) = b.sparseView()/b.norm();
     VectorXd eqb = VectorXd::Zero(eqA.cols());
-    eqb(x_dim) = 1;
 
     for(int i = global_index; i < d; i++){
-        eqA.col(x_dim) = A.col(i);
+        eqA.col(x_dim) = A.col(i)/A.col(i).norm();
+        eqb(x_dim) = 1.0/A.col(i).norm();
         eqA = eqA.transpose();
 
         SparseQR<SparseMatrixXd, COLAMDOrdering<SparseMatrix<double>::StorageIndex>> solver (eqA.block(0, 0, x_dim + 2, n));
@@ -67,6 +67,14 @@ z_res FacialReduction::findZ(const SparseMatrixXd& A, const VectorXd& b, int x_d
 
         if (ipopt.GetReturnStatus() != 0){
             global_index ++;
+            cout << "sol" << endl;
+            cout << sol << endl;
+            cout << "eqA * sol" << endl;
+            cout << eqA * sol << endl;
+            cout << "eqb" << endl;
+            cout << eqb << endl;
+            cout << "ineqA * sol" << endl;
+            cout << (ineqA * sol).maxCoeff() << endl;
             eqA = eqA.transpose();
             continue; 
         }
