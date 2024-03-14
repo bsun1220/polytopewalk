@@ -35,6 +35,7 @@ class BarrierWalk : public RandomWalk{
          * @param x initial starting point
          * @param A polytope matrix
          * @param b polytope vector
+         * @param burn number of initial steps to cut
          * @return Matrix
          */
         MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b, int burn) override;

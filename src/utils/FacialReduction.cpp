@@ -35,7 +35,7 @@ z_res FacialReduction::findZ(const SparseMatrixXd& A, const VectorXd& b, int x_d
         temp << init, delta;
         init = temp; 
 
-        if((eqA * init - eqb).maxCoeff() > ERR){
+        if((eqA * init - eqb).cwiseAbs().maxCoeff() > ERR){
             eqA = eqA.transpose();
             global_index ++; 
             continue;
