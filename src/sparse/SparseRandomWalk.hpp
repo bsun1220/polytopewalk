@@ -7,10 +7,10 @@ class SparseRandomWalk{
     public:
         /**
          * @brief Random Walk Superclass implementation
+         * @param thin thin constant
          * @param err error constant
-         * @param thin thing constant
          */
-        SparseRandomWalk(double err = 1e-6, int thin = 1) : ERR(err), THIN(thin) {}
+        SparseRandomWalk(int thin = 1, double err = 1e-6) : ERR(err), THIN(thin) {}
     
         /**
          * @brief Generate values from the RandomWalk
@@ -26,7 +26,9 @@ class SparseRandomWalk{
             const VectorXd& init, 
             const SparseMatrixXd& A, 
             const VectorXd& b, 
-            int k);
+            int k, 
+            int burn
+            );
         
     protected:
         /**

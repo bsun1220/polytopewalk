@@ -7,11 +7,11 @@ class SparseBarrierWalk : public SparseRandomWalk{
     public:
         /**
          * @brief SparseBarrierWalk class
-         * @param err error term parameter
          * @param r spread parameter
-         * @param thing thin parameter
+         * @param thin thin parameter
+         * @param err error term parameter
          */
-        SparseBarrierWalk(double r, double err = 1e-6, int thin = 1) : R(r), SparseRandomWalk(err, thin) {}
+        SparseBarrierWalk(double r, int thin = 1, double err = 1e-6) : R(r), SparseRandomWalk(thin, err) {}
 
         /**
          * @brief generate weight for slack inverse
@@ -33,6 +33,7 @@ class SparseBarrierWalk : public SparseRandomWalk{
          * @param A polytope matrix 
          * @param b polytope vector
          * @param k k values >= 0 constraint
+         * @param burn number of initial steps to cut
          * @return Matrix
          */
         MatrixXd generateCompleteWalk(
@@ -40,7 +41,8 @@ class SparseBarrierWalk : public SparseRandomWalk{
             const VectorXd& init, 
             const SparseMatrixXd& A, 
             const VectorXd& b, 
-            int k
+            int k,
+            int burn
         ) override;
         
         /**

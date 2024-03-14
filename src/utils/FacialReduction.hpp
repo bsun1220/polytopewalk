@@ -25,7 +25,15 @@ struct res{
 
 class FacialReduction {
     public:
-        FacialReduction(int max_iter = 3000, double tol = 1e-8, double s_max = 100) : MAX_ITER(max_iter), TOL(tol), S_MAX(s_max){}
+        /**
+         * @brief Facial Reduction initialization
+         * @param max_iter maximum iterations during linear program
+         * @param tol tolerance term
+         * @param s_max error term
+         * @param err error sensitivity for parameter calculation
+         * @return res
+         */
+        FacialReduction(int max_iter = 3000, double tol = 1e-8, double s_max = 100, double err = 1e-5) : MAX_ITER(max_iter), TOL(tol), S_MAX(s_max), ERR(err){}
         /**
          * @brief completes facial reduction on Ax = b, x >=_c 0
          * @param A polytope matrix (Ax = b)
@@ -41,7 +49,7 @@ class FacialReduction {
          * @brief finds a vector z satisfying A^Ty = [0 z], z in R^n, z >= 0, z != 0, <b, y> = 0
          * @param A polytope matrix (Ax = b)
          * @param b polytope vector (Ax = b)
-         * @param int k values >= 0 constraint
+         * @param k values >= 0 constraint
          * @return z_res
          */
         z_res findZ(const SparseMatrixXd& A, const VectorXd& b, int k);
@@ -49,7 +57,7 @@ class FacialReduction {
         /**
          * @brief finds supports with z vector
          * @param z vector
-         * @param int k values >= 0 constraint
+         * @param k values >= 0 constraint
          * @return SparseMatrixXd 
          */
         SparseMatrixXd pickV(const VectorXd& z, int k);
@@ -65,14 +73,40 @@ class FacialReduction {
          * @brief iteratively reduces dimension of the problem using recursion
          * @param A polytope matrix (Ax = b)
          * @param b polytope vector (Ax = b)
-         * @param int k values >= 0 constraint
+         * @param k values >= 0 constraint
          * @return fr_res
          */
         fr_res entireFacialReductionStep(SparseMatrixXd A, VectorXd b, int k);
+
+        /**
+         * @brief return global V variable
+         */
         SparseMatrixXd savedV;
+
+        /**
+         * @brief max iterations on linear program
+         */
         const int MAX_ITER;
+
+        /**
+         * @brief tolerance parameter
+         */
         const double TOL;
+
+        /**
+         * @brief tolerance parameter
+         */
         const double S_MAX;
+
+         /**
+         * @brief error parameter
+         */
+        const double ERR; 
+
+        /**
+         * @brief save last index
+         */
+        int global_index; 
 };
 
 #endif

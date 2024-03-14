@@ -170,8 +170,8 @@ TEST_CASE( "Check Centering Algorithm", "[require]" ){
 TEST_CASE( "Check Weight Properties", "[require]" ){
     //Vaidya, John, DikinLS
     SparseVaidyaWalk vaidya_sparse(0.5);
-    SparseDikinLSWalk dikinls_sparse(1.0, 0.001, 0.01, 10000);
-    SparseJohnWalk john_sparse(0.5, 0.001, 0.01, 10000);
+    SparseDikinLSWalk dikinls_sparse(1.0, 1, 0.001, 0.01, 10000);
+    SparseJohnWalk john_sparse(0.5, 1, 0.001, 0.01, 10000);
 
     VectorXd simplex_start (3);
     simplex_start << 0.33, 0.34, 0.33;
@@ -209,8 +209,8 @@ TEST_CASE( "Check Weight Properties", "[require]" ){
     VectorXd hc_x = dc.getInitialPoint(hc_dense.dense_A, hc_dense.dense_b);
     VectorXd birk_x = dc.getInitialPoint(birk_dense.dense_A, birk_dense.dense_b);
 
-    JohnWalk john(0.5, 0.001, 0.01, 10000);
-    DikinLSWalk dikinls(0.5, 0.001, 0.01, 10000);
+    JohnWalk john(0.5, 1, 0.001, 0.01, 10000);
+    DikinLSWalk dikinls(0.5, 1, 0.001, 0.01, 10000);
     VaidyaWalk vaidya(0.5);
 
     john.generateWeight(sd_x, simplex_dense.dense_A, simplex_dense.dense_b);
@@ -237,8 +237,8 @@ TEST_CASE( "Check Weight Properties", "[require]" ){
 }
 
 TEST_CASE( "Test All Dense Combinations", "[require]" ){
-    JohnWalk john(0.5, 0.001, 0.01, 100);
-    DikinLSWalk dikinls(3.0, 0.001, 0.01, 100);
+    JohnWalk john(0.5, 1, 0.001, 0.01, 100);
+    DikinLSWalk dikinls(3.0, 1, 0.001, 0.01, 100);
     VaidyaWalk vaidya(0.5);
     DikinWalk dikin(0.5);
     BallWalk ball(0.5);
@@ -269,33 +269,51 @@ TEST_CASE( "Test All Dense Combinations", "[require]" ){
 }
 
 TEST_CASE( "Test All Sparse Combinations", "[require]" ){
-    SparseJohnWalk john(0.5);
-    SparseDikinLSWalk dikinls(3.0);
-    SparseVaidyaWalk vaidya(0.5);
-    SparseDikinWalk dikin(0.5);
-    SparseBallWalk ball(0.5);
-    SparseHitAndRun hitrun(0.5);
+    SparseJohnWalk john(0.5, 2);
+    SparseDikinLSWalk dikinls(3.0, 2);
+    SparseVaidyaWalk vaidya(0.5, 2);
+    SparseDikinWalk dikin(0.5, 2);
+    SparseBallWalk ball(0.5, 2);
+    SparseHitAndRun hitrun(0.5, 2);
     SparseCenter sc;
     FacialReduction fr; 
 
-    MatrixXd walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &john, &fr, &sc);
-    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikinls, &fr, &sc);
-    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &vaidya, &fr, &sc);
-    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikin, &fr, &sc);
-    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &ball, &fr, &sc);
-    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &hitrun, &fr, &sc);
+    MatrixXd walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &john, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikinls, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &vaidya, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &dikin, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &ball, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(simplex.A, simplex.b, simplex.k, 100, &hitrun, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
 
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &john, &fr, &sc);
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikinls, &fr, &sc);
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &vaidya, &fr, &sc);
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikin, &fr, &sc);
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &ball, &fr, &sc);
-    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &hitrun, &fr, &sc);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &john, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikinls, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &vaidya, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &dikin, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &ball, &fr, &sc, 1);;
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(hc.A, hc.b, hc.k, 100, &hitrun, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
 
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &john, &fr, &sc);
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikinls, &fr, &sc);
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &vaidya, &fr, &sc);
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikin, &fr, &sc);
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &ball, &fr, &sc);
-    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &hitrun, &fr, &sc);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &john, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikinls, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &vaidya, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &dikin, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &ball, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
+    walk_res = sparseFullWalkRun(birk.A, birk.b, birk.k, 100, &hitrun, &fr, &sc, 1);
+    REQUIRE(walk_res.rows() == 100);
 }

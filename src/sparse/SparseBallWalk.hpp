@@ -10,7 +10,7 @@ class SparseBallWalk : public SparseRandomWalk{
          * @param r spread parameter
          * @param thin thin parameter
          */
-        SparseBallWalk(double r, int thin = 1) : R(r), SparseRandomWalk(0.0, thin){}
+        SparseBallWalk(double r, int thin = 1) : R(r), SparseRandomWalk(thin, 0.0){}
 
          /**
          * @brief Generate values from the Ball walk
@@ -19,6 +19,7 @@ class SparseBallWalk : public SparseRandomWalk{
          * @param A polytope matrix 
          * @param b polytope vector
          * @param k k values >= 0 constraint
+         * @param burn number of initial steps to cut
          * @return Matrix
          */
         MatrixXd generateCompleteWalk(
@@ -26,7 +27,9 @@ class SparseBallWalk : public SparseRandomWalk{
             const VectorXd& init, 
             const SparseMatrixXd& A, 
             const VectorXd& b, 
-            int k) override;
+            int k, 
+            int burn
+            ) override;
     
     protected:
         /**

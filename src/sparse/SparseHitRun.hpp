@@ -7,10 +7,11 @@ class SparseHitAndRun : public SparseRandomWalk{
     public:
         /**
          * @brief constructor for HitAndRun
-         * @param err error constant
          * @param r spread parameter
+         * @param thin thin parameter
+         * @param err error constant
          */
-        SparseHitAndRun(double r, double err = 1e-6, int thin = 1) : R(r), SparseRandomWalk(err, thin) {}
+        SparseHitAndRun(double r, int thin = 1, double err = 1e-6) : R(r), SparseRandomWalk(thin, err) {}
 
          /**
          * @brief Generate values from the Hit and Run
@@ -19,6 +20,7 @@ class SparseHitAndRun : public SparseRandomWalk{
          * @param A polytope matrix 
          * @param b polytope vector
          * @param k k values >= 0 constraint
+         * @param burn number of initial steps to cut
          * @return Matrix
          */
         MatrixXd generateCompleteWalk(
@@ -26,7 +28,9 @@ class SparseHitAndRun : public SparseRandomWalk{
             const VectorXd& init, 
             const SparseMatrixXd& A, 
             const VectorXd& b, 
-            int k) override;
+            int k, 
+            int burn
+            ) override;
         
     
     protected:

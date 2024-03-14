@@ -8,11 +8,11 @@ class SparseDikinWalk : public SparseBarrierWalk{
     public:
         /**
          * @brief constructor for Dikin Walk class
-         * @param err error constant
          * @param r spread parameter
          * @param thin thin parameter
+         * @param err error constant
          */
-        SparseDikinWalk(double r, double err = 1e-6, int thin = 1) : SparseBarrierWalk(r, err, thin) {}
+        SparseDikinWalk(double r, int thin = 1, double err = 1e-6) : SparseBarrierWalk(r, thin, err) {}
 
         /**
          * @brief generate weight (identity matrix)

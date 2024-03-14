@@ -39,9 +39,11 @@ class SparseExVariables: public VariableSet{
 class SparseExConstraint1 : public ConstraintSet{
     public:
         SparseMatrixXd A;
-        SparseExConstraint1(int num_dim, string name, const SparseMatrixXd& A_param) : ConstraintSet(num_dim, name){
+        double err;
+        SparseExConstraint1(int num_dim, string name, const SparseMatrixXd& A_param, double err_p = 1e-8) : ConstraintSet(num_dim, name){
             // A is d by n matrix
             A = A_param;
+            err = err_p;
         }
 
         VectorXd GetValues() const override{
@@ -52,7 +54,7 @@ class SparseExConstraint1 : public ConstraintSet{
         VecBound GetBounds() const override{
             VecBound b(GetRows());
             for(int i = 0; i < A.rows(); i++){
-                b.at(i) = Bounds(-inf, 0.0);
+                b.at(i) = Bounds(-inf, err);
             }
             return b;
         }
@@ -75,11 +77,13 @@ class SparseExConstraint2 : public ConstraintSet{
         SparseMatrixXd A;
         VectorXd b;
         string name;
+        double err;
    
-        SparseExConstraint2(int num_dim, string name_, const SparseMatrixXd& A_param, const VectorXd& b_param) : ConstraintSet(num_dim, name_){
+        SparseExConstraint2(int num_dim, string name_, const SparseMatrixXd& A_param, const VectorXd& b_param, double err_p = 1e-8) : ConstraintSet(num_dim, name_){
             A = A_param;
             b = b_param;
             name = name_; 
+            err = err_p;
         }
 
         VectorXd GetValues() const override{
@@ -90,7 +94,7 @@ class SparseExConstraint2 : public ConstraintSet{
         VecBound GetBounds() const override{
             VecBound bound(GetRows());
             for(int i = 0; i < b.rows(); i++){
-                bound.at(i) = Bounds(b(i),b(i));
+                bound.at(i) = Bounds(b(i)-err,b(i)+err);
             }
             return bound;
         }

@@ -8,14 +8,14 @@ class SparseJohnWalk : public SparseBarrierWalk{
     public:
         /**
          * @brief constructor for the John Walk class
-         * @param err error constant
          * @param r spread parameter
+         * @param thin thin parameter
          * @param g_lim gradient descent norm limit
          * @param step_size size of gradient descent step
          * @param max_iter maximum number of iterations in gradient descent
-         * @param thin thin parameter
+         * @param err error constant
          */
-        SparseJohnWalk(double r, double g_lim = 0.01, double step_size = 0.1, int max_iter = 1000, double err = 1e-6, int thin = 1) : G_LIM(g_lim), STEP_SIZE(step_size), MAX_ITER(max_iter), SparseBarrierWalk(r, err, thin) {}
+        SparseJohnWalk(double r, int thin = 1, double g_lim = 0.01, double step_size = 0.1, int max_iter = 1000, double err = 1e-6) : G_LIM(g_lim), STEP_SIZE(step_size), MAX_ITER(max_iter), SparseBarrierWalk(r, thin, err) {}
 
         /**
          * @brief generate weight by solving convex optimization task

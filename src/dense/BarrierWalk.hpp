@@ -37,7 +37,7 @@ class BarrierWalk : public RandomWalk{
          * @param b polytope vector
          * @return Matrix
          */
-        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
+        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b, int burn) override;
 
          /**
          * @brief set Distribution Constant

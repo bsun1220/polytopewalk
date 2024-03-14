@@ -55,7 +55,7 @@ void BarrierWalk::generateSample(const VectorXd& x, const MatrixXd& A, const Vec
     z = x + sqrt(DIST_TERM) * (lu.solve(direction));
 }
 
-MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b){
+MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b, int burn = 0){
     MatrixXd results = MatrixXd::Zero(num_steps, A.cols());
     random_device rd;
     mt19937 gen(rd());
@@ -63,8 +63,8 @@ MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x, con
     double one = 1.0;
 
     setDistTerm(A.cols(), A.rows());
-
-    for(int i = 0; i < num_steps; i++){
+    int total = (burn + num_steps) * THIN; 
+    for(int i = 1; i <= total; i++){
         generateSample(x, A, b);
         if(inPolytope(z, A, b)){
             double g_x_z = generateProposalDensity(x, z, A, b);
@@ -73,7 +73,10 @@ MatrixXd BarrierWalk::generateCompleteWalk(const int num_steps, VectorXd& x, con
             double val = dis(gen);
             x = val < alpha ? z : x;
         }
-        results.row(i) = x.transpose();
+
+        if (i % THIN == 0 && i/THIN > burn){
+            results.row((int)i/THIN - burn - 1) = x.transpose(); 
+        }
     }
     return results;
 }

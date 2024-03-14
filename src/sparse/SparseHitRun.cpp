@@ -43,7 +43,8 @@ MatrixXd SparseHitAndRun::generateCompleteWalk(
     const VectorXd& init, 
     const SparseMatrixXd& A, 
     const VectorXd& b, 
-    int k
+    int k,
+    int burn = 0
 ){
 
     MatrixXd results = MatrixXd::Zero(num_steps, A.cols());
@@ -53,7 +54,7 @@ MatrixXd SparseHitAndRun::generateCompleteWalk(
 
     SparseLU <SparseMatrixXd> A_solver (A * A.transpose());
     VectorXd x = init; 
-    int total = num_steps * THIN; 
+    int total = (burn + num_steps) * THIN; 
     for (int i = 1; i <= total; i++){
         VectorXd rand = generateGaussianRV(A.cols());
         VectorXd z = A * rand; 
@@ -65,8 +66,8 @@ MatrixXd SparseHitAndRun::generateCompleteWalk(
         double random_point = val * (pos_side - neg_side) + neg_side; 
         x = random_point * z + x; 
 
-        if (i % THIN == 0){
-            results.row((int)i/THIN - 1) = x; 
+        if (i % THIN == 0 && i/THIN > burn){
+            results.row((int)i/THIN - burn - 1) = x; 
         }
     }
     return results; 

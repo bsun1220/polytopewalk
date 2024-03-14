@@ -16,7 +16,8 @@ MatrixXd SparseRandomWalk::generateCompleteWalk(
     const VectorXd& init, 
     const SparseMatrixXd& A,
     const VectorXd& b, 
-    int k
+    int k,
+    int burn = 0
 ){
     cout << "Oops" << endl;
     return MatrixXd::Zero(1,1);

@@ -9,6 +9,12 @@ class BallWalk: public RandomWalk{
 
     public:
 
+        /**
+         * @brief Initialization of Ball Walks
+         * @param r spread parameter
+         * @param thin thin constant
+         * @return Matrix
+         */
         BallWalk(double r, int thin = 1) : R(r), RandomWalk(thin) {
             
         }
@@ -19,9 +25,10 @@ class BallWalk: public RandomWalk{
          * @param x initial starting point
          * @param A polytope matrixd (Ax <= b)
          * @param b polytope vector (Ax <= b)
+         * @param burn number of initial steps to cut
          * @return Matrix
          */
-        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
+        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b, int burn) override;
         
         /**
          * @brief print general type 

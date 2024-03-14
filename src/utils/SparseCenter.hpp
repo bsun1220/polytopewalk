@@ -6,6 +6,13 @@
 
 class SparseCenter {
     public:
+        /**
+         * @brief Center Algorithm
+         * @param max_iter maximum iterations during linear program
+         * @param tol tolerance term
+         * @param s_max error term
+         * @return res
+         */
         SparseCenter(int max_iter = 3000, double tol = 1e-8, double s_max = 100.0) : MAX_ITER(max_iter), TOL(tol), S_MAX(s_max) {
 
         }
@@ -20,8 +27,19 @@ class SparseCenter {
         VectorXd getInitialPoint(SparseMatrixXd A, VectorXd b, int k);
 
     protected:
+        /**
+         * @brief max iterations on linear program
+         */
         const int MAX_ITER;
+
+        /**
+         * @brief tolerance parameter
+         */
         const double TOL;
+
+        /**
+         * @brief tolerance parameter
+         */
         const double S_MAX;
 };
 

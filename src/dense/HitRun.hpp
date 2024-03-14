@@ -9,8 +9,8 @@ class HitAndRun: public RandomWalk{
     public:
         /**
          * @brief Hit and Run implementation constructor
-         * @param err error hyperparameter
          * @param r spread hyperparamter
+         * @param err error hyperparameter
          */
         HitAndRun(double r, double err = 1e-6, int thin = 1) : ERR(err), R(r), RandomWalk(thin) {
 
@@ -24,7 +24,7 @@ class HitAndRun: public RandomWalk{
          * @param b polytope matrix
          * @return Matrix
          */
-        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
+        MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b, int burn) override;
 
          /**
          * @brief print general type 

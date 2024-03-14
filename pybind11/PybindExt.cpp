@@ -6,7 +6,7 @@ namespace py = pybind11;
 template <class RandomWalkBase = RandomWalk> class PyRandomWalk : public RandomWalkBase {
 public:
     using RandomWalkBase::RandomWalkBase; // Inherit constructors
-    MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b) override{
+    MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b, int burn) override{
             PYBIND11_OVERRIDE_PURE(
                 MatrixXd,
                 RandomWalkBase,
@@ -14,7 +14,8 @@ public:
                 num_steps,
                 x,
                 A,
-                b
+                b,
+                burn
             );
     }
 };
@@ -23,7 +24,7 @@ template <class BarrierWalkBase = BarrierWalk> class PyBarrierWalk: public PyRan
 public:
     using PyRandomWalk<BarrierWalkBase>::PyRandomWalk; // Inherit constructors
     // Override PyAnimal's pure virtual go() with a non-pure one:
-    MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b) override{
+    MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b, int burn) override{
             PYBIND11_OVERRIDE(
                 MatrixXd,
                 BarrierWalkBase,
@@ -31,7 +32,8 @@ public:
                 num_steps,
                 x,
                 A,
-                b
+                b,
+                burn
             );
     }
     void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b) override{
@@ -64,7 +66,9 @@ public:
         const VectorXd& init, 
         const SparseMatrixXd& A, 
         const VectorXd& b, 
-        int k) override
+        int k, 
+        int burn
+        ) override
     {
             PYBIND11_OVERRIDE_PURE(
                 MatrixXd,
@@ -74,7 +78,8 @@ public:
                 init,
                 A,
                 b,
-                k
+                k,
+                burn
             );
     }
 };
@@ -86,7 +91,9 @@ public:
         const VectorXd& init, 
         const SparseMatrixXd& A, 
         const VectorXd& b,
-        int k) override
+        int k,
+        int burn
+        ) override
         {
             PYBIND11_OVERRIDE(
                 MatrixXd,
@@ -96,7 +103,8 @@ public:
                 init,
                 A,
                 b,
-                k
+                k,
+                burn
             );
     }
 
@@ -126,10 +134,10 @@ PYBIND11_MODULE(polytopewalk, m) {
     m.doc() = "pybind11 polytopewalk library";
 
     m.def("denseFullWalkRun", &denseFullWalkRun, "Dense Central Function", py::arg("A"), 
-    py::arg("b"), py::arg("k"), py::arg("num_sim"), py::arg("walk"), py::arg("fr"), py::arg("dc"));
+    py::arg("b"), py::arg("k"), py::arg("num_sim"), py::arg("walk"), py::arg("fr"), py::arg("dc"), py::arg("burn") = 0);
 
     m.def("sparseFullWalkRun", &sparseFullWalkRun, "Sparse Central Function", py::arg("A"), 
-    py::arg("b"), py::arg("k"), py::arg("num_sim"), py::arg("walk"), py::arg("fr"), py::arg("sc"));
+    py::arg("b"), py::arg("k"), py::arg("num_sim"), py::arg("walk"), py::arg("fr"), py::arg("sc"), py::arg("burn") = 0);
 
     auto m_dense = m.def_submodule("dense", "Dense Module");
     auto m_sparse = m.def_submodule("sparse", "Sparse Module");
@@ -146,7 +154,9 @@ PYBIND11_MODULE(polytopewalk, m) {
     
     py::class_<RandomWalk, PyRandomWalk<>>(m_dense, "RandomWalk")
         .def(py::init<int>(), py::arg("thin") = 1)
-        .def("generateCompleteWalk", &RandomWalk::generateCompleteWalk);
+        .def("generateCompleteWalk", &RandomWalk::generateCompleteWalk, py::arg("num_steps"), 
+        py::arg("init"), py::arg("A"), py::arg("b"), py::arg("burn") = 0
+        );
     
     py::class_<BallWalk, RandomWalk>(m_dense, "BallWalk")
         .def(py::init<double, int>(), py::arg("r") = 0.3, py::arg("thin") = 1);
@@ -158,7 +168,9 @@ PYBIND11_MODULE(polytopewalk, m) {
     py::class_<BarrierWalk, RandomWalk, PyBarrierWalk<>>(m_dense, "BarrierWalk")
         .def(py::init<double, int>(), py::arg("r") = 0.9, py::arg("thin") = 1)
         .def("generateWeight", &BarrierWalk::generateWeight)
-        .def("generateCompleteWalk", &RandomWalk::generateCompleteWalk);
+        .def("generateCompleteWalk", &RandomWalk::generateCompleteWalk, py::arg("num_steps"), 
+        py::arg("init"), py::arg("A"), py::arg("b"), py::arg("burn") = 0
+        );
     
     py::class_<DikinWalk, BarrierWalk, PyBarrierWalk<DikinWalk>>(m_dense, "DikinWalk")
         .def(py::init<double, int>(), py::arg("r") = 0.9, py::arg("thin") = 1);
@@ -167,18 +179,18 @@ PYBIND11_MODULE(polytopewalk, m) {
        .def(py::init<double, int>(), py::arg("r") = 0.9, py::arg("thin") = 1);
     
     py::class_<DikinLSWalk, BarrierWalk, PyBarrierWalk<DikinLSWalk>>(m_dense, "DikinLSWalk")
-        .def(py::init<double, double, double, int, int>(), 
-        py::arg("r") = 0.9, py::arg("g_lim") = 0.01, py::arg("step_size") = 0.1, 
-        py::arg("max_iter") = 1000, py::arg("thin") = 1);
+        .def(py::init<double, int, double, double, int>(), 
+        py::arg("r") = 0.9, py::arg("thin") = 1, py::arg("g_lim") = 0.01, py::arg("step_size") = 0.1, 
+        py::arg("max_iter") = 1000);
     
     py::class_<JohnWalk, BarrierWalk, PyBarrierWalk<JohnWalk>>(m_dense, "JohnWalk")
-        .def(py::init<double, double, double, int, int>(), 
-        py::arg("r") = 0.9, py::arg("g_lim") = 0.01, py::arg("step_size") = 0.1, 
-        py::arg("max_iter") = 1000, py::arg("thin") = 1);
+        .def(py::init<double, int, double, double, int>(), 
+        py::arg("r") = 0.9, py::arg("thin") = 1, py::arg("g_lim") = 0.01, py::arg("step_size") = 0.1, 
+        py::arg("max_iter") = 1000);
     
     py::class_<FacialReduction>(m, "FacialReduction")
-        .def(py::init<int, double, double >(),
-        py::arg("max_iter") = 3000, py::arg("tol") = 1e-8, py::arg("s_max") = 100)
+        .def(py::init<int, double, double, double>(),
+        py::arg("max_iter") = 3000, py::arg("tol") = 1e-8, py::arg("s_max") = 100, py::arg("err") = 1e-5)
         .def("reduce", &FacialReduction::reduce);
     
     py::class_<res>(m, "res")
@@ -191,34 +203,38 @@ PYBIND11_MODULE(polytopewalk, m) {
         .def_readwrite("z1", &res::z1);
     
     py::class_<SparseRandomWalk, PySparseRandomWalk<>>(m_dense, "SparseRandomWalk")
-        .def(py::init<double, int>(), py::arg("err") = 1e-6 , py::arg("thin") = 1)
-        .def("generateCompleteWalk", &SparseRandomWalk::generateCompleteWalk);
+        .def(py::init<int, double>(), py::arg("thin") = 1, py::arg("err") = 1e-6)
+        .def("generateCompleteWalk", &SparseRandomWalk::generateCompleteWalk, 
+        py::arg("num_steps"), py::arg("init"), py::arg("A"), py::arg("b"), py::arg("k"), py::arg("burn") = 0
+        );
     
     py::class_<SparseBallWalk, SparseRandomWalk>(m_sparse, "SparseBallWalk")
         .def(py::init<double, int>(), py::arg("r") = 0.9 , py::arg("thin") = 1);
     
     py::class_<SparseHitAndRun, SparseRandomWalk>(m_sparse, "SparseHitAndRun")
-        .def(py::init<double, double, int>(), 
-        py::arg("r") = 0.5, py::arg("err") = 0.01, py::arg("thin") = 1);
+        .def(py::init<double, int, double>(), 
+        py::arg("r") = 0.5, py::arg("thin") = 1, py::arg("err") = 0.01);
 
     py::class_<SparseBarrierWalk, SparseRandomWalk, PySparseBarrierWalk<>>(m_sparse, "SparseBarrierWalk")
-        .def(py::init<double, double, int>(), py::arg("r") = 0.9, py::arg("err") = 1e-6, py::arg("thin") = 1)
+        .def(py::init<double, int, double>(), py::arg("r") = 0.9, py::arg("thin") = 1, py::arg("err") = 1e-6)
         .def("generateWeight", &SparseBarrierWalk::generateWeight)
-        .def("generateCompleteWalk", &SparseRandomWalk::generateCompleteWalk);
+        .def("generateCompleteWalk", &SparseRandomWalk::generateCompleteWalk, 
+        py::arg("num_steps"), py::arg("init"), py::arg("A"), py::arg("b"), py::arg("k"), py::arg("burn") = 0
+        );
     
     py::class_<SparseDikinWalk, SparseBarrierWalk, PySparseBarrierWalk<SparseDikinWalk>>(m_sparse, "SparseDikinWalk")
-        .def(py::init<double, double, int>(), py::arg("r") = 0.9, py::arg("err") = 1e-6, py::arg("thin") = 1);
+        .def(py::init<double, int, double>(), py::arg("r") = 0.9, py::arg("thin") = 1, py::arg("err") = 1e-6);
     
     py::class_<SparseVaidyaWalk, SparseBarrierWalk, PySparseBarrierWalk<SparseVaidyaWalk>>(m_sparse, "SparseVaidyaWalk")
-        .def(py::init<double, double, int>(), py::arg("r") = 0.9, py::arg("err") = 1e-6, py::arg("thin") = 1);
+        .def(py::init<double, int, double>(), py::arg("r") = 0.9, py::arg("thin") = 1, py::arg("err") = 1e-6);
     
     py::class_<SparseJohnWalk, SparseBarrierWalk, PySparseBarrierWalk<SparseJohnWalk>>(m_sparse, "SparseJohnWalk")
-        .def(py::init<double, double, double, int, double, int>(), py::arg("r") = 0.9, py::arg("g_lim") = 0.01, 
-        py::arg("step_size") = 0.01, py::arg("max_iter") = 1000, py::arg("err") = 1e-6, py::arg("thin") = 1);
+        .def(py::init<double, int, double, double, int, double>(), py::arg("r") = 0.9, py::arg("thin") = 1, py::arg("g_lim") = 0.01, 
+        py::arg("step_size") = 0.01, py::arg("max_iter") = 1000, py::arg("err") = 1e-6);
     
     py::class_<SparseDikinLSWalk, SparseBarrierWalk, PySparseBarrierWalk<SparseDikinLSWalk>>(m_sparse, "SparseDikinLSWalk")
-        .def(py::init<double, double, double, int, double, int>(), py::arg("r") = 0.9, py::arg("g_lim") = 0.01, 
-        py::arg("step_size") = 0.01, py::arg("max_iter") = 1000, py::arg("err") = 1e-6, py::arg("thin") = 1);
+        .def(py::init<double, int, double, double, int, double>(), py::arg("r") = 0.9, py::arg("thin") = 1,py::arg("g_lim") = 0.01, 
+        py::arg("step_size") = 0.01, py::arg("max_iter") = 1000, py::arg("err") = 1e-6);
     
 
 

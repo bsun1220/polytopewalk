@@ -88,7 +88,8 @@ MatrixXd SparseBarrierWalk::generateCompleteWalk(
     const VectorXd& init, 
     const SparseMatrixXd& A, 
     const VectorXd& b, 
-    int k
+    int k,
+    int burn = 0
 ){
     MatrixXd results = MatrixXd::Zero(num_steps, A.cols());
     random_device rd;
@@ -97,7 +98,7 @@ MatrixXd SparseBarrierWalk::generateCompleteWalk(
     setDistTerm(A.cols() - A.rows(), k);
     VectorXd x = init;
     A_solver.compute(A * A.transpose());
-    int total = num_steps * THIN; 
+    int total = (burn + num_steps) * THIN; 
     for(int i = 1; i <= total; i++){
         VectorXd z = generateSample(x, A, k);
         if (inPolytope(z, k)){
@@ -107,8 +108,8 @@ MatrixXd SparseBarrierWalk::generateCompleteWalk(
             double val = dis(gen);
             x = val < alpha ? z : x; 
         }
-        if (i % THIN == 0){
-            results.row((int)i/THIN - 1) = x.transpose(); 
+        if (i % THIN == 0 && i/THIN > burn){
+            results.row((int)i/THIN - burn - 1) = x.transpose(); 
         }
     }
 

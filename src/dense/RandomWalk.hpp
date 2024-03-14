@@ -18,9 +18,10 @@ class RandomWalk{
          * @param x initial starting point
          * @param A polytope matrix (Ax <= b)
          * @param b polytope vector (Ax <= b)
+         * @param burn number of initial steps to cut
          * @return Matrix
          */
-        virtual MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b);
+        virtual MatrixXd generateCompleteWalk(const int num_steps, VectorXd& x, const MatrixXd& A, const VectorXd& b, int burn);
 
     protected: 
 
