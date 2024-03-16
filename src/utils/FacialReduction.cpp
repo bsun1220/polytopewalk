@@ -154,12 +154,12 @@ res FacialReduction::reduce(SparseMatrixXd A, VectorXd b, int k, bool sparse){
 
     fr_res result = entireFacialReductionStep(A, b, x_dim);
     res final_res; 
-    if (sparse){
-        final_res.sparse_A = result.A;
-        final_res.sparse_b = result.b;
-        final_res.saved_V = savedV;
-        return final_res; 
-    }else{
+
+    final_res.sparse_A = result.A;
+    final_res.sparse_b = result.b;
+    final_res.saved_V = savedV;
+
+    if(!sparse){
         HouseholderQR <MatrixXd> qr(result.A.cols(), result.A.rows());
         qr.compute(MatrixXd(result.A.transpose()));
         MatrixXd Q = qr.householderQ();
@@ -180,7 +180,7 @@ res FacialReduction::reduce(SparseMatrixXd A, VectorXd b, int k, bool sparse){
         
         final_res.z1 = z1;
         final_res.Q = Q;
-        return final_res;
     }
+    return final_res;
 }
 
