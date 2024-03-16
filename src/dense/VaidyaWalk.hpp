@@ -30,10 +30,6 @@ class VaidyaWalk: public BarrierWalk{
         void generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b) override;
     
     protected:
-         /**
-         * @brief global variable to update dikin hessian
-         */
-        MatrixXd dhess {};
 
         /**
          * @brief set Dist Term for Vaidya Walk
@@ -43,14 +39,6 @@ class VaidyaWalk: public BarrierWalk{
          */
         void setDistTerm(int d, int n) override;
 
-        /**
-         * @brief returns Dikin Hessian around vector x
-         * @param x center vector
-         * @param A polytope matrix (Ax <= b)
-         * @param b polytope vector (Ax <= b)
-         * @return void
-         */
-        void generateDikinHessian(const VectorXd& x, const MatrixXd& A, const VectorXd& b);
 };
 
 #endif

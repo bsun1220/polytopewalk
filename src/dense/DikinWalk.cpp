@@ -6,7 +6,7 @@ void DikinWalk::setDistTerm(int d, int n){
 
 void DikinWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
     int d = b.rows();
-    weights = MatrixXd::Identity(d, d);
+    weights = VectorXd::Ones(d).asDiagonal();
 }
 
 void DikinWalk::printType(){

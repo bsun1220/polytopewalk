@@ -18,7 +18,7 @@ class BarrierWalk : public RandomWalk{
         /**
          * @brief weights generated from generateWeights function
          */
-        MatrixXd weights{};
+        DiagonalMatrix<double, Dynamic> weights{};
 
         /**
          * @brief generate weights when calculating Hessian matrix

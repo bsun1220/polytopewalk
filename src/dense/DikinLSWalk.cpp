@@ -13,12 +13,12 @@ void DikinLSWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const Vec
 
     VectorXd w_i = VectorXd::Ones(A.rows()); 
     generateSlack(x, A, b);
-    MatrixXd slack_inv = slack.cwiseInverse().asDiagonal().toDenseMatrix();
+    DiagonalMatrix<double, Dynamic> slack_inv = slack.cwiseInverse().asDiagonal();
     MatrixXd A_x = slack_inv * A; 
 
     VectorXd term1 = (alpha) * VectorXd::Ones(A.rows()); 
 
-    MatrixXd W(A.rows(), A.rows()); 
+    DiagonalMatrix<double, Dynamic> W;
     MatrixXd WAX (A.rows(), A.cols());
     VectorXd term2a (A.rows());
     VectorXd term2b (A.rows());
@@ -29,11 +29,11 @@ void DikinLSWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const Vec
     VectorXd error = 0.00001 * VectorXd::Ones(A.rows());
 
     for(int i = 0; i < MAXITER; i++){
-        W = VectorXd(w_i.array().pow(alpha * 0.5)).asDiagonal().toDenseMatrix();
+        W = VectorXd(w_i.array().pow(alpha * 0.5)).asDiagonal();
         term2a = alpha * w_i.cwiseInverse();
 
         WAX = W * A_x;
-        term2b = (WAX * (WAX.transpose() * WAX).inverse() * WAX.transpose()).diagonal();
+        term2b = (WAX * (WAX.transpose() * WAX).inverse()).cwiseProduct(WAX).rowwise().sum();
 
         term2 = term2a.cwiseProduct(term2b);
         
@@ -43,7 +43,7 @@ void DikinLSWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const Vec
         }
         w_i = (w_i - STEPSIZE * gradient).cwiseMax(error);
     }
-    weights = w_i.asDiagonal().toDenseMatrix();
+    weights = w_i.asDiagonal();
     
 }
 

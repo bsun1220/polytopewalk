@@ -25,13 +25,13 @@ double BarrierWalk::localNorm(VectorXd v, const MatrixXd& m){
 
 void BarrierWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
     int d = b.rows();
-    weights = VectorXd::Zero(d).asDiagonal().toDenseMatrix();
+    weights = VectorXd::Zero(d).asDiagonal();
 }
 
 void BarrierWalk::generateHessian(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
     generateWeight(x, A, b);
     generateSlack(x, A, b);
-    MatrixXd slack_inv = slack.cwiseInverse().asDiagonal().toDenseMatrix();
+    DiagonalMatrix<double, Dynamic> slack_inv = slack.cwiseInverse().asDiagonal();
     hess = A.transpose() * slack_inv * weights * slack_inv * A;
 }
 

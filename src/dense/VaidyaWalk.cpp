@@ -5,22 +5,14 @@ void VaidyaWalk::setDistTerm(int d, int n){
 }
 
 void VaidyaWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
-    generateDikinHessian(x, A, b);
-    MatrixXd hess_inv = dhess.inverse();
+    generateSlack(x, A, b);
+    DiagonalMatrix<double, Dynamic> slack_inv = slack.cwiseInverse().asDiagonal();
+    MatrixXd half_hess = slack_inv * A; 
 
-    MatrixXd slack_inv = slack.cwiseInverse().asDiagonal().toDenseMatrix();
-
-    MatrixXd weights_mat = slack_inv * A * hess_inv * A.transpose() * slack_inv;
-    VectorXd wi = weights_mat.diagonal();
+    VectorXd wi = (half_hess * (half_hess.transpose() * half_hess).inverse()).cwiseProduct(half_hess).rowwise().sum();
 
     wi = wi.array() + (double)A.cols()/A.rows();
-    weights = wi.asDiagonal().toDenseMatrix();
-}
-
-void VaidyaWalk::generateDikinHessian(const VectorXd& x, const MatrixXd& A, const VectorXd& b){
-    generateSlack(x, A, b);
-    MatrixXd slack_inv = slack.cwiseInverse().asDiagonal().toDenseMatrix();
-    dhess = A.transpose() * slack_inv * slack_inv * A;
+    weights = wi.asDiagonal();
 }
 
 void VaidyaWalk::printType(){

@@ -146,6 +146,12 @@ res FacialReduction::reduce(SparseMatrixXd A, VectorXd b, int k, bool sparse){
     int x_dim = A.cols() - k; 
     savedV = SparseMatrixXd(VectorXd::Ones(A.cols()).asDiagonal());
     global_index = x_dim; 
+
+    //remove dependent rows
+    SparseMatrixXd P = pickP(A);
+    A = P * A; 
+    b = P * b; 
+
     fr_res result = entireFacialReductionStep(A, b, x_dim);
     res final_res; 
     if (sparse){
