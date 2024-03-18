@@ -67,14 +67,6 @@ z_res FacialReduction::findZ(const SparseMatrixXd& A, const VectorXd& b, int x_d
 
         if (ipopt.GetReturnStatus() != 0){
             global_index ++;
-            cout << "sol" << endl;
-            cout << sol << endl;
-            cout << "eqA * sol" << endl;
-            cout << eqA * sol << endl;
-            cout << "eqb" << endl;
-            cout << eqb << endl;
-            cout << "ineqA * sol" << endl;
-            cout << (ineqA * sol).maxCoeff() << endl;
             eqA = eqA.transpose();
             continue; 
         }

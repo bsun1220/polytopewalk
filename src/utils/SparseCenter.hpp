@@ -11,9 +11,10 @@ class SparseCenter {
          * @param max_iter maximum iterations during linear program
          * @param tol tolerance term
          * @param s_max error term
+         * @param err_lp error for LP problem
          * @return res
          */
-        SparseCenter(int max_iter = 3000, double tol = 1e-8, double s_max = 100.0) : MAX_ITER(max_iter), TOL(tol), S_MAX(s_max) {
+        SparseCenter(int max_iter = 3000, double tol = 1e-8, double s_max = 100.0, double err_lp = 1e-8) : MAX_ITER(max_iter), TOL(tol), S_MAX(s_max), ERR_LP(err_lp) {
 
         }
 
@@ -41,6 +42,11 @@ class SparseCenter {
          * @brief tolerance parameter
          */
         const double S_MAX;
+
+        /**
+         * @brief error in linear program tolerance
+         */
+        const double ERR_LP;
 };
 
 #endif

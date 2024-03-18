@@ -5,7 +5,7 @@ VectorXd DenseCenter::getInitialPoint(MatrixXd A, VectorXd b){
     int n = A.rows();
     int d = A.cols();
     VectorXd init = VectorXd::Zero(d + 1);
-    init(d) = 100000;
+    init(d) = START;
 
     MatrixXd A2 (n, d + 1);
     for(int i = 0; i < n; i++){

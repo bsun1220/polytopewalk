@@ -25,8 +25,8 @@ VectorXd SparseCenter::getInitialPoint(SparseMatrixXd A, VectorXd b, int k){
     Problem lp;
 
     lp.AddVariableSet(make_shared<SparseExVariables>(n + 1, name, init));
-    lp.AddConstraintSet(make_shared<SparseExConstraint1>(ineqA.rows(),name,ineqA));
-    lp.AddConstraintSet(make_shared<SparseExConstraint2>(eqA.rows(),name,eqA, b));
+    lp.AddConstraintSet(make_shared<SparseExConstraint1>(ineqA.rows(),name,ineqA, ERR_LP));
+    lp.AddConstraintSet(make_shared<SparseExConstraint2>(eqA.rows(),name,eqA, b, ERR_LP));
     lp.AddCostSet(make_shared<SparseExCost>(name));
     IpoptSolver ipopt;
     ipopt.SetOption("print_level", 0);
