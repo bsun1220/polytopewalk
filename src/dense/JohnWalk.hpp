@@ -11,12 +11,10 @@ class JohnWalk: public BarrierWalk{
          * @brief constructor for John Walk class
          * @param r spread parameter
          * @param thin thin constant
-         * @param g_lim gradient descent norm limit
-         * @param step_size size of gradient descent step
+         * @param lim norm limit for fixed point iteration
          * @param max_iter maximum number of iterations in gradient descent
          */
-        JohnWalk(double r, int thin = 1, double g_lim = 0.01, double step_size = 0.1, int max_iter = 100) : STEPSIZE(step_size), MAXITER(max_iter), GRADLIM(g_lim), BarrierWalk(r, thin){
-
+        JohnWalk(double r, int thin = 1, double lim = 1e-5, int max_iter = 1000) : MAXITER(max_iter), LIM(lim), BarrierWalk(r, thin){
 
         }
 
@@ -37,20 +35,16 @@ class JohnWalk: public BarrierWalk{
 
     
     protected:
-        /**
-         * @brief step size for gradient descent
-         */
-        const double STEPSIZE;
 
         /**
-         * @brief max number of iterations in gradient descent
+         * @brief max number of iterations in fixed point iteration
          */
         const double MAXITER;
 
         /**
-         * @brief stops gradient descent if it reaches under this number
+         * @brief stops if it reaches under this number in fixed iteration
          */
-        const double GRADLIM;
+        const double LIM;
 
         /**
          * @brief set Dist Term for John Walk

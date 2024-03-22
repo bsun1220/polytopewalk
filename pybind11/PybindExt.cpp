@@ -184,9 +184,8 @@ PYBIND11_MODULE(polytopewalk, m) {
         py::arg("max_iter") = 1000);
     
     py::class_<JohnWalk, BarrierWalk, PyBarrierWalk<JohnWalk>>(m_dense, "JohnWalk")
-        .def(py::init<double, int, double, double, int>(), 
-        py::arg("r") = 0.9, py::arg("thin") = 1, py::arg("g_lim") = 0.01, py::arg("step_size") = 0.1, 
-        py::arg("max_iter") = 1000);
+        .def(py::init<double, int, double, int>(), 
+        py::arg("r") = 0.9, py::arg("thin") = 1, py::arg("lim") = 1e-5, py::arg("max_iter") = 1000);
     
     py::class_<FacialReduction>(m, "FacialReduction")
         .def(py::init<int, double, double, double, double>(),
@@ -229,8 +228,8 @@ PYBIND11_MODULE(polytopewalk, m) {
         .def(py::init<double, int, double>(), py::arg("r") = 0.9, py::arg("thin") = 1, py::arg("err") = 1e-6);
     
     py::class_<SparseJohnWalk, SparseBarrierWalk, PySparseBarrierWalk<SparseJohnWalk>>(m_sparse, "SparseJohnWalk")
-        .def(py::init<double, int, double, double, int, double>(), py::arg("r") = 0.9, py::arg("thin") = 1, py::arg("g_lim") = 0.01, 
-        py::arg("step_size") = 0.01, py::arg("max_iter") = 1000, py::arg("err") = 1e-6);
+        .def(py::init<double, int, double, int, double>(), py::arg("r") = 0.9, py::arg("thin") = 1, py::arg("lim") = 1e-5, 
+        py::arg("max_iter") = 1000, py::arg("err") = 1e-6);
     
     py::class_<SparseDikinLSWalk, SparseBarrierWalk, PySparseBarrierWalk<SparseDikinLSWalk>>(m_sparse, "SparseDikinLSWalk")
         .def(py::init<double, int, double, double, int, double>(), py::arg("r") = 0.9, py::arg("thin") = 1,py::arg("g_lim") = 0.01, 

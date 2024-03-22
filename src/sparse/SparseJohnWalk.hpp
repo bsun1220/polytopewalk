@@ -10,15 +10,14 @@ class SparseJohnWalk : public SparseBarrierWalk{
          * @brief constructor for the John Walk class
          * @param r spread parameter
          * @param thin thin parameter
-         * @param g_lim gradient descent norm limit
-         * @param step_size size of gradient descent step
-         * @param max_iter maximum number of iterations in gradient descent
+         * @param lim limit in l-infinity norm
+         * @param max_iter maximum number of iterations in fixed iteration
          * @param err error constant
          */
-        SparseJohnWalk(double r, int thin = 1, double g_lim = 0.01, double step_size = 0.1, int max_iter = 1000, double err = 1e-6) : G_LIM(g_lim), STEP_SIZE(step_size), MAX_ITER(max_iter), SparseBarrierWalk(r, thin, err) {}
+        SparseJohnWalk(double r, int thin = 1, double lim = 1e-5, int max_iter = 1000, double err = 1e-5) : LIM(lim), MAX_ITER(max_iter), SparseBarrierWalk(r, thin, err) {}
 
         /**
-         * @brief generate weight by solving convex optimization task
+         * @brief generate weight by solving fixed point iteration
          * @param x slack variable
          * @param A polytope constraint
          * @param k k values >= 0 constraint
@@ -41,17 +40,12 @@ class SparseJohnWalk : public SparseBarrierWalk{
         void setDistTerm(int d, int n) override;
 
         /**
-         * @brief stops gradient descent if it reaches under this number
+         * @brief stops if it reaches under this number during fixed iteration
          */
-        const double G_LIM;
+        const double LIM;
 
         /**
-         * @brief step size for gradient descent
-         */
-        const double STEP_SIZE;
-
-        /**
-         * @brief max number of iterations in gradient descent
+         * @brief max number of iterations in fixed iteration
          */
         const int MAX_ITER;
 

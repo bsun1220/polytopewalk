@@ -13,32 +13,26 @@ void JohnWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const Vector
     DiagonalMatrix<double, Dynamic> slack_inv = slack.cwiseInverse().asDiagonal();
 
     MatrixXd A_x = slack_inv * A; 
-    VectorXd term1 = VectorXd::Ones(A.rows());
 
     DiagonalMatrix<double, Dynamic> W;
     MatrixXd WAX (A.rows(), A.cols());
-    VectorXd term2a (A.rows());
-    VectorXd term2b (A.rows());
-    VectorXd term2 (A.rows());
-    VectorXd term3 (A.rows());
     VectorXd gradient (A.rows());
+    VectorXd score; 
 
     VectorXd beta_ones = beta * VectorXd::Ones(A.rows());
+    VectorXd next_weight = w_i; 
 
     for(int i = 0; i < MAXITER; i++){
+        w_i = next_weight; 
+
         W = VectorXd(w_i.array().pow(alpha * 0.5)).asDiagonal();
         WAX = W * A_x;
-        term2a = w_i.cwiseInverse();
-        term2b = (WAX * (WAX.transpose() * WAX).inverse()).cwiseProduct(WAX).rowwise().sum();
+        score = (WAX * (WAX.transpose() * WAX).inverse()).cwiseProduct(WAX).rowwise().sum();
 
-        term2 = term2a.cwiseProduct(term2b);
-        term3 = beta * w_i.cwiseInverse();
-        
-        gradient = term1 - term2 - term3;
-        if(gradient.norm() < GRADLIM){
+        next_weight = 0.5 * (w_i + score + beta_ones).cwiseMax(beta_ones);
+        if((next_weight - w_i).cwiseAbs().maxCoeff() < LIM){
             break;
         }
-        w_i = (w_i - STEPSIZE * gradient).cwiseMax(beta_ones);
     }
 
     weights = w_i.asDiagonal();
