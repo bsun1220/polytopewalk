@@ -52,14 +52,11 @@ void BarrierWalk::generateSample(const VectorXd& x, const MatrixXd& A, const Vec
         prop = x;
         return; 
     }
-
-    VectorXd d = generateGaussianRV(x.rows());
     double det = L.diagonal().array().log().sum(); 
     double dist = -(0.5/DIST_TERM) * localNorm(x - prop, hess);
     double g_x_z = det + dist; 
 
     generateHessian(prop, A, b);
-    d = generateGaussianRV(x.rows());
     LLT<MatrixXd> cholesky2(hess);
     L = cholesky2.matrixL();
     det = L.diagonal().array().log().sum(); 
