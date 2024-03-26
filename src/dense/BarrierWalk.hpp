@@ -74,7 +74,7 @@ class BarrierWalk : public RandomWalk{
         /**
          * @brief new proposal point generated from generateSample function
          */
-        VectorXd z{};
+        VectorXd prop{};
 
         /**
          * @brief generates a gaussian random vector with d dimension
@@ -109,17 +109,6 @@ class BarrierWalk : public RandomWalk{
          * @return void
          */
         void generateHessian(const VectorXd& x, const MatrixXd& A, const VectorXd& b);
-
-        /**
-         * @brief generate proposal density around as a Multivariate Gaussian N(x, f(Hessian(x)))
-         * where function f: R^N -> R^NxN varies depending on walk type for vector z
-         * @param x centered point around ellipsoid
-         * @param z new proposal point
-        * @param A polytope matrix (Ax <= b)
-         * @param b polytope vector (Ax <= b)
-         * @return double (representing density)
-         */
-        double generateProposalDensity(const VectorXd& x, const VectorXd& z, const MatrixXd&A, const VectorXd& b);
 
         /**
          * @brief generates a point drawn from a Multivariate Gaussian N(x, f(Hessian(x)))
