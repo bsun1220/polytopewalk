@@ -94,7 +94,7 @@ class BarrierWalk : public RandomWalk{
         void generateSlack(const VectorXd& x, const MatrixXd& A, const VectorXd& b);
 
         /**
-         * @brief calculates mahalanobis distance weighted by Hessian matrix m
+         * @brief calculates Mahalanobis distance weighted by Hessian matrix m
          * @param m Weighted Hessian Matrix
          * @param v vector to be measured
          * @return double

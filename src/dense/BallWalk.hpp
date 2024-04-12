@@ -10,10 +10,9 @@ class BallWalk: public RandomWalk{
     public:
 
         /**
-         * @brief Initialization of Ball Walks
+         * @brief Initialization of Dense Ball Walk
          * @param r spread parameter
          * @param thin thin constant
-         * @return Matrix
          */
         BallWalk(double r, int thin = 1) : R(r), RandomWalk(thin) {
             

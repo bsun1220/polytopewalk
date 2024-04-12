@@ -11,6 +11,7 @@ class HitAndRun: public RandomWalk{
          * @brief Hit and Run implementation constructor
          * @param r spread hyperparamter
          * @param err error hyperparameter
+         * @param thin thin parameter (record every ith value)
          */
         HitAndRun(double r, double err = 1e-6, int thin = 1) : ERR(err), R(r), RandomWalk(thin) {
 

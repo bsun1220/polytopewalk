@@ -100,12 +100,12 @@ class FacialReduction {
         const double S_MAX;
 
          /**
-         * @brief error parameter
+         * @brief LP error parameter
          */
         const double ERR_LP; 
 
         /**
-         * @brief error parameter
+         * @brief DC error parameter
          */
         const double ERR_DC; 
 

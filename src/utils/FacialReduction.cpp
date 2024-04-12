@@ -1,5 +1,6 @@
 #include "FacialReduction.hpp"
 
+
 z_res FacialReduction::findZ(const SparseMatrixXd& A, const VectorXd& b, int x_dim){
     int n = A.rows();
     int d = A.cols();

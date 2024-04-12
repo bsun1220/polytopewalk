@@ -9,5 +9,17 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(test ${TESTS_DIR}/test.cpp)
-target_link_libraries(test PRIVATE utils dense sparse Catch2::Catch2WithMain)
+add_executable(test_dense_walk ${TESTS_DIR}/test_dense_walk.cpp)
+target_link_libraries(test_dense_walk PRIVATE utils dense sparse Catch2::Catch2WithMain)
+
+add_executable(test_sparse_walk ${TESTS_DIR}/test_sparse_walk.cpp)
+target_link_libraries(test_sparse_walk PRIVATE utils dense sparse Catch2::Catch2WithMain)
+
+add_executable(test_fr ${TESTS_DIR}/test_fr.cpp)
+target_link_libraries(test_fr PRIVATE utils dense sparse Catch2::Catch2WithMain)
+
+add_executable(test_weights ${TESTS_DIR}/test_weights.cpp)
+target_link_libraries(test_weights PRIVATE utils dense sparse Catch2::Catch2WithMain)
+
+add_executable(test_init ${TESTS_DIR}/test_init.cpp)
+target_link_libraries(test_init PRIVATE utils dense sparse Catch2::Catch2WithMain)
