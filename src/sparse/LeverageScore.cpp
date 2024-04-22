@@ -6,14 +6,14 @@ VectorXd LeverageScore::generate(const SparseMatrixXd& A, const SparseMatrixXd& 
     for(int i = x.rows() - k; i < x.rows(); i++){
         S_inv.coeffRef(i, i) = 1/x(i);
     }
-    SparseMatrixXd G = S_inv * W * W * S_inv; 
+    SparseMatrixXd G_sqrt = S_inv * W;
     for(int i = 0; i < x.rows() - k; i++){
-        G.coeffRef(i, i) = ERR;
+        G_sqrt.coeffRef(i, i) = ERR;
     }
 
-    SparseMatrixXd G_inv = SparseMatrixXd(VectorXd(G.diagonal()).cwiseInverse().asDiagonal());
+    SparseMatrixXd G_inv_sqrt = SparseMatrixXd(VectorXd(G_sqrt.diagonal()).cwiseInverse().asDiagonal());
 
-    SparseMatrixXd hess = A * G_inv * A.transpose();
+    SparseMatrixXd hess = A * (G_inv_sqrt * G_inv_sqrt)* A.transpose();
     SimplicialLDLT<SparseMatrix<double>, Eigen::Lower, Eigen::NaturalOrdering<int>> cholesky;
     cholesky.analyzePattern(hess);
     cholesky.factorize(hess);
@@ -78,14 +78,20 @@ VectorXd LeverageScore::generate(const SparseMatrixXd& A, const SparseMatrixXd& 
 
     inv = inv_d;
 
-    SparseMatrixXd AG_inv = A * G_inv;
-    SparseMatrixXd P = inv * AG_inv;
-    SparseMatrixXd result (AG_inv.cols(), AG_inv.cols());
-    for(int i = 0; i < AG_inv.cols(); i++){
-        double val = AG_inv.col(i).dot(P.col(i));
+    SparseMatrixXd AG_inv_sqrt = A * G_inv_sqrt;
+    SparseMatrixXd P = inv * AG_inv_sqrt;
+    SparseMatrixXd result (AG_inv_sqrt.cols(), AG_inv_sqrt.cols());
+    for(int i = 0; i < AG_inv_sqrt.cols(); i++){
+        double val = AG_inv_sqrt.col(i).dot(P.col(i));
         result.coeffRef(i, i) = val;
     }
-    result = G_inv - result;
-    result = W * S_inv * result * S_inv * W;
+
+    SparseMatrixXd I = SparseMatrixXd(x.rows(), x.rows());
+    for(int i = 0; i < x.rows(); i++){
+        I.coeffRef(i, i) = 1; 
+    }
+
+    result = I - result;
+
     return result.diagonal();
 }

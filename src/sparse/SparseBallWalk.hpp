@@ -13,7 +13,7 @@ class SparseBallWalk : public SparseRandomWalk{
         SparseBallWalk(double r, int thin = 1) : R(r), SparseRandomWalk(thin, 0.0){}
 
          /**
-         * @brief Generate values from the Ball walk
+         * @brief Generate values from the Ball walk (constrained)
          * @param num_steps number of steps wanted to take
          * @param init initial starting point
          * @param A polytope matrix 
