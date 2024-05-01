@@ -87,10 +87,12 @@ VectorXd LeverageScore::generate(const SparseMatrixXd& A, const SparseMatrixXd& 
     }
 
     SparseMatrixXd I = SparseMatrixXd(x.rows(), x.rows());
-    for(int i = 0; i < x.rows(); i++){
+    for(int i = 0; i < x.rows() - k; i++){
+        I.coeffRef(i, i) = result.coeffRef(i, i);
+    }
+    for(int i = x.rows() - k; i < x.rows(); i++){
         I.coeffRef(i, i) = 1; 
     }
-
     result = I - result;
 
     return result.diagonal();
