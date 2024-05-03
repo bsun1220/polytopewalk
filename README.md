@@ -15,7 +15,7 @@ git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt
 mkdir build && cd build
 cmake ..
 make
-sudo make install```
+sudo make install
 ```
 
 Finally, we can install **PolytopeWalk** as such:
