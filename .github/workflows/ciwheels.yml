@@ -39,7 +39,7 @@ jobs:
             cmake ..
             make
             make install
-          CIBW_BEFORE_ALL_WINDOWS: "bash ./scripts/windows-setup.sh"
+          CIBW_BEFORE_ALL_WINDOWS: "bash .github/workflows/scripts/windows-setup.sh"
         with:
           package-dir: .
           output-dir: wheelhouse
