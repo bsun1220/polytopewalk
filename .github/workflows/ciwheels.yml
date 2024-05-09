@@ -39,16 +39,7 @@ jobs:
             cmake ..
             make
             make install
-          CIBW_BEFORE_ALL_WINDOWS: |
-            git clone https://github.com/microsoft/vcpkg.git
-            .\vcpkg\bootstrap-vcpkg.bat
-            .\vcpkg\vcpkg install eigen3
-            .\vcpkg\vcpkg install ipopt
-            git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt
-            mkdir build && cd build
-            cmake ..
-            make
-            sudo make install
+          CIBW_BEFORE_ALL_WINDOWS: "bash ./scripts/windows-setup.sh"
         with:
           package-dir: .
           output-dir: wheelhouse
