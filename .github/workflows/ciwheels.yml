@@ -40,7 +40,6 @@ jobs:
             make
             make install
           CIBW_BEFORE_ALL_WINDOWS: |
-            # choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
             choco install vcpkg
             vcpkg integrate install
             ./vcpkg/vcpkg install eigen3
