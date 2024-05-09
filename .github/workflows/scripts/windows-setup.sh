@@ -7,4 +7,4 @@ git clone https://github.com/microsoft/vcpkg
 
 # Install necessary libraries with vcpkg
 ./vcpkg/vcpkg install eigen3
-./vcpkg/vcpkg install ipopt
+./vcpkg/vcpkg install coin-or-ipopt
