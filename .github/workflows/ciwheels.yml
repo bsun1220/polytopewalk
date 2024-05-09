@@ -40,7 +40,7 @@ jobs:
             make
             make install
           CIBW_BEFORE_ALL_WINDOWS: |
-            git clone https://github.com/microsoft/vcpkg
+            git clone https://github.com/microsoft/vcpkg.git
             .\vcpkg\bootstrap-vcpkg.bat
             .\vcpkg\vcpkg install eigen3
             .\vcpkg\vcpkg install ipopt
