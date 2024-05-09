@@ -40,8 +40,7 @@ jobs:
             make
             make install
           CIBW_BEFORE_ALL_WINDOWS: |
-            pacman -S mingw-w64-eigen3 mingw-w64-mumps
-            # choco install eigen ipopt
+            choco install eigen ipopt
             git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt
             mkdir build && cd build
             cmake ..
