@@ -9,6 +9,9 @@ git clone https://github.com/microsoft/vcpkg
 ./vcpkg/vcpkg install eigen3
 ./vcpkg/vcpkg install coin-or-ipopt
 
+# handles the CMAKE_PREFIX_PATH for the packages installed via vcpkg
+cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
+
 # Install ifopt from source
 git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt
 mkdir build && cd build
