@@ -16,6 +16,6 @@ git clone https://github.com/microsoft/vcpkg
 git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt
 mkdir build && cd build
 # handles the CMAKE_PREFIX_PATH for the packages installed via vcpkg
-cmake -S .. -DCMAKE_TOOLCHAIN_FILE=../../vcpkg/scripts/buildsystems/vcpkg.cmake
+cmake --trace-expand -S .. -DCMAKE_TOOLCHAIN_FILE=../../vcpkg/scripts/buildsystems/vcpkg.cmake
 make
 make install
