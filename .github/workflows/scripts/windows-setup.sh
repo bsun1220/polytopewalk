@@ -9,7 +9,8 @@ git clone https://github.com/microsoft/vcpkg
 ./vcpkg/vcpkg install eigen3
 ./vcpkg/vcpkg install coin-or-ipopt
 
-
+# Check what has been installed
+./vcpkg/vcpkg list --triplet x64-windows
 
 # Install ifopt from source
 git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt
