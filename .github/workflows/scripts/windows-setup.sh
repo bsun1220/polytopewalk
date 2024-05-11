@@ -20,7 +20,7 @@ cd ThirdParty-Mumps
 ./get.Mumps
 ./configure
 make
-sudo make install
+make install
 cd ..
 
 echo `pwd`
@@ -32,18 +32,18 @@ mkdir build
 cd build
 ../configure
 make
-make test
-sudo make install
+# make test
+make install
 cd ..
 
-# install ifopt
+# install ifopt from source
 git clone https://github.com/ethz-adrl/ifopt.git
 cd ifopt
 mkdir build
 cd build
 export CMAKE_PREFIX_PATH="/c/msys64/mingw64:$CMAKE_PREFIX_PATH"
 cmake ..
-sudo make install
+make install
 cd ..
 
 
