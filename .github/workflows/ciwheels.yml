@@ -54,6 +54,9 @@ jobs:
           install: >-
             base-devel
             mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-lapack
+            mingw-w64-x86_64-metis
+            mingw-w64-x86_64-eigen3
             
       - name: Run set up script in MSYS2 (Windows only)
         if: runner.os == 'Windows'
