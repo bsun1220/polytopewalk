@@ -37,6 +37,7 @@ make
 make install
 export IPOPT_DIR=`pwd`
 cd ..
+cd ..
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/mingw64/lib:/c/msys64/mingw64/lib"
 
@@ -57,6 +58,6 @@ echo $CMAKE_PREFIX_PATH
 cmake ..
 make install
 cd ..
-
+cd ..
 
 
