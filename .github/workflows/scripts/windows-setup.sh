@@ -1,5 +1,7 @@
 #!/bin/bash
 
+choco install strawberryperl
+
 # Clone and bootstrap vcpkg
 git clone https://github.com/microsoft/vcpkg
 ./vcpkg/bootstrap-vcpkg.bat
@@ -10,14 +12,19 @@ git clone https://github.com/microsoft/vcpkg
 ./vcpkg/vcpkg install coin-or-ipopt
 
 # Install Ipopt lib from source
-git clone https://github.com/coin-or/Ipopt.git && cd Ipopt
+git clone https://github.com/coin-or/Ipopt.git
+cd Ipopt
 ./configure
-make; make test; make install
+make
+make test
+make install
 cd ..
 
 # Install ifopt from source
-git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt
-mkdir build && cd build
+git clone https://github.com/ethz-adrl/ifopt.git
+cd ifopt
+mkdir build
+cd build
 # handles the CMAKE_PREFIX_PATH for the packages installed via vcpkg
 cmake --trace-expand -S .. -DCMAKE_TOOLCHAIN_FILE=../../vcpkg/scripts/buildsystems/vcpkg.cmake
 make
