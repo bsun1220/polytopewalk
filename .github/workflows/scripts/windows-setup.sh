@@ -3,16 +3,15 @@
 # install prerequisite
 pacman -Syu
 # pacman -S binutils diffutils git grep make patch pkg-config
-pacman -S mingw-w64-x86_64-lapack
-pacman -S mingw-w64-x86_64-metis
-pacman -S mingw-w64-x86_64-eigen3
+# pacman -S mingw-w64-x86_64-lapack
+# pacman -S mingw-w64-x86_64-metis
+# pacman -S mingw-w64-x86_64-eigen3
 
 pacman -Qs eigen3
 pacman -Ql eigen3 | grep bin/
 
 
 echo "OK pause"
-"c/Program Files/Git/bin/git.exe" --version
 export PATH="/c/Program Files/Git/bin:$PATH"
 
 git clone https://github.com/ethz-adrl/ifopt.git
