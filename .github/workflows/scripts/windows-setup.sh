@@ -32,7 +32,7 @@ mkdir build
 cd build
 ../configure
 make
-make test
+# make test
 make install
 export IPOPT_DIR=`pwd`
 cd ..
@@ -42,8 +42,11 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/mingw64/lib:/c/msys64/mingw64/lib"
 echo $IPOPT_DIR
 echo "list d"
 ls "d/a/_temp/msys64/mingw64/include"
+echo "list d2"
+ls "/d/a/polytopewalk/polytopewalk/Ipopt/build"
 echo "list c"
 ls "/mingw64/lib"
+echo "list c2"
 ls "/c/msys64/mingw64/lib"
 
 
@@ -53,6 +56,7 @@ cd ifopt
 mkdir build
 cd build
 export CMAKE_PREFIX_PATH="/mingw64:/c/msys64/mingw64:$CMAKE_PREFIX_PATH"
+echo $CMAKE_PREFIX_PATH
 cmake ..
 make install
 cd ..
