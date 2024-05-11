@@ -39,6 +39,12 @@ cd ..
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/mingw64/lib:/c/msys64/mingw64/lib"
 
+echo $IPOPT_DIR
+echo "list d"
+ls "d/a/_temp/msys64/mingw64/include"
+echo "list c"
+ls "/mingw64/lib"
+ls "/c/msys64/mingw64/lib"
 
 
 # install ifopt from source
