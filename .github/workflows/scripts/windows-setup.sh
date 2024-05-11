@@ -13,7 +13,7 @@
 echo "Let's start windows-setup"
 export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
 
-# install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html#SYSTEMPACKAGES_MSYS
+# install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html
 # install Mumps
 git clone https://github.com/coin-or-tools/ThirdParty-Mumps.git
 cd ThirdParty-Mumps
@@ -23,7 +23,20 @@ make
 make install
 cd ..
 
+echo `pwd`
 
+# install ipopt from source
+git clone https://github.com/coin-or/Ipopt.git
+cd Ipopt
+mkdir build
+cd build
+./configure
+make
+make test
+make install
+cd ..
+
+# install ifopt
 git clone https://github.com/ethz-adrl/ifopt.git
 cd ifopt
 mkdir build
