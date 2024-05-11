@@ -12,8 +12,10 @@ pacman -Ql eigen3 | grep bin/
 
 
 echo "OK pause"
+"c/Program Files/Git/bin/git.exe" --version
+export PATH="/c/Program Files/Git/bin:$PATH"
 
-C:\Program Files\Git\bin\git.exe clone https://github.com/ethz-adrl/ifopt.git
+git clone https://github.com/ethz-adrl/ifopt.git
 cd ifopt
 mkdir build
 cd build
