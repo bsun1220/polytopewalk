@@ -45,30 +45,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up MSYS2 (Windows only)
-        if: runner.os == 'Windows'
-        uses: msys2/setup-msys2@v2
-        with:
-          update: true
-          install: >-
-            base-devel
-            mingw-w64-x86_64-toolchain
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-gcc-fortran
-            mingw-w64-x86_64-cmake
-            mingw-w64-x86_64-lapack
-            mingw-w64-x86_64-metis
-            mingw-w64-x86_64-eigen3
-            
-      - name: Run set up script in MSYS2 (Windows only)
-        if: runner.os == 'Windows'
-        shell: msys2 {0}
-        run: |
-          bash .github/workflows/scripts/windows-setup.sh
-          # environment config
-          echo "CMAKE_PREFIX_PATH=/mingw64/lib" >> $GITHUB_ENV
-          
+        
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.17.0
         env:
@@ -89,6 +66,7 @@ jobs:
             cmake ..
             make
             make install
+          CIBW_BEFORE_ALL_WINDOWS: "bash .github/workflows/scripts/windows-setup.sh"
         with:
           package-dir: .
           output-dir: wheelhouse
