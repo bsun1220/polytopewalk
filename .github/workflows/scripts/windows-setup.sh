@@ -7,17 +7,9 @@ git clone https://github.com/microsoft/vcpkg
 
 # Install eigen3 and ipopt with vcpkg
 ./vcpkg/vcpkg install eigen3
-./vcpkg/vcpkg install pkgconf
-# ./vcpkg/vcpkg install coin-or-ipopt
+./vcpkg/vcpkg install coin-or-ipopt
 
-# Test ipopt install from source
-# Install Mumps
-git clone https://github.com/coin-or-tools/ThirdParty-Mumps.git && cd ThirdParty-Mumps
-./get.Mumps
-./configure
-make; make install
-cd ..
-
+# Install Ipopt lib from source
 git clone https://github.com/coin-or/Ipopt.git && cd Ipopt
 ./configure
 make; make test; make install
