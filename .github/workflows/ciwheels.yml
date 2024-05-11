@@ -67,6 +67,7 @@ jobs:
             make
             make install
           CIBW_BEFORE_ALL_WINDOWS: "bash .github/workflows/scripts/windows-setup.sh"
+          CIBW_ENVIRONMENT_WINDOWS: "CMAKE_TOOLCHAIN_FILE=D:/a/polytopewalk/polytopewalk/vcpkg/scripts/buildsystems/vcpkg.cmake"
         with:
           package-dir: .
           output-dir: wheelhouse
