@@ -7,7 +7,7 @@ git clone https://github.com/microsoft/vcpkg
 
 cd vcpkg
 # Set the VCPKG_ROOT environment variable to the current directory
-export VCPKG_ROOT=($pwd)
+export VCPKG_ROOT=$(pwd)
 # Display VCPKG_ROOT to verify it is set correctly
 echo "VCPKG_ROOT is set to: $VCPKG_ROOT"
 cd ..
