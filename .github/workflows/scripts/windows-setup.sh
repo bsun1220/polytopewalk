@@ -32,8 +32,9 @@ mkdir build
 cd build
 ../configure
 make
-# make test
+make test
 make install
+export IPOPT_DIR=`pwd`
 cd ..
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/mingw64/lib:/c/msys64/mingw64/lib"
