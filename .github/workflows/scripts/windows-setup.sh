@@ -36,12 +36,16 @@ make
 make install
 cd ..
 
+# check ipopt
+find /c/msys64/mingw64 -name "libipopt*"
+
+
 # install ifopt from source
 git clone https://github.com/ethz-adrl/ifopt.git
 cd ifopt
 mkdir build
 cd build
-export CMAKE_PREFIX_PATH="/c/msys64/mingw64:$CMAKE_PREFIX_PATH"
+export CMAKE_PREFIX_PATH="/msys64/mingw64:/c/msys64/mingw64:$CMAKE_PREFIX_PATH"
 cmake ..
 make install
 cd ..
