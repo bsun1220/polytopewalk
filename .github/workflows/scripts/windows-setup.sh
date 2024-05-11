@@ -37,8 +37,6 @@ make install
 cd ..
 cd ..
 
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/c/msys64/mingw64/lib"
-
 # get FindIPOPT_DIR from casadi, which is better written
 git clone --depth 1 --branch 3.6.5 https://github.com/casadi/casadi.git
 
@@ -51,7 +49,8 @@ cp ../casadi/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/
 cp ../casadi/cmake/canonicalize_paths.cmake ifopt_ipopt/cmake/
 mkdir build
 cd build
-cmake .. 
+cmake .. -DIPOPT_LIBRARIES="/mingw64/lib/libipopt.dll.a" -DIPOPT_INCLUDE_DIRS="/mingw64/include/coin-or" -G "MinGW Makefiles"
+
 make
 make install
 cd ..
