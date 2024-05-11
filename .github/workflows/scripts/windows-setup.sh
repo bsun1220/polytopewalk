@@ -4,8 +4,7 @@
 pacman -Syu
 # pacman -S binutils diffutils git grep make patch pkg-config
 pacman -S git
-
-
-pacman -S mingw-w64-openblas
+pacman -S gcc fortran
+pacman -S lapack metis
 
 
