@@ -8,6 +8,8 @@ pacman -S mingw-w64-x86_64-lapack
 pacman -S mingw-w64-x86_64-metis
 pacman -S mingw-w64-x86_64-eigen3
 
+pacman -Qs eigen3
+
 echo "OK pause"
 
 git clone https://github.com/ethz-adrl/ifopt.git
