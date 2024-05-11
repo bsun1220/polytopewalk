@@ -10,13 +10,8 @@
 # pacman -Qs eigen3
 # pacman -Ql eigen3 | grep bin/
 
-ls "C:\msys64"
-ls "C:\msys64\mingw64"
-ls "C:\msys64\mingw64\bin"
-
-
 echo "OK pause"
-export PATH="/c/Program Files/Git/bin:$PATH"
+export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
 
 git clone https://github.com/ethz-adrl/ifopt.git
 cd ifopt
