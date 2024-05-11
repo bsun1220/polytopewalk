@@ -10,8 +10,19 @@
 # pacman -Qs eigen3
 # pacman -Ql eigen3 | grep bin/
 
-echo "OK pause"
+echo "Let's start windows-setup"
 export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
+
+# install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html#SYSTEMPACKAGES_MSYS
+# install Mumps
+git clone https://github.com/coin-or-tools/ThirdParty-Mumps.git
+cd ThirdParty-Mumps
+./get.Mumps
+./configure
+make
+make install
+cd ..
+
 
 git clone https://github.com/ethz-adrl/ifopt.git
 cd ifopt
@@ -19,6 +30,7 @@ mkdir build
 cd build
 cmake -S ..
 make install
+cd ..
 
 
 
