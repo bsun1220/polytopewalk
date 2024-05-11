@@ -53,6 +53,7 @@ jobs:
           update: true
           install: >-
             base-devel
+            mingw-w64-x86_64-toolchain
             
       - name: Run set up script in MSYS2 (Windows only)
         if: runner.os == 'Windows'
