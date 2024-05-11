@@ -10,20 +10,59 @@ on:
 
 jobs:
   build_wheels:
-    name: Build wheels on ${{ matrix.os }}
+    name: Build wheel for ${{ matrix.os }} on cp${{ matrix.python }}-${{ matrix.platform_id }}-${{ matrix.manylinux_image }}
     runs-on: ${{ matrix.os }}
     strategy:
+      # Ensure that a wheel builder finishes even if another fails
+      fail-fast: false
       matrix:
-        os: [ubuntu-20.04, macos-13, macos-14, windows-2022] 
-# macos-latest
+        include:
+          # Window 64 bit
+          - os: windows-latest
+            python: 39
+            platform_id: win_amd64
+          # - os: windows-latest
+          #   python: 310
+          #   platform_id: win_amd64
+
+          # Linux 64 bit manylinux2014
+          - os: ubuntu-latest
+            python: 39
+            platform_id: manylinux_x86_64
+            manylinux_image: manylinux2014
+
+          # MacOS x86_64
+          - os: macos-12
+            python: 39
+            platform_id: macosx_x86_64
+
+          # MacOS arm64
+          - os: macos-14
+            python: 39
+            platform_id: macosx_arm64
+            
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up MSYS2 (Windows only)
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            base-devel
+            mingw-w64-x86_64-toolchain
+      - name: Run set up script in MSYS2 (Windows only)
+        if: runner.os == 'Windows'
+        shell: msys2 {0}
+        run: |
+          bash .github/workflows/scripts/windows-setup.sh
+      
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.17.0
         env:
-          # Skip 32-bit builds and musllinux
-          CIBW_SKIP: "*-win32 *-manylinux_i686 *musllinux*"
           CIBW_BEFORE_ALL_MACOS: |
             brew install eigen ipopt
             git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt
@@ -39,7 +78,6 @@ jobs:
             cmake ..
             make
             make install
-          CIBW_BEFORE_ALL_WINDOWS: "bash .github/workflows/scripts/windows-setup.sh"
         with:
           package-dir: .
           output-dir: wheelhouse
