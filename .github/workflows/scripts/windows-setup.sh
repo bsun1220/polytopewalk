@@ -6,4 +6,6 @@ pacman -Syu
 pacman -S git
 pacman -S mingw-w64-x86_64-gcc-fortran
 
+echo "OK pause"
+
 
