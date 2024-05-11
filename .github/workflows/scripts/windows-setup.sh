@@ -12,7 +12,7 @@
 
 echo "Let's start windows-setup"
 export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
-echo "PATH=/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH" >> $GITHUB_ENV
+echo "PATH=$PATH:/c/msys64/mingw64/bin" >> $GITHUB_ENV
 
 # install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html
 # install Mumps
