@@ -5,6 +5,7 @@ pacman -Syu
 # pacman -S binutils diffutils git grep make patch pkg-config
 pacman -S git
 pacman -S mingw-w64-x86_64-lapack
+pacman -S mingw-w64-x86_64-metis
 
 echo "OK pause"
 
