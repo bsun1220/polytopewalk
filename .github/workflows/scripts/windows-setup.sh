@@ -27,10 +27,10 @@ cmake .. \
   -DIPOPT_INCLUDE_DIRS="../../vcpkg/installed/x64-windows/include/coin-or" \
   -G "Unix Makefiles"
 
-
 make
 make install
 cd ..
 cd ..
 
+export CMAKE_TOOLCHAIN_FILE="../../vcpkg/scripts/buildsystems/vcpkg.cmake"
 
