@@ -2,27 +2,26 @@
 
 # Clone and bootstrap vcpkg
 git clone https://github.com/microsoft/vcpkg
-./vcpkg/bootstrap-vcpkg.bat
-./vcpkg/vcpkg integrate install
-
 cd vcpkg
+./bootstrap-vcpkg.bat
+./vcpkg integrate install
+
 # Set the VCPKG_ROOT environment variable to the current directory
 export VCPKG_ROOT=$(pwd)
 # Display VCPKG_ROOT to verify it is set correctly
 echo "VCPKG_ROOT is set to: $VCPKG_ROOT"
-cd ..
-
 
 # Install eigen3 and ipopt with vcpkg
-./vcpkg/vcpkg install eigen3
-./vcpkg/vcpkg install coin-or-ipopt
+./vcpkg install eigen3
+./vcpkg install coin-or-ipopt
+
+cd ..
 
 # export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:./vcpkg/installed/x64-windows/lib/ipopt.lib"
-
-echo `ls ./vcpkg/`
-echo `ls ./vcpkg/installed`
-echo `ls ./vcpkg/installed/x64-windows`
-echo `ls ./vcpkg/installed/x64-windows/lib`
+echo `ls ./`
+echo `ls ./installed`
+echo `ls ./installed/x64-windows`
+echo `ls ./installed/x64-windows/lib`
 
 # get FindIPOPT_DIR.cmake from casadi, which is better written
 git clone --depth 1 --branch 3.6.5 https://github.com/casadi/casadi.git
