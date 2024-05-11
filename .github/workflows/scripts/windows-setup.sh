@@ -7,10 +7,19 @@ git clone https://github.com/microsoft/vcpkg
 
 # Install eigen3 and ipopt with vcpkg
 ./vcpkg/vcpkg install eigen3
-./vcpkg/vcpkg install coin-or-ipopt
+# ./vcpkg/vcpkg install coin-or-ipopt
 
-# Check what has been installed
-./vcpkg/vcpkg list --triplet x64-windows
+# Test ipopt install from source
+svn co https://projects.coin-or.org/svn/Ipopt/stable/3.11 CoinIpopt
+cd CoinIpopt/ThirdParty
+cd Blas && ./get.Blas && cd ..
+cd Lapack && ./get.Lapack && cd ..
+cd Metis && ./get.Metis && cd .. (Graph Coloring tool used by e.g. Mumps)
+cd Mumps && ./get.Mumps && cd .. (Sparse direct linear solver with permissive license)
+cd ..; mkdir build; cd build
+../configure --prefix=/usr/local ADD_FFLAGS=-fPIC ADD_CFLAGS=-fPIC ADD_CXXFLAGS=-fPIC
+make; sudo make install
+pkg-config --libs ipopt
 
 # Install ifopt from source
 git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt
