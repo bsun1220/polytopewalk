@@ -42,11 +42,9 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/mingw64/lib:/c/msys64/mingw64/lib"
 
 echo $IPOPT_DIR
 echo "list d"
-ls "d/a/_temp/msys64/mingw64/include"
+ls "/d/a/_temp/msys64/mingw64/include"
 echo "list d2"
 ls "/d/a/polytopewalk/polytopewalk/Ipopt/build"
-echo "list c"
-ls "/mingw64/lib"
 echo "list c222222"
 ls "/c/msys64/mingw64/lib"
 
