@@ -41,6 +41,7 @@ git clone https://github.com/ethz-adrl/ifopt.git
 cd ifopt
 mkdir build
 cd build
+export CMAKE_PREFIX_PATH="/c/msys64/mingw64:$CMAKE_PREFIX_PATH"
 cmake ..
 sudo make install
 cd ..
