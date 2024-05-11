@@ -19,43 +19,38 @@ export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
 git clone https://github.com/coin-or-tools/ThirdParty-Mumps.git
 cd ThirdParty-Mumps
 ./get.Mumps
-./configure
+./configure --prefix=/c/msys64/mingw64/
 make
 make install
 cd ..
-
-echo `pwd`
 
 # install ipopt from source
 git clone https://github.com/coin-or/Ipopt.git
 cd Ipopt
 mkdir build
 cd build
-../configure
+../configure --prefix=/c/msys64/mingw64/
 make
 # make test
 make install
-export IPOPT_DIR=`pwd`
+# export IPOPT_DIR=`pwd`
 cd ..
 cd ..
 
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/mingw64/lib:/c/msys64/mingw64/lib"
-
-echo $IPOPT_DIR
-# echo "list d"
-# ls "/d/a/_temp/msys64/mingw64/include"
-echo "list c222222"
-ls "/c/msys64/mingw64/lib"
-
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/c/msys64/mingw64/lib"
+# get FindIPOPT_DIR
+git clone https://github.com/casadi/casadi.git
 
 # install ifopt from source
 git clone https://github.com/ethz-adrl/ifopt.git
 cd ifopt
+mv ifopt_ipopt/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/FindIPOPT.cmakeold
+cp ../casadi/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/
+cp ../casadi/cmake/canonicalize_paths.cmake ifopt_ipopt/cmake/
 mkdir build
 cd build
-export CMAKE_PREFIX_PATH="/mingw64:/c/msys64/mingw64:$CMAKE_PREFIX_PATH"
-echo $CMAKE_PREFIX_PATH
-cmake ..
+cmake .. 
+make
 make install
 cd ..
 cd ..
