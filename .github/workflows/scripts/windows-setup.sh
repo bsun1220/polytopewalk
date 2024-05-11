@@ -9,7 +9,14 @@ git clone https://github.com/microsoft/vcpkg
 ./vcpkg/vcpkg install eigen3
 ./vcpkg/vcpkg install coin-or-ipopt
 
-# get FindIPOPT_DIR from casadi, which is better written
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:./vcpkg/installed/x64-windows/lib/ipopt.lib"
+
+echo `ls ./vcpkg/`
+echo `ls ./vcpkg/installed`
+echo `ls ./vcpkg/installed/x64-windows`
+echo `ls ./vcpkg/installed/x64-windows/lib`
+
+# get FindIPOPT_DIR.cmake from casadi, which is better written
 git clone --depth 1 --branch 3.6.5 https://github.com/casadi/casadi.git
 
 # install ifopt from source
@@ -23,8 +30,8 @@ mkdir build
 cd build
 cmake .. \
   -DCMAKE_TOOLCHAIN_FILE="../../vcpkg/scripts/buildsystems/vcpkg.cmake" \
-  -DIPOPT_LIBRARIES="../../vcpkg/packages/coin-or-ipopt_x64-windows/lib/ipopt.lib" \
-  -DIPOPT_INCLUDE_DIRS="../../vcpkg/packages/coin-or-ipopt_x64-windows/include/coin-or/" \
+  -DIPOPT_LIBRARIES="../../vcpkg/installed/x64-windows/lib/ipopt.lib" \
+  -DIPOPT_INCLUDE_DIRS="../../vcpkg/installed/x64-windows/include/coin-or/" \
   -G "Unix Makefiles"
 
 make
