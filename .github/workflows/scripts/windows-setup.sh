@@ -23,14 +23,12 @@ mkdir build
 cd build
 cmake .. \
   -DCMAKE_TOOLCHAIN_FILE="../../vcpkg/scripts/buildsystems/vcpkg.cmake" \
-  -DIPOPT_LIBRARIES="../../vcpkg/installed/x64-windows/lib/ipopt.lib" \
-  -DIPOPT_INCLUDE_DIRS="../../vcpkg/installed/x64-windows/include/coin-or" \
+  -DIPOPT_LIBRARIES="../../vcpkg/packages/coin-or-ipopt_x64-windows/lib/ipopt.lib" \
+  -DIPOPT_INCLUDE_DIRS="../../vcpkg/packages/coin-or-ipopt_x64-windows/include/coin-or/" \
   -G "Unix Makefiles"
 
 make
 make install
 cd ..
 cd ..
-
-export CMAKE_TOOLCHAIN_FILE="../../vcpkg/scripts/buildsystems/vcpkg.cmake"
 
