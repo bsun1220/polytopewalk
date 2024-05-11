@@ -2,7 +2,7 @@
 
 # install prerequisite
 pacman -S binutils diffutils git grep make patch pkg-config
-pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-fortran
-pacman -S mingw-w64-x86_64-lapack mingw-w64-x86_64-metis
+pacman -S mingw-w64-gcc mingw-w64-lfortran
+pacman -S mingw-w64-lapack mingw-w64-metis
 
 
