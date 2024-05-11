@@ -20,7 +20,7 @@ cd ThirdParty-Mumps
 ./get.Mumps
 ./configure
 make
-make install
+sudo make install
 cd ..
 
 echo `pwd`
@@ -33,7 +33,7 @@ cd build
 ../configure
 make
 make test
-make install
+sudo make install
 cd ..
 
 # install ifopt
@@ -41,8 +41,8 @@ git clone https://github.com/ethz-adrl/ifopt.git
 cd ifopt
 mkdir build
 cd build
-cmake -S ..
-make install
+cmake ..
+sudo make install
 cd ..
 
 
