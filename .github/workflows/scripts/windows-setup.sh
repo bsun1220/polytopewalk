@@ -12,6 +12,7 @@
 
 echo "Let's start windows-setup"
 export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
+echo "PATH=/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH" >> $GITHUB_ENV
 
 # install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html
 # install Mumps
@@ -46,7 +47,7 @@ echo "list d2"
 ls "/d/a/polytopewalk/polytopewalk/Ipopt/build"
 echo "list c"
 ls "/mingw64/lib"
-echo "list c2"
+echo "list c222222"
 ls "/c/msys64/mingw64/lib"
 
 
