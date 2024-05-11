@@ -30,7 +30,7 @@ git clone https://github.com/coin-or/Ipopt.git
 cd Ipopt
 mkdir build
 cd build
-./configure
+../configure
 make
 make test
 make install
