@@ -1,22 +1,8 @@
 #!/bin/bash
 
-# Clone and bootstrap vcpkg
-git clone https://github.com/microsoft/vcpkg
-./vcpkg/bootstrap-vcpkg.bat
-./vcpkg/vcpkg integrate install
+# install prerequisite
+pacman -S binutils diffutils git grep make patch pkg-config
+pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-fortran
+pacman -S mingw-w64-x86_64-lapack mingw-w64-x86_64-metis
 
-# Install eigen3 and ipopt with vcpkg
-./vcpkg/vcpkg install eigen3
-./vcpkg/vcpkg install coin-or-ipopt
 
-# Install ifopt from source
-git clone https://github.com/ethz-adrl/ifopt.git
-cd ifopt
-mkdir build
-cd build
-# handles the CMAKE_PREFIX_PATH for the packages installed via vcpkg
-cmake -S .. \
-  -DCMAKE_TOOLCHAIN_FILE="../../vcpkg/scripts/buildsystems/vcpkg.cmake" \
-  -DCMAKE_INCLUDE_PATH="../../vcpkg/installed/x64-windows/include" \
-  -DCMAKE_LIBRARY_PATH="../../vcpkg/installed/x64-windows/lib"
-make install
