@@ -36,7 +36,7 @@ make
 make install
 cd ..
 
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/c/msys64/mingw64/lib"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/mingw64/lib:/c/msys64/mingw64/lib"
 
 
 
