@@ -43,8 +43,8 @@ cd build
 cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON \
   -DCMAKE_INSTALL_PREFIX="/mingw64/local" \
   -DCMAKE_PREFIX_PATH="/mingw64" \
-  -DIPOPT_LIBRARIES="/mingw64/lib/libipopt.dll.a" \
-  -DIPOPT_INCLUDE_DIRS="/mingw64/include/coin-or" \
+  # -DIPOPT_LIBRARIES="/mingw64/lib/libipopt.dll.a" \
+  # -DIPOPT_INCLUDE_DIRS="/mingw64/include/coin-or" \
   -G "Unix Makefiles"
 
 make VERBOSE=1
