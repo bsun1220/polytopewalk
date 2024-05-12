@@ -13,8 +13,6 @@ jobs:
     name: Build wheel for ${{ matrix.os }} on cp${{ matrix.python }}-${{ matrix.platform_id }}-${{ matrix.manylinux_image }}
     runs-on: ${{ matrix.os }}
     strategy:
-      # Ensure that a wheel builder finishes even if another fails
-      fail-fast: false
       matrix:
         include:
           # Window 64 bit
@@ -40,8 +38,8 @@ jobs:
           # - os: macos-14
           #   python: 39
           #   platform_id: macosx_arm64
-            
-
+       
+    continue-on-error: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
