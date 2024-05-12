@@ -65,13 +65,6 @@ jobs:
         shell: msys2 {0}
         run: |
           bash .github/workflows/scripts/windows-setup.sh
-
-      - name: Clean up environment variables (Windows only)
-        if: runner.os == 'Windows'
-        run: |
-          echo %PATH%
-          echo "Cleaning up environment..."
-          set PATH=
           
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.17.0
