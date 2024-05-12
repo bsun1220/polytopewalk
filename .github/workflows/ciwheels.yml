@@ -92,6 +92,7 @@ jobs:
             echo %PATH% &&
             echo %CMAKE_PREFIX_PATH% &&
             echo %Eigen3_DIR% &&
+            dir %Eigen3_DIR% &&
             echo "OK"
         with:
           package-dir: .
