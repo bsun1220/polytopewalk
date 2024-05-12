@@ -12,6 +12,7 @@ cd ThirdParty-Mumps
 ./configure --prefix=/mingw64/
 make
 make install
+make clean
 cd ..
 
 # install ipopt from source
@@ -23,6 +24,7 @@ cd build
 make
 # make test
 make install
+make clean
 cd ..
 cd ..
 
@@ -47,6 +49,7 @@ cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON \
 
 make VERBOSE=1
 make install
+make clean
 cd ..
 cd ..
 
