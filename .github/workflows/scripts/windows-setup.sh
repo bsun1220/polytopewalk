@@ -38,7 +38,7 @@ cp ../casadi/cmake/canonicalize_paths.cmake ifopt_ipopt/cmake/
 mkdir build
 cd build
 cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON \
-  -DCMAKE_INSTALL_PREFIX=/c/msys64/mingw64/ \
+  -DCMAKE_INSTALL_PREFIX="/c/msys64/mingw64/" \
   -DCMAKE_PREFIX_PATH="/c/msys64/mingw64/lib" \
   -DIPOPT_LIBRARIES="/c/msys64/mingw64/lib/libipopt.dll.a" \
   -DIPOPT_INCLUDE_DIRS="/c/msys64/mingw64/include/coin-or" \
