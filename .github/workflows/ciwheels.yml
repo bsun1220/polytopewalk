@@ -87,7 +87,10 @@ jobs:
             cmake ..
             make
             make install
-          CIBW_BEFORE_ALL_WINDOWS: echo $env.GITHUB_ENV
+          CIBW_BEFORE_ALL_WINDOWS: |
+            echo $env:GITHUB_ENV
+            echo $env:PATH
+            echo $env:CMAKE_PREFIX_PATH
         with:
           package-dir: .
           output-dir: wheelhouse
