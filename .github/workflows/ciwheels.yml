@@ -89,7 +89,6 @@ jobs:
             make install
           CIBW_BEFORE_ALL_WINDOWS: >-
             echo %Eigen3_DIR% &&
-            dir "C:\msys64\mingw64\share\eigen3\cmake\" &&
             dir "%Eigen3_DIR%" &&
             echo "OK"
         with:
