@@ -87,13 +87,15 @@ jobs:
             make
             make install
           CIBW_BEFORE_ALL_WINDOWS: >-
-            echo %PATH% &&
-            echo %CMAKE_PREFIX_PATH% &&
-            echo %Eigen3_DIR% &&
-            dir "%Eigen3_DIR%" &&
-            echo %ifopt_DIR% &&
-            dir "%ifopt_DIR%" &&
-            echo "OK"
+            # echo %PATH% &&
+            # echo %CMAKE_PREFIX_PATH% &&
+            # echo %Eigen3_DIR% &&
+            # dir "%Eigen3_DIR%" &&
+            # echo %ifopt_DIR% &&
+            # dir "%ifopt_DIR%" &&
+            echo "OK" &&
+            set INCLUDE= &&
+            set LIB= &&
         with:
           package-dir: .
           output-dir: wheelhouse
