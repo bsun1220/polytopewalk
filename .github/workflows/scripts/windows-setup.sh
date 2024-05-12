@@ -1,14 +1,15 @@
 #!/bin/bash
 
 echo "Let's start windows-setup"
-export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
+# export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
+export PATH="/mingw64/bin:$PATH"
 
 # install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html
 # install Mumps
 git clone https://github.com/coin-or-tools/ThirdParty-Mumps.git
 cd ThirdParty-Mumps
 ./get.Mumps
-./configure --prefix=/c/msys64/mingw64/
+./configure --prefix=/mingw64/
 make
 make install
 cd ..
@@ -18,7 +19,7 @@ git clone https://github.com/coin-or/Ipopt.git
 cd Ipopt
 mkdir build
 cd build
-../configure --prefix=/c/msys64/mingw64/
+../configure --prefix=/mingw64/
 make
 # make test
 make install
@@ -38,10 +39,10 @@ cp ../casadi/cmake/canonicalize_paths.cmake ifopt_ipopt/cmake/
 mkdir build
 cd build
 cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON \
-  -DCMAKE_INSTALL_PREFIX="/c/msys64/mingw64/" \
-  -DCMAKE_PREFIX_PATH="/c/msys64/mingw64/lib" \
-  -DIPOPT_LIBRARIES="/c/msys64/mingw64/lib/libipopt.dll.a" \
-  -DIPOPT_INCLUDE_DIRS="/c/msys64/mingw64/include/coin-or" \
+  -DCMAKE_INSTALL_PREFIX="/mingw64/" \
+  -DCMAKE_PREFIX_PATH="/mingw64/lib" \
+  -DIPOPT_LIBRARIES="/mingw64/lib/libipopt.dll.a" \
+  -DIPOPT_INCLUDE_DIRS="/mingw64/include/coin-or" \
   -G "Unix Makefiles"
 
 make VERBOSE=1
@@ -53,6 +54,8 @@ ls /c/msys64/mingw64/share
 ls /c/msys64/mingw64/share/eigen3
 ls /c/msys64/mingw64/share/ifopt
 ls /mingw64/share
+ls /c/msys64/mingw64/bin
+ls /mingw64/bin
 
 cmake_predix_path=$(cygpath -w /mingw64/share)
 echo "CMAKE_PREFIX_PATH=$cmake_predix_path" >> $GITHUB_ENV
