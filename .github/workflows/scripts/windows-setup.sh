@@ -44,7 +44,7 @@ make install
 cd ..
 cd ..
 
-echo "PATH=/c/msys64/mingw64/bin:$PATH" >> $GITHUB_ENV
-echo "CMAKE_PREFIX_PATH=/c/msys64/mingw64/lib" >> $GITHUB_ENV
+echo "PATH=C:\msys64\mingw64\bin:$PATH" >> $GITHUB_ENV
+echo "CMAKE_PREFIX_PATH=C:\msys64\mingw64\lib" >> $GITHUB_ENV
 
 
