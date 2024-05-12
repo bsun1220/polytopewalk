@@ -68,6 +68,7 @@ echo "Eigen3_DIR=$eigen_dir" >> $GITHUB_ENV
 ifopt_dir=$(cygpath -w /mingw64/local/share/ifopt/cmake)
 echo $ifopt_dir
 echo "ifopt_DIR=$ifopt_dir" >> $GITHUB_ENV
+echo "PATH=" >> $GITHUB_ENV
 # # get CXX compiler location
 # cc=$(cygpath -w /mingw64/bin/cc.exe)
 # echo "CC=$cc" >> $GITHUB_ENV
