@@ -2,7 +2,6 @@
 
 echo "Let's start windows-setup"
 export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
-echo "PATH=$PATH:/c/msys64/mingw64/bin" >> $GITHUB_ENV
 
 # install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html
 # install Mumps
@@ -23,7 +22,6 @@ cd build
 make
 # make test
 make install
-# export IPOPT_DIR=`pwd`
 cd ..
 cd ..
 
@@ -39,11 +37,14 @@ cp ../casadi/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/
 cp ../casadi/cmake/canonicalize_paths.cmake ifopt_ipopt/cmake/
 mkdir build
 cd build
-cmake .. -DIPOPT_LIBRARIES="/c/msys64/mingw64/lib/libipopt.dll.a" -DIPOPT_INCLUDE_DIRS="/c/msys64/mingw64/include/coin-or" -G "MinGW Makefiles"
+cmake .. -DCMAKE_PREFIX_PATH="/c/msys64/mingw64/lib" -DIPOPT_LIBRARIES="/c/msys64/mingw64/lib/libipopt.dll.a" -DIPOPT_INCLUDE_DIRS="/c/msys64/mingw64/include/coin-or" -G "MinGW Makefiles"
 
 make
 make install
 cd ..
 cd ..
+
+echo "PATH=$PATH:/c/msys64/mingw64/bin" >> $GITHUB_ENV
+echo "CMAKE_PREFIX_PATH=/c/msys64/mingw64/lib" >> $GITHUB_ENV
 
 
