@@ -49,6 +49,8 @@ make install
 cd ..
 cd ..
 
+ls /mingw64/share/ifopt/cmake
+
 cmake_predix_path=$(cygpath -w /mingw64/share)
 echo "CMAKE_PREFIX_PATH=$cmake_predix_path" >> $GITHUB_ENV
 eigen_dir=$(cygpath -w /mingw64/share/eigen3/cmake)
