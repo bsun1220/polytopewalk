@@ -1,29 +1,33 @@
 #!/bin/bash
 
-# Clone and bootstrap vcpkg
-git clone https://github.com/microsoft/vcpkg
-cd vcpkg
-./bootstrap-vcpkg.bat
-./vcpkg integrate install
+echo "Let's start windows-setup"
+export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
+echo "PATH=$PATH:/c/msys64/mingw64/bin" >> $GITHUB_ENV
 
-# Set the VCPKG_ROOT environment variable to the current directory
-export VCPKG_ROOT=$(pwd)
-# Display VCPKG_ROOT to verify it is set correctly
-echo "VCPKG_ROOT is set to: $VCPKG_ROOT"
-
-# Install eigen3 and ipopt with vcpkg
-./vcpkg install eigen3
-./vcpkg install coin-or-ipopt
-
+# install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html
+# install Mumps
+git clone https://github.com/coin-or-tools/ThirdParty-Mumps.git
+cd ThirdParty-Mumps
+./get.Mumps
+./configure --prefix=/c/msys64/mingw64/
+make
+make install
 cd ..
 
-# export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:./vcpkg/installed/x64-windows/lib/ipopt.lib"
-echo `ls ./`
-echo `ls ./installed`
-echo `ls ./installed/x64-windows`
-echo `ls ./installed/x64-windows/lib`
+# install ipopt from source
+git clone https://github.com/coin-or/Ipopt.git
+cd Ipopt
+mkdir build
+cd build
+../configure --prefix=/c/msys64/mingw64/
+make
+# make test
+make install
+# export IPOPT_DIR=`pwd`
+cd ..
+cd ..
 
-# get FindIPOPT_DIR.cmake from casadi, which is better written
+# get FindIPOPT_DIR from casadi, which is better written
 git clone --depth 1 --branch 3.6.5 https://github.com/casadi/casadi.git
 
 # install ifopt from source
@@ -35,14 +39,11 @@ cp ../casadi/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/
 cp ../casadi/cmake/canonicalize_paths.cmake ifopt_ipopt/cmake/
 mkdir build
 cd build
-cmake .. \
-  -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
-  -DIPOPT_LIBRARIES="$VCPKG_ROOT/installed/x64-windows/lib/ipopt.lib" \
-  -DIPOPT_INCLUDE_DIRS="$VCPKG_ROOT/installed/x64-windows/include/coin-or" \
-  -G "Unix Makefiles"
+cmake .. -DIPOPT_LIBRARIES="/c/msys64/mingw64/lib/libipopt.dll.a" -DIPOPT_INCLUDE_DIRS="/c/msys64/mingw64/include/coin-or" -G "MinGW Makefiles"
 
 make
 make install
 cd ..
 cd ..
+
 
