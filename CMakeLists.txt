@@ -7,6 +7,10 @@ if(UNIX)
     set(CMAKE_CXX_FLAGS "-O2 -fPIC")
 elseif(WIN32)
     # For Windows, specific Windows options can be set here
+    get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
+    foreach(dir ${dirs})
+      message(STATUS "dir='${dir}'")
+    endforeach()
 endif()
 
 find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
