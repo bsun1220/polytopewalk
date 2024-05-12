@@ -36,16 +36,14 @@ cd ifopt
 mv ifopt_ipopt/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/FindIPOPT.cmakeold
 cp ../casadi/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/
 cp ../casadi/cmake/canonicalize_paths.cmake ifopt_ipopt/cmake/
-cmake -S . -B build \
-  # -DCMAKE_VERBOSE_MAKEFILE=ON \
-  # -DCMAKE_INSTALL_PREFIX="/mingw64/" \
+mkdir build
+cd build
+cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON \
+  -DCMAKE_INSTALL_PREFIX="/mingw64/" \
   -DCMAKE_PREFIX_PATH="/mingw64/lib" \
   -DIPOPT_LIBRARIES="/mingw64/lib/libipopt.dll.a" \
   -DIPOPT_INCLUDE_DIRS="/mingw64/include/coin-or" \
-  -G "Visual Studio 17 2022"
-
-cmake --build build --config Release
-cmake --install build --prefix "/mingw64/"
+  -G "Unix Makefiles"
 
 make VERBOSE=1
 make install
@@ -59,7 +57,7 @@ cd ..
 # ls /c/msys64/mingw64/bin
 # ls /mingw64/bin
 
-cmake_predix_path=$(cygpath -w /mingw64)
+cmake_predix_path=$(cygpath -w /mingw64/share)
 echo "CMAKE_PREFIX_PATH=$cmake_predix_path" >> $GITHUB_ENV
 echo $cmake_predix_path
 eigen_dir=$(cygpath -w /mingw64/share/eigen3/cmake)
