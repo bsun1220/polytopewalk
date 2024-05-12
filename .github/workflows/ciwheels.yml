@@ -70,8 +70,8 @@ jobs:
       - name: Verify Eigen3 Installation (Windows only)
         if: runner.os == 'Windows'
         run: |
-          echo "Eigen3_DIR: %Eigen3_DIR%"
-          dir "%Eigen3_DIR%"
+          echo "Eigen3_DIR: $Eigen3_DIR"
+          dir $Eigen3_DIR
           
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.17.0
