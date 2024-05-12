@@ -87,11 +87,11 @@ jobs:
             cmake ..
             make
             make install
-          CIBW_BEFORE_ALL_WINDOWS: |
-            echo $env:GITHUB_ENV
-            echo $env:PATH
-            echo $env:CMAKE_PREFIX_PATH
-            echo $CMAKE_PREFIX_PATH
+          CIBW_BEFORE_ALL_WINDOWS: >-
+            echo $env:GITHUB_ENV &&
+            echo $env:PATH &&
+            echo $env:CMAKE_PREFIX_PATH &&
+            echo $CMAKE_PREFIX_PATH &&
             echo "OK"
         with:
           package-dir: .
