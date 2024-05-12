@@ -93,6 +93,10 @@ jobs:
             echo %CMAKE_PREFIX_PATH% &&
             echo %Eigen3_DIR% &&
             dir "C:\msys64\" &&
+            dir "C:\msys64\mingw64\" &&
+            dir "C:\msys64\mingw64\share\" &&
+            dir "C:\msys64\mingw64\share\eigen3\" &&
+            dir "C:\msys64\mingw64\share\eigen3\cmake\" &&
             dir "%Eigen3_DIR%" &&
             echo "OK"
         with:
