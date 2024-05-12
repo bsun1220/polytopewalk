@@ -89,6 +89,7 @@ jobs:
             make
             make install
           CIBW_BEFORE_ALL_WINDOWS: >-
+            echo %PATH% &&
             echo %CMAKE_PREFIX_PATH% &&
             echo %Eigen3_DIR% &&
             dir "%Eigen3_DIR%" &&
