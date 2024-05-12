@@ -6,6 +6,7 @@ if(UNIX)
     # For Unix-like systems, add the -fPIC option
     set(CMAKE_CXX_FLAGS "-O2 -fPIC")
 elseif(WIN32)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_USE_MATH_DEFINES")
     # For Windows, specific Windows options can be set here
     get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
     foreach(dir ${dirs})
