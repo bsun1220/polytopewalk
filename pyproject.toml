@@ -22,7 +22,7 @@ classifiers = [
 [tool.scikit-build]
 # A list of args to pass to CMake when configuring the project. Setting this in
 # config or envvar will override toml. See also ``cmake.define``.
-cmake.args = ["-DCMAKE_VERBOSE_MAKEFILE=ON"]
+cmake.args = []
 
 # A table of defines to pass to CMake when configuring the project. Additive.
 cmake.define = {}
