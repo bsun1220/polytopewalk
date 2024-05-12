@@ -51,6 +51,11 @@ class DikinLSWalk: public BarrierWalk{
         const double GRADLIM;
 
         /**
+         * @brief saves current weight for iteration
+         */
+        VectorXd w_i = VectorXd::Zero(1) - VectorXd::Ones(1); 
+
+        /**
          * @brief set Distribution Constant
          * @param d (dimension)
          * @param n (number of constraints)

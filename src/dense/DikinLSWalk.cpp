@@ -1,6 +1,7 @@
 #include "DikinLSWalk.hpp"
 
 void DikinLSWalk::setDistTerm(int d, int n){
+    w_i = VectorXd::Ones(n); 
     double q = 2.0 * (1.0 + log(n));
     double term = (1.0 + q) * (1.0 + q * q);
     DIST_TERM = R*R/term; 
@@ -11,7 +12,10 @@ void DikinLSWalk::generateWeight(const VectorXd& x, const MatrixXd& A, const Vec
     double q = 2.0 * (1.0 + log(A.rows()));
     double alpha = 1.0 - (2.0/q);
 
-    VectorXd w_i = VectorXd::Ones(A.rows()); 
+    if (w_i.coeffRef(0) == -1 || w_i.rows() != A.rows()){
+        w_i = VectorXd::Ones(A.rows());
+    }
+
     generateSlack(x, A, b);
     DiagonalMatrix<double, Dynamic> slack_inv = slack.cwiseInverse().asDiagonal();
     MatrixXd A_x = slack_inv * A; 

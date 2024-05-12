@@ -56,6 +56,11 @@ class SparseDikinLSWalk : public SparseBarrierWalk{
          */
         const int MAX_ITER;
 
+        /**
+         * @brief saves current weight for iteration
+         */
+        VectorXd w_i = VectorXd::Zero(1) - VectorXd::Ones(1); 
+
 };
 
 #endif

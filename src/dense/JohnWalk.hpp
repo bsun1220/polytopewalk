@@ -47,6 +47,11 @@ class JohnWalk: public BarrierWalk{
         const double LIM;
 
         /**
+         * @brief saves current weight for iteration
+         */
+        VectorXd w_i = VectorXd::Zero(1) - VectorXd::Ones(1); 
+
+        /**
          * @brief set Dist Term for John Walk
          * @param d (dimension)
          * @param n (number of constraints)
