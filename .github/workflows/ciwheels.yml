@@ -88,9 +88,6 @@ jobs:
             make
             make install
           CIBW_BEFORE_ALL_WINDOWS: >-
-            echo %GITHUB_ENV% &&
-            echo %PATH% &&
-            echo %CMAKE_PREFIX_PATH% &&
             echo %Eigen3_DIR% &&
             dir "C:\msys64\" &&
             dir "C:\msys64\mingw64\" &&
