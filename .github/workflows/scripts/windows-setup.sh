@@ -66,5 +66,7 @@ ifopt_dir=$(cygpath -w /mingw64/share/ifopt/cmake)
 echo $ifopt_dir
 echo "ifopt_DIR=$ifopt_dir" >> $GITHUB_ENV
 # get CXX compiler location
-echo "CC=/mingw64/bin/cc.exe" >> $GITHUB_ENV
-echo "CXX=/mingw64/bin/c++.exe" >> $GITHUB_ENV
+cc=$(cygpath -w /mingw64/bin/cc.exe)
+echo "CC=$cc" >> $GITHUB_ENV
+cxx=$(cygpath -w /mingw64/bin/c++.exe)
+echo "CXX=$cxx" >> $GITHUB_ENV
