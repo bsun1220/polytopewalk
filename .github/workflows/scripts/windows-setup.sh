@@ -3,7 +3,7 @@
 echo "Let's start windows-setup"
 export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
 
-pacman -Ql mingw-w64-x86_64-eigen3
+pacman -Ql mingw-w64-x86_64-eigen3 | grep '\.cmake$'
 
 # # install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html
 # # install Mumps
