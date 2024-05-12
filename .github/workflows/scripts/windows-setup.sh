@@ -49,9 +49,10 @@ make install
 cd ..
 cd ..
 
-ls C:/msys64/mingw64/share
 ls /c/msys64/mingw64/share
-ls /mingw64/share/ifopt/cmake
+ls /c/msys64/mingw64/share/eigen3
+ls /c/msys64/mingw64/share/ifopt
+ls /mingw64/share
 
 cmake_predix_path=$(cygpath -w /mingw64/share)
 echo "CMAKE_PREFIX_PATH=$cmake_predix_path" >> $GITHUB_ENV
