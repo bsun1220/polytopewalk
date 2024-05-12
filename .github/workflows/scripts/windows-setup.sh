@@ -52,7 +52,7 @@ pacman -Ql mingw-w64-x86_64-eigen3 | grep '\.cmake$'
 # cd ..
 
 # echo "PATH=C:\Windows\System32:C:\msys64\mingw64\bin:$PATH" >> $GITHUB_ENV
-echo "CMAKE_PREFIX_PATH=C:\msys64\mingw64\lib\" >> $GITHUB_ENV
-echo "Eigen3_DIR=C:\msys64\mingw64\share\eigen3\cmake\" >> $GITHUB_ENV
-
-
+cmake_predix_path=$(cygpath -w /mingw64/lib)
+echo "CMAKE_PREFIX_PATH=$cmake_predix_path" >> $GITHUB_ENV
+eigen_dir=$(cygpath -w /mingw64/share/eigen3/cmake)
+echo "Eigen3_DIR=$eigen_dir" >> $GITHUB_ENV
