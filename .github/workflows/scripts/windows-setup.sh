@@ -39,7 +39,7 @@ mkdir build
 cd build
 cmake .. -DCMAKE_PREFIX_PATH="/c/msys64/mingw64/lib" -DIPOPT_LIBRARIES="/c/msys64/mingw64/lib/libipopt.dll.a" -DIPOPT_INCLUDE_DIRS="/c/msys64/mingw64/include/coin-or" -G "MinGW Makefiles"
 
-make
+make VERBOSE=1
 make install
 cd ..
 cd ..
