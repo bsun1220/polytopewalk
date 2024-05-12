@@ -91,6 +91,8 @@ jobs:
             echo $env:GITHUB_ENV
             echo $env:PATH
             echo $env:CMAKE_PREFIX_PATH
+            echo $CMAKE_PREFIX_PATH
+            echo "OK"
         with:
           package-dir: .
           output-dir: wheelhouse
