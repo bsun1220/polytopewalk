@@ -49,6 +49,8 @@ make install
 cd ..
 cd ..
 
+ls C:/msys64/mingw64/share
+ls /c/msys64/mingw64/share
 ls /mingw64/share/ifopt/cmake
 
 cmake_predix_path=$(cygpath -w /mingw64/share)
