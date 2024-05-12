@@ -39,7 +39,7 @@ jobs:
           #   python: 39
           #   platform_id: macosx_arm64
        
-    continue-on-error: true
+    # continue-on-error: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
