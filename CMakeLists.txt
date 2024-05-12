@@ -7,7 +7,7 @@ set(CMAKE_CXX_FLAGS "-O2 -fPIC")
 find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 find_package(pybind11 CONFIG REQUIRED)
 find_package(Eigen3 CONFIG REQUIRED)
-find_package(ifopt REQUIRED)
+find_package(ifopt CONFIG REQUIRED)
 
 set(POLYTOPEWALK_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SOURCES_DIR ${POLYTOPEWALK_DIR}/src)
