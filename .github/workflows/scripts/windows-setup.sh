@@ -51,6 +51,6 @@ cd ..
 
 # echo "PATH=C:\Windows\System32:C:\msys64\mingw64\bin:$PATH" >> $GITHUB_ENV
 echo "CMAKE_PREFIX_PATH=C:\msys64\mingw64\lib" >> $GITHUB_ENV
-echo "Eigen3_DIR=C:\msys64\mingw64\mingw64\share\eigen3\cmake" >> $GITHUB_ENV
+echo "Eigen3_DIR=C:\msys64\mingw64\share\eigen3\cmake" >> $GITHUB_ENV
 
 
