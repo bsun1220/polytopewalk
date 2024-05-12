@@ -2,7 +2,12 @@ cmake_minimum_required(VERSION 3.0.0...3.5)
 project(polytopewalk)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-O2 -fPIC")
+if(UNIX)
+    # For Unix-like systems, add the -fPIC option
+    set(CMAKE_CXX_FLAGS "-O2 -fPIC")
+elseif(WIN32)
+    # For Windows, specific Windows options can be set here
+endif()
 
 find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 find_package(pybind11 CONFIG REQUIRED)
