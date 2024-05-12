@@ -50,18 +50,18 @@ make install
 cd ..
 cd ..
 
-ls /c/msys64/mingw64/share
-ls /c/msys64/mingw64/share/eigen3
-ls /c/msys64/mingw64/share/ifopt
-ls /mingw64/share
-ls /c/msys64/mingw64/bin
-ls /mingw64/bin
+# ls /c/msys64/mingw64/share
+# ls /c/msys64/mingw64/share/eigen3
+# ls /c/msys64/mingw64/share/ifopt
+# ls /mingw64/share
+# ls /c/msys64/mingw64/bin
+# ls /mingw64/bin
 
 cmake_predix_path=$(cygpath -w /mingw64/share)
 echo "CMAKE_PREFIX_PATH=$cmake_predix_path" >> $GITHUB_ENV
 echo $cmake_predix_path
 eigen_dir=$(cygpath -w /mingw64/share/eigen3/cmake)
 echo "Eigen3_DIR=$eigen_dir" >> $GITHUB_ENV
-ifopt_dir=$(cygpath -w /c/mingw64/share/ifopt/cmake)
+ifopt_dir=$(cygpath -w /mingw64/share/ifopt/cmake)
 echo $ifopt_dir
 echo "ifopt_DIR=$ifopt_dir" >> $GITHUB_ENV
