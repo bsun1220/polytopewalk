@@ -3,6 +3,8 @@
 echo "Let's start windows-setup"
 export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
 
+pacman -Ql mingw-w64-x86_64-eigen3
+
 # # install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html
 # # install Mumps
 # git clone https://github.com/coin-or-tools/ThirdParty-Mumps.git
@@ -50,7 +52,7 @@ export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
 # cd ..
 
 # echo "PATH=C:\Windows\System32:C:\msys64\mingw64\bin:$PATH" >> $GITHUB_ENV
-echo "CMAKE_PREFIX_PATH=C:\msys64\mingw64\lib" >> $GITHUB_ENV
-echo "Eigen3_DIR=C:\msys64\mingw64\share\eigen3\cmake" >> $GITHUB_ENV
+echo "CMAKE_PREFIX_PATH=C:\msys64\mingw64\lib\" >> $GITHUB_ENV
+echo "Eigen3_DIR=C:\msys64\mingw64\share\eigen3\cmake\" >> $GITHUB_ENV
 
 
