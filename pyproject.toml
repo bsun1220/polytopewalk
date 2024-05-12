@@ -18,3 +18,18 @@ authors = [
 classifiers = [
     'License :: OSI Approved :: MIT License'
 ]
+
+[tool.scikit-build]
+# A list of args to pass to CMake when configuring the project. Setting this in
+# config or envvar will override toml. See also ``cmake.define``.
+cmake.args = ["-DCMAKE_VERBOSE_MAKEFILE=ON"]
+
+# A table of defines to pass to CMake when configuring the project. Additive.
+cmake.define = {}
+
+# Verbose printout when building.
+cmake.verbose = true
+
+# The build type to use when building the project. Valid options are: "Debug",
+# "Release", "RelWithDebInfo", "MinSizeRel", "", etc.
+cmake.build-type = "Release"
