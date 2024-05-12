@@ -36,14 +36,16 @@ cd ifopt
 mv ifopt_ipopt/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/FindIPOPT.cmakeold
 cp ../casadi/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/
 cp ../casadi/cmake/canonicalize_paths.cmake ifopt_ipopt/cmake/
-mkdir build
-cd build
-cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON \
-  -DCMAKE_INSTALL_PREFIX="/mingw64/" \
+cmake -S . -B build \
+  # -DCMAKE_VERBOSE_MAKEFILE=ON \
+  # -DCMAKE_INSTALL_PREFIX="/mingw64/" \
   -DCMAKE_PREFIX_PATH="/mingw64/lib" \
   -DIPOPT_LIBRARIES="/mingw64/lib/libipopt.dll.a" \
   -DIPOPT_INCLUDE_DIRS="/mingw64/include/coin-or" \
-  -G "Unix Makefiles"
+  -G "Visual Studio 17 2022"
+
+cmake --build build --config Release
+cmake --install build --prefix "/mingw64/"
 
 make VERBOSE=1
 make install
@@ -57,7 +59,7 @@ cd ..
 # ls /c/msys64/mingw64/bin
 # ls /mingw64/bin
 
-cmake_predix_path=$(cygpath -w /mingw64/share)
+cmake_predix_path=$(cygpath -w /mingw64)
 echo "CMAKE_PREFIX_PATH=$cmake_predix_path" >> $GITHUB_ENV
 echo $cmake_predix_path
 eigen_dir=$(cygpath -w /mingw64/share/eigen3/cmake)
@@ -65,8 +67,8 @@ echo "Eigen3_DIR=$eigen_dir" >> $GITHUB_ENV
 ifopt_dir=$(cygpath -w /mingw64/share/ifopt/cmake)
 echo $ifopt_dir
 echo "ifopt_DIR=$ifopt_dir" >> $GITHUB_ENV
-# get CXX compiler location
-cc=$(cygpath -w /mingw64/bin/cc.exe)
-echo "CC=$cc" >> $GITHUB_ENV
-cxx=$(cygpath -w /mingw64/bin/c++.exe)
-echo "CXX=$cxx" >> $GITHUB_ENV
+# # get CXX compiler location
+# cc=$(cygpath -w /mingw64/bin/cc.exe)
+# echo "CC=$cc" >> $GITHUB_ENV
+# cxx=$(cygpath -w /mingw64/bin/c++.exe)
+# echo "CXX=$cxx" >> $GITHUB_ENV
