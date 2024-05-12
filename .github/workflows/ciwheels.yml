@@ -25,21 +25,21 @@ jobs:
           #   python: 310
           #   platform_id: win_amd64
 
-          # Linux 64 bit manylinux2014
-          - os: ubuntu-latest
-            python: 39
-            platform_id: manylinux_x86_64
-            manylinux_image: manylinux2014
+          # # Linux 64 bit manylinux2014
+          # - os: ubuntu-latest
+          #   python: 39
+          #   platform_id: manylinux_x86_64
+          #   manylinux_image: manylinux2014
 
-          # MacOS x86_64
-          - os: macos-12
-            python: 39
-            platform_id: macosx_x86_64
+          # # MacOS x86_64
+          # - os: macos-12
+          #   python: 39
+          #   platform_id: macosx_x86_64
 
-          # MacOS arm64
-          - os: macos-14
-            python: 39
-            platform_id: macosx_arm64
+          # # MacOS arm64
+          # - os: macos-14
+          #   python: 39
+          #   platform_id: macosx_arm64
             
 
     steps:
