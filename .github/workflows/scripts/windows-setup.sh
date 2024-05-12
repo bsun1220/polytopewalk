@@ -38,7 +38,7 @@ cd build
 cmake .. \
   -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
   -DIPOPT_LIBRARIES="$VCPKG_ROOT/installed/x64-windows/lib/ipopt.lib" \
-  -DIPOPT_INCLUDE_DIRS="$VCPKG_ROOT/installed/x64-windows/include/coin-or/" \
+  -DIPOPT_INCLUDE_DIRS="$VCPKG_ROOT/installed/x64-windows/include/coin-or" \
   -G "Unix Makefiles"
 
 make
