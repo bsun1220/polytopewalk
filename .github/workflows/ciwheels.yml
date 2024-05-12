@@ -94,8 +94,11 @@ jobs:
             # echo %ifopt_DIR% &&
             # dir "%ifopt_DIR%" &&
             echo "OK" &&
+            echo %INCLUDE% &&
+            echo %LIB% &&
             set INCLUDE= &&
             set LIB= &&
+            echo %INCLUDE%
         with:
           package-dir: .
           output-dir: wheelhouse
