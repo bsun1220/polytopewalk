@@ -43,8 +43,6 @@ cd build
 cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON \
   -DCMAKE_INSTALL_PREFIX="/mingw64/local" \
   -DCMAKE_PREFIX_PATH="/mingw64" \
-  # -DIPOPT_LIBRARIES="/mingw64/lib/libipopt.dll.a" \
-  # -DIPOPT_INCLUDE_DIRS="/mingw64/include/coin-or" \
   -G "Unix Makefiles"
 
 make VERBOSE=1
@@ -68,7 +66,6 @@ echo "Eigen3_DIR=$eigen_dir" >> $GITHUB_ENV
 ifopt_dir=$(cygpath -w /mingw64/local/share/ifopt/cmake)
 echo $ifopt_dir
 echo "ifopt_DIR=$ifopt_dir" >> $GITHUB_ENV
-echo "PATH=" >> $GITHUB_ENV
 # # get CXX compiler location
 # cc=$(cygpath -w /mingw64/bin/cc.exe)
 # echo "CC=$cc" >> $GITHUB_ENV
