@@ -35,21 +35,32 @@ cd ifopt
 mv ifopt_ipopt/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/FindIPOPT.cmakeold
 cp ../casadi/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/
 cp ../casadi/cmake/canonicalize_paths.cmake ifopt_ipopt/cmake/
-mkdir build
-cd build
-cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON \
+cmake -A x64 -B build \
+  -DCMAKE_VERBOSE_MAKEFILE=ON \
   -DCMAKE_INSTALL_PREFIX="/mingw64/local" \
   -DCMAKE_PREFIX_PATH="/mingw64" \
-  -G "Unix Makefiles"
+  -G "Visual Studio 17 2022"
 
-make VERBOSE=1
-make install
+cmake --build build --config Release
+cmake --install build --config Release
 cd ..
-cd ..
+
+# mkdir build
+# cd build
+# cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON \
+#   -DCMAKE_INSTALL_PREFIX="/mingw64/local" \
+#   -DCMAKE_PREFIX_PATH="/mingw64" \
+#   -G "Unix Makefiles"
+
+# make VERBOSE=1
+# make install
+# cd ..
+# cd ..
 
 eigen_dir=$(cygpath -w /mingw64/share/eigen3/cmake)
 echo $eigen_dir
 echo "Eigen3_DIR=$eigen_dir" >> $GITHUB_ENV
 ifopt_dir=$(cygpath -w /mingw64/local/share/ifopt/cmake)
+echo `ls /mingw64/local/share/ifopt/cmake`
 echo $ifopt_dir
 echo "ifopt_DIR=$ifopt_dir" >> $GITHUB_ENV
