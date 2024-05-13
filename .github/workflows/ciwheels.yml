@@ -23,11 +23,11 @@ jobs:
           #   python: 310
           #   platform_id: win_amd64
 
-          # # Linux 64 bit manylinux2014
-          # - os: ubuntu-latest
-          #   python: 39
-          #   platform_id: manylinux_x86_64
-          #  manylinux_image: manylinux2014
+          # Linux 64 bit manylinux2014
+            - os: ubuntu-latest
+              python: 39
+              platform_id: manylinux_x86_64
+              manylinux_image: manylinux2014
 
           # # MacOS x86_64
           # - os: macos-12
@@ -89,13 +89,7 @@ jobs:
             make install
           CIBW_BEFORE_ALL_WINDOWS: >-
             echo "OK" &&
-            echo %INCLUDE% &&
-            echo %LIB% &&
-            set INCLUDE= &&
-            set LIB= &&
-            echo %INCLUDE%
-          CIBW_ENVIRONMENT_WINDOWS: >-
-            CMAKE_GENERATOR="Visual Studio 17 2022"
+            echo "OK WINDOWS"
         with:
           package-dir: .
           output-dir: wheelhouse
