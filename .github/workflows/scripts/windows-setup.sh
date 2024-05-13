@@ -37,10 +37,10 @@ git clone --depth 1 --branch 3.6.5 https://github.com/casadi/casadi.git
 # install ifopt from source
 git clone https://github.com/ethz-adrl/ifopt.git
 cd ifopt
-# move FindIPOPT.cmake around
-mv ifopt_ipopt/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/FindIPOPT.cmakeold
-cp ../casadi/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/
-cp ../casadi/cmake/canonicalize_paths.cmake ifopt_ipopt/cmake/
+# # move FindIPOPT.cmake around
+# mv ifopt_ipopt/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/FindIPOPT.cmakeold
+# cp ../casadi/cmake/FindIPOPT.cmake ifopt_ipopt/cmake/
+# cp ../casadi/cmake/canonicalize_paths.cmake ifopt_ipopt/cmake/
 cmake -A x64 -B build \
   -DCMAKE_VERBOSE_MAKEFILE=ON \
   -DCMAKE_INSTALL_PREFIX="/mingw64/local" \
