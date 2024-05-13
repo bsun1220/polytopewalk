@@ -12,7 +12,6 @@ cd ThirdParty-Mumps
 ./configure --prefix=/mingw64/
 make
 make install
-make clean
 cd ..
 
 # install ipopt from source
@@ -22,9 +21,7 @@ mkdir build
 cd build
 ../configure --prefix=/mingw64/
 make
-# make test
 make install
-make clean
 cd ..
 cd ..
 
@@ -47,27 +44,12 @@ cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON \
 
 make VERBOSE=1
 make install
-make clean
 cd ..
 cd ..
 
-# ls /c/msys64/mingw64/share
-# ls /c/msys64/mingw64/share/eigen3
-# ls /c/msys64/mingw64/share/ifopt
-# ls /mingw64/share
-# ls /c/msys64/mingw64/bin
-# ls /mingw64/bin
-
-# cmake_predix_path=$(cygpath -w /mingw64/share)
-# echo "CMAKE_PREFIX_PATH=$cmake_predix_path" >> $GITHUB_ENV
-# echo $cmake_predix_path
 eigen_dir=$(cygpath -w /mingw64/share/eigen3/cmake)
+echo $eigen_dir
 echo "Eigen3_DIR=$eigen_dir" >> $GITHUB_ENV
 ifopt_dir=$(cygpath -w /mingw64/local/share/ifopt/cmake)
 echo $ifopt_dir
 echo "ifopt_DIR=$ifopt_dir" >> $GITHUB_ENV
-# # get CXX compiler location
-# cc=$(cygpath -w /mingw64/bin/cc.exe)
-# echo "CC=$cc" >> $GITHUB_ENV
-# cxx=$(cygpath -w /mingw64/bin/c++.exe)
-# echo "CXX=$cxx" >> $GITHUB_ENV
