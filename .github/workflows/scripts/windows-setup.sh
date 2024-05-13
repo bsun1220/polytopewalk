@@ -45,8 +45,6 @@ cmake -A x64 -B build \
   -DCMAKE_VERBOSE_MAKEFILE=ON \
   -DCMAKE_INSTALL_PREFIX="/mingw64/local" \
   -DCMAKE_PREFIX_PATH="/mingw64" \
-  -DIPOPT_LIBRARIES="/mingw64/lib/libipopt.dll.a" \
-  -DIPOPT_INCLUDE_DIRS="/mingw64/include/coin-or" \
   -G "Visual Studio 17 2022"
 
 cmake --build build --config Release
@@ -58,6 +56,8 @@ cd ..
 # cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON \
 #   -DCMAKE_INSTALL_PREFIX="/mingw64/local" \
 #   -DCMAKE_PREFIX_PATH="/mingw64" \
+#   -DIPOPT_LIBRARIES="/mingw64/lib/libipopt.dll.a" \
+#   -DIPOPT_INCLUDE_DIRS="/mingw64/include/coin-or" \
 #   -G "Unix Makefiles"
 
 # make VERBOSE=1
