@@ -4,26 +4,32 @@ echo "Let's start windows-setup"
 # export PATH="/c/msys64/mingw64/bin:/c/Program Files/Git/bin:$PATH"
 export PATH="/mingw64/bin:$PATH"
 
-# install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html
-# install Mumps
-git clone https://github.com/coin-or-tools/ThirdParty-Mumps.git
-cd ThirdParty-Mumps
-./get.Mumps
-./configure --prefix=/mingw64/
-make
-make install
-cd ..
+# install ipopt from binary
+wget https://github.com/coin-or/Ipopt/releases/download/releases%2F3.14.16/Ipopt-3.14.16-win64-msvs2019-md.zip
+unzip Ipopt-3.14.16-win64-msvs2019-md.zip
+mkdir /mingw64/local
+cp -r Ipopt-3.14.16-win64-msvs2019-md/* /mingw64/
 
-# install ipopt from source
-git clone https://github.com/coin-or/Ipopt.git
-cd Ipopt
-mkdir build
-cd build
-../configure --prefix=/mingw64/
-make
-make install
-cd ..
-cd ..
+# # install ipopt via https://coin-or.github.io/Ipopt/INSTALL.html
+# # install Mumps
+# git clone https://github.com/coin-or-tools/ThirdParty-Mumps.git
+# cd ThirdParty-Mumps
+# ./get.Mumps
+# ./configure --prefix=/mingw64/
+# make
+# make install
+# cd ..
+
+# # install ipopt from source
+# git clone https://github.com/coin-or/Ipopt.git
+# cd Ipopt
+# mkdir build
+# cd build
+# ../configure --prefix=/mingw64/
+# make
+# make install
+# cd ..
+# cd ..
 
 # get FindIPOPT_DIR from casadi, which is better written
 git clone --depth 1 --branch 3.6.5 https://github.com/casadi/casadi.git
